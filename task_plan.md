@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Create the verified local review commit and hand the candidate to Rex without pushing or deploying.
+Await Rex's authorization to push `master` and trigger the connected Vercel review deployment; Brevo integration remains the next product phase only after UX approval.
 
 ## Current Phase
 
-Phase 5 — Deliver
+Phase 5 — Deliver (complete)
 
 ## Phases
 
@@ -46,11 +46,11 @@ Phase 5 — Deliver
 - **Status:** complete
 
 ### Phase 5: Deliver
-- [ ] Create the local review commit
+- [x] Create the local review commit
 - [x] Leave a clean local handoff
 - [x] Summarize changed files and verification evidence
 - [x] Record follow-up opportunities separately from the MVP scope
-- **Status:** in_progress
+- **Status:** complete
 
 ## Key Questions
 

@@ -188,7 +188,8 @@
   - `git diff --check`: passed.
   - Pixel QA: corrected mobile and tablet hero captures, mobile menu/basket/checkout/review, tablet menu, laptop home/menu, and desktop home/menu have no remaining verified stop-ship issue.
 - Current state: Frontend implementation, generated assets, automated tests, production build, and responsive browser/pixel QA are complete. No push or deployment has occurred.
-- Next action: Create the local review commit and ask Rex whether to push/deploy the connected Vercel review build.
+- Local implementation commit: `2b42455` (`feat: build mobile-first ordering review flow`).
+- Next action: Ask Rex whether to push `master` and trigger the connected Vercel review deployment. Brevo stays deferred until Rex approves the site and flow.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## 5-Question Reboot Check
