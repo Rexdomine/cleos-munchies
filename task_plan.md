@@ -6,10 +6,10 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Define the Brevo relay contract, payment handoff UX, and menu data model using the supplied menu inventory before implementation.
+Lock the mobile-first menu interaction model and frontend architecture, then define the Brevo relay contract before implementation.
 
-- Current state: Public GitHub repository is created and pushed; Vercel linkage is pending because the read-only account lookup was blocked before any Vercel change.
-- Next action: Define the Brevo relay contract, payment handoff UX, and menu data model using the supplied menu inventory before implementation.
+- Current state: GitHub and Vercel setup is verified; menu content and the mobile-first reference UX are captured.
+- Next action: Lock the mobile-first menu interaction model and frontend architecture, then define the Brevo relay contract.
 
 ## Current Phase
 
@@ -29,9 +29,11 @@ Phase 2 — Plan
 
 ### Phase 2: Plan
 - [ ] Choose frontend stack and project structure
-- [ ] Define the minimal ordering flow and screens
-- [ ] Record content, brand, and responsive UX decisions
-- **Status:** pending
+- [x] Define the minimal ordering flow and screens
+- [x] Record the mobile-first menu interaction direction
+- [ ] Finalize content, brand, and responsive design tokens
+- [ ] Define the Brevo relay and durable reference contract
+- **Status:** in_progress
 
 ### Phase 3: Implement
 - [ ] Build the frontend shell and menu experience

@@ -137,4 +137,25 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
 
 ## Visual / Browser Findings
 
-- None yet.
+### Menu-page reference and mobile adaptation
+
+Source: supplied Foodly “Full Menu” reference image, inspected 2026-09-10 UTC.
+
+- The menu is the product’s primary landing experience; avoid a long marketing homepage before users can browse food.
+- Carry over: prominent food photography, category-led discovery, consistent cards, visible price/portion, fast add actions, and an always-findable cart.
+- Do not copy directly: desktop sidebar, four-column density, generic ratings/reviews, favorites, broad marketplace filters, or instant-delivery preparation times.
+- Mobile-first structure:
+  1. Compact branded header with cart count.
+  2. Short preorder/delivery context strip.
+  3. Sticky horizontal category chips using the real menu categories.
+  4. Optional compact search; no permanent filter sidebar.
+  5. One-column food cards optimized for thumb use, with image, name, price, serving size, availability, short description, and Add/Choose options action.
+  6. Item options in a mobile bottom sheet where portion/variant choices are required.
+  7. Persistent bottom cart bar showing item count and subtotal, positioned above device safe-area insets.
+  8. Cart → delivery details → pending-payment/order-reference screen → Monzo handoff.
+- App-like behavior requirements: immediate quantity feedback, preserved cart during navigation/refresh, large touch targets, no hover-only controls, safe-area support, restrained motion, visible loading/error states, and keyboard-friendly checkout fields.
+- Sticky category/cart surfaces must reserve layout space and never cover the first menu item, form actions, or cart content.
+- Checkout must use appropriate mobile input modes (especially phone and postcode-relevant fields) and must not ask customers to re-enter information already supplied in the same order flow.
+- Desktop remains responsive but secondary: category controls may expand and cards may form a readable grid; mobile behavior is the acceptance baseline.
+- Generated menu imagery should share a consistent Afro-fusion photography direction, crop ratio, lighting, plating realism, and background treatment.
+

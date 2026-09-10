@@ -73,6 +73,20 @@
   - `.gitignore`
   - `progress.md`
 
+### Mobile-first UX reference
+- **Status:** complete
+- Actions taken:
+  - Inspected the supplied Foodly menu-page reference.
+  - Extracted the useful patterns: food-first browsing, consistent cards, category discovery, visible prices, quick add actions, and persistent cart access.
+  - Rejected marketplace complexity that does not fit Cleo’s Munchies: desktop sidebar, dense four-column mobile layout, ratings-heavy cards, favorites, and excessive filters.
+  - Defined the mobile app-like structure: compact header, preorder context, sticky category chips, one-column cards, item bottom sheets, and sticky cart subtotal/checkout bar.
+  - Recorded mobile acceptance requirements including touch targets, safe areas, preserved cart state, keyboard-friendly checkout, and non-hover interaction parity.
+  - Ran a focused UI/UX guidance check and added rules preventing sticky UI overlap, redundant form entry, and incorrect mobile keyboards.
+- Files created/modified:
+  - `task_plan.md`
+  - `findings.md`
+  - `progress.md`
+
 ## Error Log
 
 - Timestamp: 2026-09-10 UTC
@@ -92,8 +106,8 @@
 
 ## Pause / Resume Notes
 
-- Current state: Public GitHub repository and Vercel Git connection are complete and verified; local audit updates are committed but intentionally not pushed to avoid triggering a pre-scaffold deployment.
-- Next action: Define the Brevo relay contract, payment handoff UX, and menu data model, then scaffold the frontend.
+- Current state: GitHub/Vercel connection, source menu, payment approach, Brevo direction, and mobile-first menu UX are captured; implementation has not started.
+- Next action: Lock the frontend architecture and design tokens, then define the Brevo relay contract.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## 5-Question Reboot Check
