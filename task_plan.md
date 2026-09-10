@@ -8,9 +8,12 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 Define the Brevo relay contract, payment handoff UX, and menu data model using the supplied menu inventory before implementation.
 
+- Current state: Public GitHub repository is created and pushed; Vercel linkage is pending because the read-only account lookup was blocked before any Vercel change.
+- Next action: Define the Brevo relay contract, payment handoff UX, and menu data model using the supplied menu inventory before implementation.
+
 ## Current Phase
 
-Phase 1 — Discovery
+Phase 2 — Plan
 
 ## Phases
 
@@ -21,8 +24,8 @@ Phase 1 — Discovery
 - [x] Confirm the customer, payment, and manual reconciliation workflow
 - [x] Identify iframe and automatic-email feasibility boundaries
 - [x] Capture the source menu content and service offering
-- [ ] Confirm Monzo embed policy and email/order-submission approach
-- **Status:** in_progress
+- [x] Confirm Monzo embed policy and email/order-submission approach
+- **Status:** complete
 
 ### Phase 2: Plan
 - [ ] Choose frontend stack and project structure

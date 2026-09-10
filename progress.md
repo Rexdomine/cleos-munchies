@@ -67,20 +67,33 @@
   - Confirmed GitHub authentication for `Rexdomine`.
   - Confirmed Vercel CLI is unavailable and a Vercel API token is available for the hosting-link step.
   - Added root `.gitignore` rules for environment files, Vercel metadata, dependencies, and build output.
+  - Created and pushed the public GitHub repository.
+  - Attempted a read-only Vercel account/project lookup; the execution environment blocked the command on timeout before any Vercel state changed.
 - Files created/modified:
   - `.gitignore`
   - `progress.md`
 
+## Error Log
 
 - Timestamp: 2026-09-10 UTC
   - Error: `/usr/bin/bash: hermes-plan-bootstrap: command not found`.
   - Attempt: 1
   - Resolution/next change: Manual bootstrap using the loaded skill's file contracts.
+- Timestamp: 2026-09-10 UTC
+  - Error: Vercel account/project lookup command timed out and was blocked by the execution environment before any external state change.
+  - Attempt: 1
+  - Resolution/next change: Await Rex's response before retrying the Vercel lookup; do not claim Vercel linkage.
+
+- Timestamp: 2026-09-10 UTC
+  - External setup: GitHub repository and Vercel project creation/read-back completed successfully.
+  - GitHub verified: public `Rexdomine/cleos-munchies`, default branch `master`.
+  - Vercel verified: project `cleos-munchies`, ID `prj_RO3nMRxmRHwJ1IC9Ikq3LBL04yHz`, Git link to `Rexdomine/cleos-munchies`, production branch `master`.
+  - Deployment status: not started; source app is not scaffolded yet.
 
 ## Pause / Resume Notes
 
-- Current state: Concept and source-menu discovery are aligned; Brevo is selected; payment handoff and provider-risk notes are recorded; implementation has not started.
-- Next action: Define the Brevo relay contract, payment handoff UX, and menu data model.
+- Current state: Public GitHub repository and Vercel Git connection are complete and verified; local audit updates are committed but intentionally not pushed to avoid triggering a pre-scaffold deployment.
+- Next action: Define the Brevo relay contract, payment handoff UX, and menu data model, then scaffold the frontend.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## 5-Question Reboot Check

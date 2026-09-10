@@ -16,6 +16,11 @@
 - New project workspace created at `/opt/data/projects/cleos-munchies`.
 - The workspace did not exist before setup.
 - No implementation stack or source files have been selected yet.
+- Public GitHub repository: `https://github.com/Rexdomine/cleos-munchies`.
+- GitHub visibility verified as public; default branch verified as `master`.
+- Vercel project created and linked: project ID `prj_RO3nMRxmRHwJ1IC9Ikq3LBL04yHz`.
+- Vercel Git link verified for `Rexdomine/cleos-munchies`, production branch `master`, in the default authenticated team scope.
+- No deployment has been started because the app has not been scaffolded yet.
 
 ## Research / External Findings
 
