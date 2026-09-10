@@ -6,7 +6,7 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Commit and push the verified mobile visual correction, then verify the exact Vercel production deployment.
+Owner reviews the corrected mobile experience before any Brevo integration begins.
 
 ## Current Phase
 
@@ -66,8 +66,8 @@ Phase 7 — Mobile visual consistency
 - [x] Add RED contracts for a deterministic hero starburst and non-blue buttons
 - [x] Replace the Unicode glyph with an inline SVG and explicitly inherit button color
 - [x] Verify mobile and desktop rendered output, full regression suite, and production build
-- [ ] Commit, push, and verify the exact Vercel production deployment
-- **Status:** in_progress
+- [x] Commit, push, and verify the exact Vercel production deployment
+- **Status:** complete
 
 ## Key Questions
 
