@@ -1,0 +1,523 @@
+{
+  "version": 1,
+  "auditedAt": "2026-09-10",
+  "policy": "Visible okra is allowed only when the menu dish name explicitly identifies an okra soup.",
+  "generator": "OpenAI GPT Image 2 via image_generate; no Higgsfield",
+  "correctedIds": [
+    "a-little-spice",
+    "afang-soup-assorted",
+    "beans-with-yam",
+    "beef-shawarma",
+    "beef-stir-fry",
+    "boiled-plantain-fritters-with-pap-and-bread",
+    "boiled-plantain-with-egg-sauce",
+    "catfish-and-veg-stir-fry",
+    "chicken-pie",
+    "chicken-shawarma",
+    "chicken-shawarma-with-chips",
+    "chicken-stir-fry",
+    "fish-pie",
+    "grilled-catfish",
+    "grilled-chicken",
+    "meat-pie",
+    "mixed-plantain-fritters-with-pap-and-bread",
+    "mixed-shawarma",
+    "peppered-beef",
+    "peppered-chicken",
+    "peppered-gizzard",
+    "platerie-akara-and-pap",
+    "sausage-and-egg-stir-fry",
+    "seafood-stir-fry",
+    "yam-and-egg-sauce"
+  ],
+  "items": [
+    {
+      "id": "platerie-akara-and-pap",
+      "name": "Platerie (Akara & Pap)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "yam-and-egg-sauce",
+      "name": "Yam & Egg Sauce",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "beans-with-yam",
+      "name": "Beans with Yam",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "boiled-plantain-with-egg-sauce",
+      "name": "Boiled Plantain with Egg Sauce",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "mixed-plantain-fritters-with-pap-and-bread",
+      "name": "Mixed Plantain Fritters with Pap & Bread",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "boiled-plantain-fritters-with-pap-and-bread",
+      "name": "Boiled Plantain Fritters with Pap & Bread",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "seafood-stir-fry",
+      "name": "Seafood Stir Fry",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "chicken-stir-fry",
+      "name": "Chicken Stir Fry",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "beef-stir-fry",
+      "name": "Beef Stir Fry",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "sausage-and-egg-stir-fry",
+      "name": "Sausage & Egg Stir Fry",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "catfish-and-veg-stir-fry",
+      "name": "Catfish & Veg Stir Fry",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "choco-puff",
+      "name": "Choco Puff",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "a-little-spice",
+      "name": "A Little Spice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "sugar-puff",
+      "name": "Sugar Puff",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "berry-and-cream",
+      "name": "Berry & Cream",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "peppered-gizzard",
+      "name": "Peppered Gizzard",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "peppered-snail",
+      "name": "Peppered Snail",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "peppered-beef",
+      "name": "Peppered Beef",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "peppered-goat",
+      "name": "Peppered Goat",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "peppered-chicken",
+      "name": "Peppered Chicken",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "peppered-prawns",
+      "name": "Peppered Prawns",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "seafood-okra-soup",
+      "name": "Seafood Okra Soup",
+      "okraAllowed": true,
+      "okraVisible": true,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "egusi-soup-goat-meat",
+      "name": "Egusi Soup (Goat Meat)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "egusi-soup-assorted",
+      "name": "Egusi Soup (Assorted)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "ogbono-soup",
+      "name": "Ogbono Soup",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "oha-soup-assorted",
+      "name": "Oha Soup (Assorted)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "afang-soup-assorted",
+      "name": "Afang Soup (Assorted)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "efo-riro-soup",
+      "name": "Efo Riro Soup",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "banga-soup-assorted",
+      "name": "Banga Soup (Assorted)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "okra-soup",
+      "name": "Okra Soup",
+      "okraAllowed": true,
+      "okraVisible": true,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "meat-pie",
+      "name": "Meat Pie",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "chicken-pie",
+      "name": "Chicken Pie",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "fish-pie",
+      "name": "Fish Pie",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "chicken-shawarma",
+      "name": "Chicken Shawarma",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "beef-shawarma",
+      "name": "Beef Shawarma",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "mixed-shawarma",
+      "name": "Mixed Shawarma",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "fish-shawarma",
+      "name": "Fish Shawarma",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "chicken-shawarma-with-chips",
+      "name": "Chicken Shawarma with Chips",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "beef-shawarma-with-sausage",
+      "name": "Beef Shawarma with Sausage",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "moi-moi-with-egg",
+      "name": "Moi Moi with Egg",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "moi-moi-with-fish",
+      "name": "Moi Moi with Fish",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "moi-moi-with-chicken",
+      "name": "Moi Moi with Chicken",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "moi-moi-with-prawns",
+      "name": "Moi Moi with Prawns",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "moi-moi-with-boiled-egg-and-prawns",
+      "name": "Moi Moi with Boiled Egg & Prawns",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-catfish",
+      "name": "Grilled Catfish",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "grilled-croaker",
+      "name": "Grilled Croaker",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-tilapia",
+      "name": "Grilled Tilapia",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-hake",
+      "name": "Grilled Hake",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-mackerel",
+      "name": "Grilled Mackerel",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-salmon",
+      "name": "Grilled Salmon",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-chicken",
+      "name": "Grilled Chicken",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": true
+    },
+    {
+      "id": "grilled-chicken-and-potato",
+      "name": "Grilled Chicken & Potato",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "grilled-chicken-plantain",
+      "name": "Grilled Chicken & Plantain",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "jollof-rice",
+      "name": "Jollof Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "fried-rice-special",
+      "name": "Fried Rice (Special)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "coconut-rice",
+      "name": "Coconut Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "white-rice",
+      "name": "White Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "ofada-rice",
+      "name": "Ofada Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "native-rice",
+      "name": "Native Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "coconut-fried-rice",
+      "name": "Coconut Fried Rice",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    },
+    {
+      "id": "party-jollof-smokey",
+      "name": "Party Jollof (Smokey)",
+      "okraAllowed": false,
+      "okraVisible": false,
+      "status": "pass",
+      "corrected": false
+    }
+  ]
+}

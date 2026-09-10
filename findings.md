@@ -152,6 +152,14 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
 
 ## Visual / Browser Findings
 
+### Non-okra ingredient cleanup — 2026-09-10 UTC
+
+- Owner correctly identified systematic okra garnish leakage from the first image-generation prompt family.
+- Full visual audit found recognisable okra in 25 non-okra images: all six Breakfast dishes; all five Indomie dishes; A Little Spice; Peppered Gizzard, Peppered Beef, and Peppered Chicken; Afang Soup (Assorted); all three Pies; Chicken Shawarma, Beef Shawarma, Mixed Shawarma, and Chicken Shawarma with Chips; Grilled Catfish; and Grilled Chicken.
+- The other 34 non-okra menu images are visually clean and should not be regenerated. Seafood Okra and Okra Soup are the only two dishes where okra is allowed and remain untouched.
+- Edits must remove whole pods, chopped rounds, and star-shaped or seeded cross-sections while preserving dish identity, named accompaniments, framing, lighting, and the existing filename contract.
+- Use standard GPT Image 2 through `image_generate` only; Higgsfield remains excluded.
+
 ### Mobile Safari consistency correction — 2026-09-10 UTC
 
 - The supplied mobile screenshot showed unselected category buttons and the card price/add control in iOS blue while desktop remained ink/dark.

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 import { MENU, MENU_CATEGORIES, findMenuItem, searchMenu } from '../src/data/menu.js';
 
@@ -51,5 +51,16 @@ describe('menu data contract', () => {
         `Missing dish image for ${item.name}: ${item.image}`,
       );
     }
+  });
+
+  it('allows visible okra only for the two named okra soups', () => {
+    const audit = JSON.parse(readFileSync(new URL('../docs/menu-image-ingredient-audit.json', import.meta.url), 'utf8'));
+    const menuIds = MENU.map((item) => item.id).sort();
+    assert.deepEqual(audit.items.map((item) => item.id).sort(), menuIds);
+    assert.deepEqual(
+      audit.items.filter((item) => item.okraAllowed).map((item) => item.id).sort(),
+      ['okra-soup', 'seafood-okra-soup'],
+    );
+    assert.equal(audit.items.every((item) => item.okraAllowed || item.okraVisible === false), true);
   });
 });

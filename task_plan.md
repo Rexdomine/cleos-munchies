@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Owner reviews the corrected mobile experience before any Brevo integration begins.
+Remove visible okra from the 25 affected non-okra dish images, preserve the clean images and two legitimate okra soups, then rerun fidelity/release QA.
 
 ## Current Phase
 
-Phase 7 — Mobile visual consistency
+Phase 8 — Ingredient-accurate image cleanup
 
 ## Phases
 
@@ -68,6 +68,16 @@ Phase 7 — Mobile visual consistency
 - [x] Verify mobile and desktop rendered output, full regression suite, and production build
 - [x] Commit, push, and verify the exact Vercel production deployment
 - **Status:** complete
+
+### Phase 8: Ingredient-accurate image cleanup
+- [x] Audit all 61 rendered dish images for visible okra
+- [x] Preserve Seafood Okra, Okra Soup, and the 34 other unaffected menu images
+- [x] Edit the 25 affected non-okra assets with standard GPT Image 2 only
+- [x] Reinspect every edited image for zero okra and retained dish identity
+- [x] Re-optimize assets and update provenance
+- [x] Run unit, build, full Chromium, responsive, and pixel QA
+- [ ] Commit, push, and verify the exact Vercel production deployment
+- **Status:** in_progress
 
 ## Key Questions
 

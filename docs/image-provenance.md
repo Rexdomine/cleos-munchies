@@ -8,7 +8,7 @@ These are illustrative menu photographs, not photographs of the business's exact
 
 ## Visual direction
 
-Premium Nigerian/Afro-fusion takeaway photography with warm directional light, deep charcoal surfaces, restrained pepper-red and okra-green brand accents, realistic handmade texture, and square mobile-card-safe composition.
+Premium Nigerian/Afro-fusion takeaway photography with warm directional light, deep charcoal surfaces, restrained pepper-red accents, realistic handmade texture, and square mobile-card-safe composition. Olive green belongs to the interface styling, not as a food garnish or ingredient unless the named dish calls for it.
 
 Food identity takes priority over visual uniformity. Named proteins, fillings, accompaniments, soup styles, fish forms, and rice preparations must be distinguishable at menu-card size.
 
@@ -17,6 +17,7 @@ Food identity takes priority over visual uniformity. Named proteins, fillings, a
 - 61 per-dish files under `public/images/menu/`
 - Deterministic URL contract: `/images/menu/<dish-id>.webp`
 - Machine-readable file sizes and SHA-256 checksums: `docs/menu-image-manifest.json`
+- Machine-readable ingredient audit and okra policy: `docs/menu-image-ingredient-audit.json`
 - Generation sources remain uncommitted under `.hermes/dish-images-batch-a/` and `.hermes/dish-images-batch-b/`
 - Fidelity criteria: `docs/menu-image-fidelity.md`
 
@@ -32,4 +33,4 @@ A dish-by-dish visual review checked:
 - no malformed food, accidental text, watermark, logo, or person;
 - no repeated menu image URLs.
 
-Targeted regeneration corrected Choco Puff, Sugar Puff, Okra Soup, and Fish Shawarma. Fish Shawarma received a second refinement so flaky skin-on fish remains unmistakable at menu-card size. The final set passed the rendered review.
+The initial fidelity pass corrected Choco Puff, Sugar Puff, Okra Soup, and Fish Shawarma. A subsequent owner review found inappropriate okra garnish in 25 non-okra dishes. Those 25 source images were surgically edited with the same standard GPT Image 2 tool and reinspected at source and card size. Seafood Okra and Okra Soup are the only assets permitted to show okra and were preserved byte-for-byte. The final set passed the rendered review.

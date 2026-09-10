@@ -6,9 +6,10 @@ Cleo's Munchies uses representative generated photography, but each menu image m
 
 - Realistic Nigerian/Afro-fusion takeaway food photography
 - Warm directional light on a deep charcoal tabletop
-- Subtle pepper-red and okra-green accents
+- Subtle pepper-red accents; olive green may appear in interface styling, never as an unlisted food garnish
 - Square, centered, mobile-card-safe composition
 - Authentic handmade texture and believable portions
+- Okra/okro is forbidden in every image except `seafood-okra-soup` and `okra-soup`
 - No people, hands, text, logos, watermarks, unrelated dishes, or malformed utensils
 
 ## Category-specific checks
