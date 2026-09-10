@@ -186,6 +186,8 @@
 - Image inventory: 61 WebPs, 61 unique SHA-256 hashes, 9,626,180 total bytes; machine-readable provenance is in `docs/menu-image-manifest.json`.
 - Final image candidate gate: `npm test` passed 23/23; `npm run build` passed; `npm audit --audit-level=high` found 0 vulnerabilities; `npm run test:e2e` passed 20/20; `git diff --check` passed.
 - Review/payment boundary remained unchanged: no Brevo call, email submission, payment submission, or paid-state transition was added or activated.
+- Release verification: local HEAD matched GitHub `master`; Vercel reported the exact Git-triggered production deployment READY; the canonical URL initially returned HTTP 200 and live Chromium decoded 38 dish assets before the automation IP triggered Vercel's repeated 403 edge response.
+- Hosted QA caveat: a paced fresh-browser retry from the same IP remained blocked, and both Browser Use daemons were unavailable before navigation. This does not replace the complete local production-browser proof; it is recorded explicitly rather than presented as a clean 61-image public sweep.
 - Final candidate gate on 2026-09-10 UTC:
   - `npm test`: 21 passed, 0 failed.
   - `npm run build`: passed; output `235.67 kB` JS and `7.38 kB` CSS before gzip.

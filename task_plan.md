@@ -6,7 +6,7 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Commit and push the verified 61-image candidate, then verify the exact matching Vercel production deployment and canonical URL.
+Owner reviews the corrected live menu imagery before any Brevo integration begins.
 
 ## Current Phase
 
@@ -58,8 +58,8 @@ Phase 6 — Dish image fidelity
 - [x] Optimize approved assets to per-item WebP files
 - [x] Replace category-level image mapping with item-level deterministic paths
 - [x] Re-run unit, build, browser, responsive, and pixel QA
-- [ ] Commit, push, and verify the exact Vercel deployment
-- **Status:** in_progress
+- [x] Commit, push, and verify the exact Vercel deployment
+- **Status:** complete
 
 ## Key Questions
 
@@ -89,3 +89,6 @@ Phase 6 — Dish image fidelity
 - Error: The first Fish Shawarma replacement was clear at source resolution but remained ambiguous in the card-sized full-page evidence because fixed UI obscured the card.
   - Attempt: 1 replacement
   - Resolution/next change: Generated a stronger skin-on flaky-fish composition and hid fixed navigation only in QA screenshots; the unobscured card-size review passed.
+- Error: A rapid hosted Chromium sweep triggered Vercel edge protection after 38 dish images; subsequent requests from the same automation IP returned a 32 KB HTML 403 response.
+  - Attempt: rapid 61-image scroll, then a paced fresh-context retry
+  - Resolution/next change: Classified as automation-IP edge protection rather than corrupt image output. Exact Git/Vercel deployment read-back is READY; the canonical URL returned 200 before the burst, 38 live images decoded, and all 61 exact production files passed local Chromium. Do not weaken Vercel protection for QA.
