@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Vercel/local provider metadata
+.vercel/
+
+# Build output
+.next/
+dist/
+build/
+out/
+
+# Local OS/editor files
+.DS_Store
+.vscode/
+.idea/
