@@ -48,8 +48,15 @@ describe('mobile ordering UI contract', () => {
   it('labels quick-add and basket controls for assistive technology', async () => {
     const app = await source('../src/App.jsx');
     assert.match(app, /aria-label={`Add \${item\.name}`}/);
+    assert.match(app, /aria-label={`Choose a size for \${item\.name}`}/);
+    assert.match(app, /aria-label="Open basket"/);
     assert.match(app, /aria-label="Close basket"/);
     assert.match(app, /inputMode={name === 'phone' \? 'tel'/);
+  });
+
+  it('defers off-screen dish image loading for the 61-item menu', async () => {
+    const app = await source('../src/App.jsx');
+    assert.match(app, /<img src=\{item\.image\} alt="" loading="lazy" decoding="async"/);
   });
 
   it('contains the exact approved Monzo handoff with safe new-tab behavior', async () => {

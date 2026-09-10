@@ -10,6 +10,10 @@
 - Brevo will be used for transactional order email notifications through a trusted server-side/serverless relay; Brevo credentials must never ship to the browser.
 - Monzo hosted-payment iframe support is not a hard requirement. The preferred fallback is a dedicated payment handoff screen with a clear “Continue to Monzo” action that opens the hosted link in a new tab, preserving the order/reference context in the original tab.
 - Payment confirmation remains manual: the sister compares the Monzo Notes reference with the order email reference.
+- Owner image-fidelity correction: replace repeated category-level food images with one dish-specific visual per menu item, closely matching the exact dish name and distinguishing protein, filling, accompaniment, soup, or rice style.
+- Use the standard OpenAI GPT Image 2 generation tool included with the owner's subscription for this correction. Do not use Higgsfield.
+- The first two large generation workers timed out at five minutes, but their append-only logs preserved 29 successful GPT Image 2 output paths: 14 images for the first menu half and 15 for the second. Contact-sheet inspection found coherent food compositions without watermarks, embedded text, or malformed food; individual dish-level inspection remains required before release.
+- Generation is now split into smaller batches for the remaining 32 images. This changes orchestration only; model/tool choice remains GPT Image 2 through the standard `image_generate` capability.
 
 ## Repo Findings
 
@@ -155,7 +159,7 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
 - Exact responsive evidence was captured at 390×844, 768×1024, 1366×768, and 1440×900. Each viewport passed decoded-image checks, zero horizontal overflow, clean console/page-error checks, and sticky category geometry beneath the 76px header.
 - Pixel review found and drove repairs for a 21px mobile hero copy/image collision and an 18.5px tablet collision. The corrected mobile and tablet captures passed independent visual reinspection.
 - Chromium scrollbar chrome is explicitly hidden for the horizontal category rail; the remaining curved mark observed inside the first menu image is the plate rim in the photograph, not a UI scrollbar or clipped control.
-- Repeated food imagery within one category is intentional category-level art direction for this first release, not a failed data binding. Ten coherent generated category images cover all 61 items.
+- The prior category-level reuse is superseded by the owner's fidelity correction. The candidate now uses one deterministic `/images/menu/<dish-id>.webp` path per dish, and release requires 61 unique decoded assets.
 - Basket, checkout, and review screenshots show no first-open clipping or overlap. Quantity and close controls now have explicit 44px targets; dialogs lock background scroll and close with Escape.
 - Desktop/laptop/tablet/mobile visual reviews found the editorial cream/ink/pepper-red/olive system distinctive and not generic template UI after the responsive repairs.
 

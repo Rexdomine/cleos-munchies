@@ -1,16 +1,3 @@
-const IMAGE_BY_CATEGORY = {
-  Breakfast: '/images/breakfast.webp',
-  Indomie: '/images/noodles.webp',
-  'Puff Puff': '/images/puff-puff.webp',
-  Appetisers: '/images/appetisers.webp',
-  Soups: '/images/soups.webp',
-  Pies: '/images/pies.webp',
-  Shawarma: '/images/shawarma.webp',
-  'Moi Moi': '/images/moi-moi.webp',
-  'Clean Grills': '/images/grills.webp',
-  'Rice Trays': '/images/rice.webp',
-};
-
 const CATEGORY_NOTES = {
   Breakfast: 'Served per small takeaway bowl',
   Indomie: 'Served per small takeaway bowl',
@@ -33,13 +20,14 @@ function slugify(value) {
 }
 
 function makeItem(category, name, price, extra = {}) {
+  const id = extra.id ?? slugify(name);
   return {
-    id: extra.id ?? slugify(name),
+    id,
     category,
     name,
     price,
     note: extra.note ?? CATEGORY_NOTES[category],
-    image: IMAGE_BY_CATEGORY[category],
+    image: `/images/menu/${id}.webp`,
     ...extra,
   };
 }

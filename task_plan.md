@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Await Rex's authorization to push `master` and trigger the connected Vercel review deployment; Brevo integration remains the next product phase only after UX approval.
+Commit and push the verified 61-image candidate, then verify the exact matching Vercel production deployment and canonical URL.
 
 ## Current Phase
 
-Phase 5 — Deliver (complete)
+Phase 6 — Dish image fidelity
 
 ## Phases
 
@@ -52,6 +52,15 @@ Phase 5 — Deliver (complete)
 - [x] Record follow-up opportunities separately from the MVP scope
 - **Status:** complete
 
+### Phase 6: Dish image fidelity
+- [x] Generate one standard GPT Image 2 image per menu item (61/61)
+- [x] Inspect dish-name fidelity and regenerate mismatches
+- [x] Optimize approved assets to per-item WebP files
+- [x] Replace category-level image mapping with item-level deterministic paths
+- [x] Re-run unit, build, browser, responsive, and pixel QA
+- [ ] Commit, push, and verify the exact Vercel deployment
+- **Status:** in_progress
+
 ## Key Questions
 
 1. Should we attempt iframe embedding, or use the safer new-tab Monzo handoff as the default?
@@ -74,3 +83,9 @@ Phase 5 — Deliver (complete)
 - Error: `hermes-plan-bootstrap` was not available on PATH.
   - Attempt: 1
   - Resolution/next change: Created the required planning files manually from the loaded skill templates.
+- Error: Both 30/31-image delegated generation workers reached the five-minute timeout before copying outputs or writing manifests.
+  - Attempt: 1
+  - Resolution/next change: Recovered 29 completed GPT Image 2 files directly from provider cache using the logged prompt/output pairs; continue the remaining 32 in smaller bounded batches.
+- Error: The first Fish Shawarma replacement was clear at source resolution but remained ambiguous in the card-sized full-page evidence because fixed UI obscured the card.
+  - Attempt: 1 replacement
+  - Resolution/next change: Generated a stronger skin-on flaky-fish composition and hid fixed navigation only in QA screenshots; the unobscured card-size review passed.

@@ -1,0 +1,612 @@
+[
+  {
+    "id": "platerie-akara-and-pap",
+    "name": "Platerie (Akara & Pap)",
+    "category": "Breakfast",
+    "file": "public/images/menu/platerie-akara-and-pap.webp",
+    "bytes": 138154,
+    "sha256": "f333f986bab032f9c1f6ecdf18459b5f941bfbb13299bbc2c593df3e4acda53b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "yam-and-egg-sauce",
+    "name": "Yam & Egg Sauce",
+    "category": "Breakfast",
+    "file": "public/images/menu/yam-and-egg-sauce.webp",
+    "bytes": 161596,
+    "sha256": "5b22951291ad92d94ba7705703a188bcc3f96b6f1f9c5ccbabe81643f745b524",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "beans-with-yam",
+    "name": "Beans with Yam",
+    "category": "Breakfast",
+    "file": "public/images/menu/beans-with-yam.webp",
+    "bytes": 147400,
+    "sha256": "7609d2266a4c95f5b98158f7687f7ee8f20b50013de5bf92ecf62c6b3f0ff031",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "boiled-plantain-with-egg-sauce",
+    "name": "Boiled Plantain with Egg Sauce",
+    "category": "Breakfast",
+    "file": "public/images/menu/boiled-plantain-with-egg-sauce.webp",
+    "bytes": 142922,
+    "sha256": "595536e78ea23443fd17e8814102c72f1706087b9ecebefd0251df74fa4b3cf3",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "mixed-plantain-fritters-with-pap-and-bread",
+    "name": "Mixed Plantain Fritters with Pap & Bread",
+    "category": "Breakfast",
+    "file": "public/images/menu/mixed-plantain-fritters-with-pap-and-bread.webp",
+    "bytes": 145130,
+    "sha256": "5b3a103b407491c7e746077bda6130100f0797633663ae50e6ca2a1f0dc3f1fc",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "boiled-plantain-fritters-with-pap-and-bread",
+    "name": "Boiled Plantain Fritters with Pap & Bread",
+    "category": "Breakfast",
+    "file": "public/images/menu/boiled-plantain-fritters-with-pap-and-bread.webp",
+    "bytes": 155056,
+    "sha256": "1b5cb3ee4f85c2365d173a94d980d134da7ab56cee092ffdce616cfec55870f1",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "seafood-stir-fry",
+    "name": "Seafood Stir Fry",
+    "category": "Indomie",
+    "file": "public/images/menu/seafood-stir-fry.webp",
+    "bytes": 129792,
+    "sha256": "8f09c05f131818eb79c85b13a7e4ecfe677e1937d17a06edd9eac327c2ff66c3",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "chicken-stir-fry",
+    "name": "Chicken Stir Fry",
+    "category": "Indomie",
+    "file": "public/images/menu/chicken-stir-fry.webp",
+    "bytes": 136764,
+    "sha256": "681c371a0e86dde961b79b17a72518f6f0f14e80d0d163b4bbf9f26e57076cab",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "beef-stir-fry",
+    "name": "Beef Stir Fry",
+    "category": "Indomie",
+    "file": "public/images/menu/beef-stir-fry.webp",
+    "bytes": 176908,
+    "sha256": "0e555ef79ad995336e4f663b5934179734d601230e0d82c8a27536c7c267c1ee",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "sausage-and-egg-stir-fry",
+    "name": "Sausage & Egg Stir Fry",
+    "category": "Indomie",
+    "file": "public/images/menu/sausage-and-egg-stir-fry.webp",
+    "bytes": 168438,
+    "sha256": "24b503d12de03d6a3dac226ba54fd3b9a3e29e56858750845b11d4b6d181ba0b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "catfish-and-veg-stir-fry",
+    "name": "Catfish & Veg Stir Fry",
+    "category": "Indomie",
+    "file": "public/images/menu/catfish-and-veg-stir-fry.webp",
+    "bytes": 187816,
+    "sha256": "e667b3cc7949408228653514bcc79ab8a7a610f6e4a6c25dfeea1adeb75c6aae",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "choco-puff",
+    "name": "Choco Puff",
+    "category": "Puff Puff",
+    "file": "public/images/menu/choco-puff.webp",
+    "bytes": 158960,
+    "sha256": "3cbb7e74386d860d68d9699a3d920a4f2890afbda7eb1dbc103737b9e8aa1163",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "a-little-spice",
+    "name": "A Little Spice",
+    "category": "Puff Puff",
+    "file": "public/images/menu/a-little-spice.webp",
+    "bytes": 155626,
+    "sha256": "89f6318005bfbbd12da2b163b2545754f22e1202297e817fedb26bc16af30cc3",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "sugar-puff",
+    "name": "Sugar Puff",
+    "category": "Puff Puff",
+    "file": "public/images/menu/sugar-puff.webp",
+    "bytes": 188938,
+    "sha256": "b8a5021f2ca9a2d2c3703c660d5d5b40f5656acae9d057684d64a9df9783218d",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "berry-and-cream",
+    "name": "Berry & Cream",
+    "category": "Puff Puff",
+    "file": "public/images/menu/berry-and-cream.webp",
+    "bytes": 128864,
+    "sha256": "5323bf2b627f3a7999ed66f9891db8de8fa2ad6714e0d5dc986541285db871fb",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-gizzard",
+    "name": "Peppered Gizzard",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-gizzard.webp",
+    "bytes": 143492,
+    "sha256": "1762245406f497f0fc9c867a0c53daf92ec5ce542d3c4fa7c655f134d544f1f7",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-snail",
+    "name": "Peppered Snail",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-snail.webp",
+    "bytes": 151046,
+    "sha256": "9d4cd34e7b4a1dd983062be4b6601dd913173720fca28647e384e72f0726c891",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-beef",
+    "name": "Peppered Beef",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-beef.webp",
+    "bytes": 153598,
+    "sha256": "3b0ca315659be11db04be7bbf5d03acd4ee89305469117fb83a38c2f8ea23714",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-goat",
+    "name": "Peppered Goat",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-goat.webp",
+    "bytes": 154784,
+    "sha256": "d66fa29f2984b8f27a8bab983a8399a156e8184a847b1502972a9eb4676df714",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-chicken",
+    "name": "Peppered Chicken",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-chicken.webp",
+    "bytes": 139128,
+    "sha256": "75e8cf59e38be9cdac833adeffd1f05a8b34bfa0642ce9a1b5777292bf6ea7d2",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "peppered-prawns",
+    "name": "Peppered Prawns",
+    "category": "Appetisers",
+    "file": "public/images/menu/peppered-prawns.webp",
+    "bytes": 171796,
+    "sha256": "defd89e065b25eeb35f4bd52e911eb7a48c03129278df2bcaecf64fd5584bdb5",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "seafood-okra-soup",
+    "name": "Seafood Okra Soup",
+    "category": "Soups",
+    "file": "public/images/menu/seafood-okra-soup.webp",
+    "bytes": 191854,
+    "sha256": "dc280bdc4bd9ecaf8c38dc470e6a6dc5c72e91e078c59f2e102f49096b37a768",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "egusi-soup-goat-meat",
+    "name": "Egusi Soup (Goat Meat)",
+    "category": "Soups",
+    "file": "public/images/menu/egusi-soup-goat-meat.webp",
+    "bytes": 190216,
+    "sha256": "b0c0a614ef134ef0574695fc4bb8feb2d236bf4e4d1fc47835289fe426bcc2f8",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "egusi-soup-assorted",
+    "name": "Egusi Soup (Assorted)",
+    "category": "Soups",
+    "file": "public/images/menu/egusi-soup-assorted.webp",
+    "bytes": 183648,
+    "sha256": "b7dabbc8f7f9d90780c0baf4f527f293fc422ab3bb652472caecccfd8398185b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "ogbono-soup",
+    "name": "Ogbono Soup",
+    "category": "Soups",
+    "file": "public/images/menu/ogbono-soup.webp",
+    "bytes": 158498,
+    "sha256": "d62643bed161664d898256342be7dc03a8160ee92e6cc7bde71a566f4017aaad",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "oha-soup-assorted",
+    "name": "Oha Soup (Assorted)",
+    "category": "Soups",
+    "file": "public/images/menu/oha-soup-assorted.webp",
+    "bytes": 148756,
+    "sha256": "a9e7d30755d6e9b7cd571519ed4cdb476a82397e2ced222ae824303bb8ff7083",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "afang-soup-assorted",
+    "name": "Afang Soup (Assorted)",
+    "category": "Soups",
+    "file": "public/images/menu/afang-soup-assorted.webp",
+    "bytes": 187186,
+    "sha256": "2421fdf7ddc9f34ca43b01f06a9eac198616a5fbd01d952e533f133db81231d5",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "efo-riro-soup",
+    "name": "Efo Riro Soup",
+    "category": "Soups",
+    "file": "public/images/menu/efo-riro-soup.webp",
+    "bytes": 178468,
+    "sha256": "e9ae50e3266f2992ba2cdf08da838b0da8636f40c6d997e646cb7df3068153ba",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "banga-soup-assorted",
+    "name": "Banga Soup (Assorted)",
+    "category": "Soups",
+    "file": "public/images/menu/banga-soup-assorted.webp",
+    "bytes": 152126,
+    "sha256": "4bae42017e367651500fc7433e2b064be7ed6a0ad1cbf0244ddcb0346287d88b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "okra-soup",
+    "name": "Okra Soup",
+    "category": "Soups",
+    "file": "public/images/menu/okra-soup.webp",
+    "bytes": 150130,
+    "sha256": "3c03ac6918abf23a4a32256791d9bb0121f9454bd96a651a1a4bf3390b34dc06",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "meat-pie",
+    "name": "Meat Pie",
+    "category": "Pies",
+    "file": "public/images/menu/meat-pie.webp",
+    "bytes": 133798,
+    "sha256": "9ba2b1a7f3299e2345cf5ff595746db7be39ea2dfff2a8a567609d5dc8f0c742",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "chicken-pie",
+    "name": "Chicken Pie",
+    "category": "Pies",
+    "file": "public/images/menu/chicken-pie.webp",
+    "bytes": 129240,
+    "sha256": "afddff8f17075721c4c01601c4d49985706341e5193a75047cd6764b7ca552f5",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "fish-pie",
+    "name": "Fish Pie",
+    "category": "Pies",
+    "file": "public/images/menu/fish-pie.webp",
+    "bytes": 121950,
+    "sha256": "61793bc1f8b4eb96c703baacde1ccb4347094b2bab012544298130e311ca6547",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "chicken-shawarma",
+    "name": "Chicken Shawarma",
+    "category": "Shawarma",
+    "file": "public/images/menu/chicken-shawarma.webp",
+    "bytes": 131270,
+    "sha256": "b4801b6cc737a7087cc31d7e796a2187c2489cd5b0f27f47a288bf2fbc8f9a81",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "beef-shawarma",
+    "name": "Beef Shawarma",
+    "category": "Shawarma",
+    "file": "public/images/menu/beef-shawarma.webp",
+    "bytes": 153386,
+    "sha256": "77e75b9b62b350f9df364430c5d9b9f036c03e834e5334edf77f833f4cfb1de3",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "mixed-shawarma",
+    "name": "Mixed Shawarma",
+    "category": "Shawarma",
+    "file": "public/images/menu/mixed-shawarma.webp",
+    "bytes": 138780,
+    "sha256": "7b4028dd76c80aa9fdc994b47f5dfae3508b612da23d9375aaac76903f1e8ef0",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "fish-shawarma",
+    "name": "Fish Shawarma",
+    "category": "Shawarma",
+    "file": "public/images/menu/fish-shawarma.webp",
+    "bytes": 172432,
+    "sha256": "4c7079c0af2a5a631f488b281e7e67e545eb72a9d3f6f587dc79570fe5bbeb8a",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "chicken-shawarma-with-chips",
+    "name": "Chicken Shawarma with Chips",
+    "category": "Shawarma",
+    "file": "public/images/menu/chicken-shawarma-with-chips.webp",
+    "bytes": 144402,
+    "sha256": "f10420f59424876d427a1d049c77374cdde18c83a3a4640de770158d6736c846",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "beef-shawarma-with-sausage",
+    "name": "Beef Shawarma with Sausage",
+    "category": "Shawarma",
+    "file": "public/images/menu/beef-shawarma-with-sausage.webp",
+    "bytes": 141538,
+    "sha256": "e8eda128e89d1c96f6f2b3d066e957af6fa89c7f2a28afb43a4651c1f2b3ddfb",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "moi-moi-with-egg",
+    "name": "Moi Moi with Egg",
+    "category": "Moi Moi",
+    "file": "public/images/menu/moi-moi-with-egg.webp",
+    "bytes": 130322,
+    "sha256": "3fdaf51e78f591d76d8beda4a9da1f92c489a5642544c89bffee2f612e471d54",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "moi-moi-with-fish",
+    "name": "Moi Moi with Fish",
+    "category": "Moi Moi",
+    "file": "public/images/menu/moi-moi-with-fish.webp",
+    "bytes": 130526,
+    "sha256": "d863fcedb04a60e5d2900fff3dfc6b464aa6857e06a2ef047a12bdf38808a5b1",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "moi-moi-with-chicken",
+    "name": "Moi Moi with Chicken",
+    "category": "Moi Moi",
+    "file": "public/images/menu/moi-moi-with-chicken.webp",
+    "bytes": 112538,
+    "sha256": "87cc87cf87cd216758a4e02ab1d98014b64f9057523caccf429e69cad570150b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "moi-moi-with-prawns",
+    "name": "Moi Moi with Prawns",
+    "category": "Moi Moi",
+    "file": "public/images/menu/moi-moi-with-prawns.webp",
+    "bytes": 121330,
+    "sha256": "99f1609648460a273dd97524e1c78c9e411f6a9143e75e768e657e55ac9bd8ba",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "moi-moi-with-boiled-egg-and-prawns",
+    "name": "Moi Moi with Boiled Egg & Prawns",
+    "category": "Moi Moi",
+    "file": "public/images/menu/moi-moi-with-boiled-egg-and-prawns.webp",
+    "bytes": 107924,
+    "sha256": "78bc0975f872e638974bf7a7f38b8cb0269749198f5662583780e675accf64b8",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-catfish",
+    "name": "Grilled Catfish",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-catfish.webp",
+    "bytes": 195504,
+    "sha256": "49e7153c6486abac5bf93d3c084e2486fac8a334311aa91a80cebc2445766947",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-croaker",
+    "name": "Grilled Croaker",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-croaker.webp",
+    "bytes": 151636,
+    "sha256": "577e79f0b56fe1abae51b29b648d4662b9edac854a29fe240939389cb4deaefc",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-tilapia",
+    "name": "Grilled Tilapia",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-tilapia.webp",
+    "bytes": 205582,
+    "sha256": "e14ea23e0634dd5b7fdd1915c3053bd5e500c239078728a6d5516e6a330856e8",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-hake",
+    "name": "Grilled Hake",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-hake.webp",
+    "bytes": 159268,
+    "sha256": "1edaffcf00ce2d3ecec166a47b6d7033e2dc8b8de9986908186d6ac860c171c0",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-mackerel",
+    "name": "Grilled Mackerel",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-mackerel.webp",
+    "bytes": 157428,
+    "sha256": "cf9c83ecca1bdf6dc46a12843d414e7d043d378e77db0311e35b435b889e5183",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-salmon",
+    "name": "Grilled Salmon",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-salmon.webp",
+    "bytes": 153224,
+    "sha256": "62bf1ca2727b8f5b79aaeee45b8d37c7c12b6736db18243726be47c909c22dbd",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-chicken",
+    "name": "Grilled Chicken",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-chicken.webp",
+    "bytes": 185074,
+    "sha256": "8a01cff0d34b5f93212b487813fdc56f4283470012108f562d3408fdbb4059f1",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-chicken-and-potato",
+    "name": "Grilled Chicken & Potato",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-chicken-and-potato.webp",
+    "bytes": 191800,
+    "sha256": "6ef35dc7241253740627fb0f751454f8b110641ed67ae5ec11b16f6ac785fe20",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "grilled-chicken-plantain",
+    "name": "Grilled Chicken & Plantain",
+    "category": "Clean Grills",
+    "file": "public/images/menu/grilled-chicken-plantain.webp",
+    "bytes": 203538,
+    "sha256": "92f657b2b0f4e5fec87167538eb04181cc2803a3e1b9c94cad096afe9ed04e99",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "jollof-rice",
+    "name": "Jollof Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/jollof-rice.webp",
+    "bytes": 201164,
+    "sha256": "da5af083942d13dfa2233098dfcf718348465b58fceb705a2d55e0123a487c76",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "fried-rice-special",
+    "name": "Fried Rice (Special)",
+    "category": "Rice Trays",
+    "file": "public/images/menu/fried-rice-special.webp",
+    "bytes": 164418,
+    "sha256": "be86da51b5880ba841f71b55d464fbc5b9241635f3800b855c13bdc871301403",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "coconut-rice",
+    "name": "Coconut Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/coconut-rice.webp",
+    "bytes": 145856,
+    "sha256": "2a8af8b8f07a2967ed8ffa9372a0811c450629ed917920aae0f264a4b57aadc1",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "white-rice",
+    "name": "White Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/white-rice.webp",
+    "bytes": 116366,
+    "sha256": "6b7f78a227fcdcd5ccfde6e6a486b3fe745d574811be6b1596d9c0c00fa96702",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "ofada-rice",
+    "name": "Ofada Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/ofada-rice.webp",
+    "bytes": 161806,
+    "sha256": "240baa317ef2686f71b398ab05fd3a563f2c72bb79bbf2cd131ab271c51b905b",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "native-rice",
+    "name": "Native Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/native-rice.webp",
+    "bytes": 218412,
+    "sha256": "03a45ea0afe65417801df1dde7cfa5377014908685c7ec04657454a90bafdec4",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "coconut-fried-rice",
+    "name": "Coconut Fried Rice",
+    "category": "Rice Trays",
+    "file": "public/images/menu/coconut-fried-rice.webp",
+    "bytes": 166404,
+    "sha256": "22da52e67951a83c7a28497d6d0b4bb8e67fa36c5b09255bae0daf80b6630910",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  },
+  {
+    "id": "party-jollof-smokey",
+    "name": "Party Jollof (Smokey)",
+    "category": "Rice Trays",
+    "file": "public/images/menu/party-jollof-smokey.webp",
+    "bytes": 202174,
+    "sha256": "aba9c3ba030af684449985dc7d73d163682e690d2d68cc78175d6ccb3514768d",
+    "generator": "OpenAI GPT Image 2 via image_generate",
+    "representative": true
+  }
+]

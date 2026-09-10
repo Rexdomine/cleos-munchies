@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 
 import { MENU, MENU_CATEGORIES, findMenuItem, searchMenu } from '../src/data/menu.js';
 
@@ -38,5 +39,17 @@ describe('menu data contract', () => {
   it('searches names, descriptions, and categories case-insensitively', () => {
     assert.equal(searchMenu(MENU, 'plantain').some((item) => item.id === 'grilled-chicken-plantain'), true);
     assert.equal(searchMenu(MENU, 'SOUP').every((item) => item.category === 'Soups'), true);
+  });
+
+  it('assigns one deterministic dish-specific image to every menu item', () => {
+    assert.equal(new Set(MENU.map((item) => item.image)).size, MENU.length);
+    for (const item of MENU) {
+      assert.equal(item.image, `/images/menu/${item.id}.webp`);
+      assert.equal(
+        existsSync(new URL(`../public${item.image}`, import.meta.url)),
+        true,
+        `Missing dish image for ${item.name}: ${item.image}`,
+      );
+    }
   });
 });

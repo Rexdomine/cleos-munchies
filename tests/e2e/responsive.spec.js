@@ -21,19 +21,12 @@ for (const viewport of viewports) {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: 'Explore the full menu' })).toBeVisible();
     await page.locator('img').first().evaluate(async image => image.decode());
-    await page.evaluate(async () => {
-      await Promise.all([...document.images].map(image => image.complete ? Promise.resolve() : new Promise(resolve => {
-        image.addEventListener('load', resolve, { once: true });
-        image.addEventListener('error', resolve, { once: true });
-      })));
-    });
-
     const metrics = await page.evaluate(() => ({
       innerWidth: window.innerWidth,
       documentWidth: document.documentElement.scrollWidth,
       bodyWidth: document.body.scrollWidth,
       brokenImages: [...document.images]
-        .filter(image => !image.complete || image.naturalWidth === 0)
+        .filter(image => image.complete && image.naturalWidth === 0)
         .map(image => image.getAttribute('src')),
     }));
 
@@ -82,6 +75,22 @@ for (const viewport of viewports) {
     await page.screenshot({ path: `/tmp/cleos-qa/${viewport.name}-menu.png` });
   });
 }
+
+test('all 61 dish-specific menu images load and decode', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const images = page.locator('.food-card img');
+  await expect(images).toHaveCount(61);
+
+  const sources = new Set();
+  for (let index = 0; index < 61; index += 1) {
+    const image = images.nth(index);
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate((element) => element.naturalWidth)).toBeGreaterThan(0);
+    sources.add(await image.getAttribute('src'));
+  }
+  expect(sources.size).toBe(61);
+});
 
 test('mobile basket, checkout, and review states remain within the viewport', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

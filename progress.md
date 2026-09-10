@@ -180,6 +180,12 @@
 
 ## Pause / Resume Notes
 
+- 2026-09-10 owner adjustment: replace the 10 repeated category images with 61 dish-specific GPT Image 2 assets before Brevo integration. Two non-overlapping standard `image_generate` batches are active; Higgsfield is explicitly excluded.
+- 2026-09-10 generation recovery: both large delegated workers timed out before manifest creation. Their logs and provider cache yielded 29 completed GPT Image 2 PNGs (all 1254×1254 and non-empty). A labelled contact sheet found no malformed or text-bearing output. The files are being recovered by exact logged prompt/output mapping; 32 images remain and will be generated in smaller bounded batches.
+- 2026-09-10 dish-image completion: generated the remaining 32 assets through four bounded standard GPT Image 2 waves. Fidelity review regenerated Choco Puff, Sugar Puff, Okra Soup, and Fish Shawarma; Fish Shawarma received a second card-readability refinement. Final rendered review passed all 61 dish/name pairings.
+- Image inventory: 61 WebPs, 61 unique SHA-256 hashes, 9,626,180 total bytes; machine-readable provenance is in `docs/menu-image-manifest.json`.
+- Final image candidate gate: `npm test` passed 23/23; `npm run build` passed; `npm audit --audit-level=high` found 0 vulnerabilities; `npm run test:e2e` passed 20/20; `git diff --check` passed.
+- Review/payment boundary remained unchanged: no Brevo call, email submission, payment submission, or paid-state transition was added or activated.
 - Final candidate gate on 2026-09-10 UTC:
   - `npm test`: 21 passed, 0 failed.
   - `npm run build`: passed; output `235.67 kB` JS and `7.38 kB` CSS before gzip.
@@ -187,9 +193,9 @@
   - `npm run test:e2e` with the project-scoped Chromium cache: 9 passed, 0 failed.
   - `git diff --check`: passed.
   - Pixel QA: corrected mobile and tablet hero captures, mobile menu/basket/checkout/review, tablet menu, laptop home/menu, and desktop home/menu have no remaining verified stop-ship issue.
-- Current state: Frontend implementation, generated assets, automated tests, production build, and responsive browser/pixel QA are complete. No push or deployment has occurred.
+- Current state: The approved review build is deployed at `https://cleos-munchies.vercel.app`; dish-image fidelity correction is now active.
 - Local implementation commit: `2b42455` (`feat: build mobile-first ordering review flow`).
-- Next action: Ask Rex whether to push `master` and trigger the connected Vercel review deployment. Brevo stays deferred until Rex approves the site and flow.
+- Next action: Generate, inspect, optimize, and map all 61 dish-specific images; rerun exact responsive QA and redeploy. Brevo stays deferred.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## 5-Question Reboot Check

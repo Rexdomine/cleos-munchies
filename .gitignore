@@ -16,6 +16,9 @@ dist/
 build/
 out/
 
+# Generated source-image workspace
+.hermes/dish-images-batch-*/
+
 # Test output
 playwright-report/
 test-results/
