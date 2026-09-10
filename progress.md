@@ -87,6 +87,35 @@
   - `findings.md`
   - `progress.md`
 
+### Implementation kickoff
+- **Status:** in_progress
+- Actions taken:
+  - Locked Vite + React as the frontend architecture and Node's built-in test runner for pure domain behavior.
+  - Defined the review-mode boundary: cart, checkout, unique order reference, and Monzo handoff are functional; Brevo remains inert and visibly not connected.
+  - Recorded the exact approved Monzo URL and the prohibition on automated payment submission or paid-state claims.
+  - Defined an original Afro-fusion editorial visual direction rather than copying the supplied marketplace reference.
+  - Started strict TDD with domain tests before production modules.
+  - RED: `npm test` failed with `ERR_MODULE_NOT_FOUND` for the intentionally absent cart, menu, and order modules.
+  - GREEN: implemented the pure modules and ran 14 passing tests covering cart identity/totals, menu data/prices/search, checkout validation, stable references, the exact Monzo URL, empty-cart rejection, and truthful Brevo-deferred review status.
+  - Generated ten 1254×1254 category masters with OpenAI `gpt-image-2-medium` and optimized each to a 900×900 WebP using FFmpeg.
+  - Verified all ten production dimensions and SHA-256 hashes; visually inspected a contact sheet and found no stop-ship artifacts, text, logos, or malformed food.
+  - Added review-stage `robots.txt` blocking indexing and a Vercel configuration with Vite framework declaration, SPA fallback, and baseline security headers.
+  - Verified menu data contains 61 items across 10 categories and all ten referenced production images exist and are non-empty.
+  - Verified the supplied Monzo URL resolves to **“Pay Cleopatra”** without entering an amount or initiating payment.
+  - Implemented the Vite/React menu, search, category filtering, variant sheet, persistent cart, delivery form, stable review reference, explicit review-only state, and exact safe new-tab Monzo handoff.
+  - Removed unsupported 48-hour copy, external Google Fonts, ambiguous add controls, and emoji-prone external-link glyphs after focused RED regressions.
+  - Added and completed a RED→GREEN regression for sticky category navigation beneath the 76px mobile header.
+  - Latest local gate: 21/21 Node tests pass; Vite production build succeeds (`235.03 kB` JS / `7.09 kB` CSS before gzip).
+  - Installed a project-scoped Chromium headless shell through a checksum-verified direct archive after the standard Playwright installers stalled.
+  - Added four Playwright order-flow scenarios and five responsive/visual scenarios.
+  - Browser RED→GREEN: added background scroll lock and Escape dismissal for option/basket dialogs.
+  - Visual RED→GREEN: corrected mobile hero text/image overlap, hid Chromium category-rail scrollbar chrome, made review-mode Monzo activation non-actionable, added 44px quantity/close targets, focused the first invalid field, and added required/error semantics.
+  - Tablet RED→GREEN: rectangle-intersection evidence found an 18.5px hero collision at 768px; a dedicated 651–900px composition removed it and passed visual reinspection.
+- Files created/modified:
+  - `task_plan.md`
+  - `findings.md`
+  - `progress.md`
+
 ## Error Log
 
 - Timestamp: 2026-09-10 UTC
@@ -104,10 +133,62 @@
   - Vercel verified: project `cleos-munchies`, ID `prj_RO3nMRxmRHwJ1IC9Ikq3LBL04yHz`, Git link to `Rexdomine/cleos-munchies`, production branch `master`.
   - Deployment status: not started; source app is not scaffolded yet.
 
+- Timestamp: 2026-09-10 UTC
+  - Error: System Python did not include Pillow for image optimization/contact-sheet work.
+  - Attempt: 1
+  - Resolution/next change: Switched to the installed FFmpeg toolchain.
+- Timestamp: 2026-09-10 UTC
+  - Error: The first long shell-based FFmpeg batch was blocked by an unrelated gateway safety heuristic before output.
+  - Attempt: 1
+  - Resolution/next change: Used bounded per-file FFmpeg calls through `execute_code`; all ten files succeeded.
+- Timestamp: 2026-09-10 UTC
+  - Error: Both Browser Use Chromium sessions failed before navigation; no system Chromium binary was installed.
+  - Attempt: 2 browser-harness approaches
+  - Resolution/next change: Installed project-scoped Playwright and started a direct Playwright headless-shell download for browser QA.
+- Timestamp: 2026-09-10 UTC
+  - Error: Combined `npm install` + Playwright browser installation exceeded the execution timeout; the package install completed but the browser did not.
+  - Attempt: 1 package/browser batch
+  - Resolution/next change: Separated package validation from a background browser-only installation.
+- Timestamp: 2026-09-10 UTC
+  - Error: Background `npx playwright install chromium-headless-shell` produced no output for more than seven minutes.
+  - Attempt: 2 browser download
+  - Resolution/next change: Killed the hung wrapper and launched Playwright's direct Node CLI with an explicit browser cache path.
+- Timestamp: 2026-09-10 UTC
+  - Error: Initial Playwright config write was malformed in transit; no valid config resulted.
+  - Attempt: 1
+  - Resolution/next change: Replaced the file with a syntax-verified configuration.
+- Timestamp: 2026-09-10 UTC
+  - Error: Node 26 rejected the unsupported `--exclude-pattern` option in the unit-test script.
+  - Attempt: 1
+  - Resolution/next change: Changed the unit runner to the explicit `tests/*.test.js` glob; 21 tests then passed.
+- Timestamp: 2026-09-10 UTC
+  - Error: Approved archive command could not run because `unzip` is not installed; extraction to the runtime-owned `/opt/hermes` cache also lacked permission.
+  - Attempt: 2 extraction approaches
+  - Resolution/next change: Used Python's standard-library ZIP validation/extraction with traversal protection into the user-writable `/opt/data/.playwright` cache.
+- Timestamp: 2026-09-10 UTC
+  - Error: The first Playwright project inherited WebKit from the `iPhone 13` preset despite being named `mobile-chromium`.
+  - Attempt: 1 real-browser run
+  - Resolution/next change: Declared Chromium and mobile viewport/touch properties explicitly; the three initial journeys then passed.
+- Timestamp: 2026-09-10 UTC
+  - Error: A focused browser rerun reused an older port-4280 production build and did not contain the newest overlay code.
+  - Attempt: 1 exact-candidate rerun
+  - Resolution/next change: Made Playwright build before preview, disabled server reuse, and moved to unique port 4281.
+- Timestamp: 2026-09-10 UTC
+  - Error: Initial sticky-geometry QA scrolled through global smooth behavior and captured intermediate positions.
+  - Attempt: 3 geometry probes
+  - Resolution/next change: Neutralized smooth scrolling only inside the QA harness; all four exact viewport sticky checks then passed.
+
 ## Pause / Resume Notes
 
-- Current state: GitHub/Vercel connection, source menu, payment approach, Brevo direction, and mobile-first menu UX are captured; implementation has not started.
-- Next action: Lock the frontend architecture and design tokens, then define the Brevo relay contract.
+- Final candidate gate on 2026-09-10 UTC:
+  - `npm test`: 21 passed, 0 failed.
+  - `npm run build`: passed; output `235.67 kB` JS and `7.38 kB` CSS before gzip.
+  - `npm audit --audit-level=high`: 0 vulnerabilities.
+  - `npm run test:e2e` with the project-scoped Chromium cache: 9 passed, 0 failed.
+  - `git diff --check`: passed.
+  - Pixel QA: corrected mobile and tablet hero captures, mobile menu/basket/checkout/review, tablet menu, laptop home/menu, and desktop home/menu have no remaining verified stop-ship issue.
+- Current state: Frontend implementation, generated assets, automated tests, production build, and responsive browser/pixel QA are complete. No push or deployment has occurred.
+- Next action: Create the local review commit and ask Rex whether to push/deploy the connected Vercel review build.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## 5-Question Reboot Check

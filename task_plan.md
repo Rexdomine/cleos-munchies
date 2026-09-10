@@ -6,14 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Lock the mobile-first menu interaction model and frontend architecture, then define the Brevo relay contract before implementation.
-
-- Current state: GitHub and Vercel setup is verified; menu content and the mobile-first reference UX are captured.
-- Next action: Lock the mobile-first menu interaction model and frontend architecture, then define the Brevo relay contract.
+Create the verified local review commit and hand the candidate to Rex without pushing or deploying.
 
 ## Current Phase
 
-Phase 2 — Plan
+Phase 5 — Deliver
 
 ## Phases
 
@@ -28,30 +25,32 @@ Phase 2 — Plan
 - **Status:** complete
 
 ### Phase 2: Plan
-- [ ] Choose frontend stack and project structure
+- [x] Choose Vite + React and a pure-module test architecture
 - [x] Define the minimal ordering flow and screens
 - [x] Record the mobile-first menu interaction direction
-- [ ] Finalize content, brand, and responsive design tokens
-- [ ] Define the Brevo relay and durable reference contract
-- **Status:** in_progress
+- [x] Finalize the initial brand and responsive design direction
+- [x] Define an inert notification adapter boundary for deferred Brevo work
+- **Status:** complete
 
 ### Phase 3: Implement
-- [ ] Build the frontend shell and menu experience
-- [ ] Add cart and lightweight checkout interaction
-- [ ] Keep project state and decisions current in planning files
-- **Status:** pending
+- [x] Build the frontend shell and menu experience
+- [x] Add cart and lightweight checkout interaction
+- [x] Generate and optimize the category image family
+- [x] Keep project state and decisions current in planning files
+- **Status:** complete
 
 ### Phase 4: Verify
-- [ ] Run lint/build/tests where applicable
-- [ ] Exercise the ordering flow in a browser
-- [ ] Check responsive layout and empty/error states
-- **Status:** pending
+- [x] Run unit/source-contract tests and production build
+- [x] Exercise the ordering flow in a browser
+- [x] Check responsive layout and empty/error states
+- **Status:** complete
 
 ### Phase 5: Deliver
-- [ ] Leave a clean local handoff
-- [ ] Summarize changed files and verification evidence
-- [ ] Record follow-up opportunities separately from the MVP scope
-- **Status:** pending
+- [ ] Create the local review commit
+- [x] Leave a clean local handoff
+- [x] Summarize changed files and verification evidence
+- [x] Record follow-up opportunities separately from the MVP scope
+- **Status:** in_progress
 
 ## Key Questions
 

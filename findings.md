@@ -121,6 +121,17 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
 - Decision: Keep planning artifacts at the project root.
   - Rationale: Makes the project resumable and easy to hand off.
 
+- Decision: Use Vite + React for the frontend prototype, with business rules extracted into pure JavaScript modules tested through Node's built-in test runner.
+  - Rationale: Keeps the app lightweight, avoids unnecessary framework/server complexity, and remains compatible with a later Vercel serverless Brevo endpoint.
+- Decision: Treat the Brevo notification adapter as inert until integration is explicitly authorized.
+  - Rationale: Review mode must not send emails or show a false “submitted” success state.
+- Decision: Use the exact Monzo URL supplied by Rex: `https://monzo.me/cleopatraejiogu?h=EltkP8&account_type=personal`.
+  - Rationale: It is the approved payment handoff target; QA will verify the link but will not submit payment.
+- Read-only provider verification: the URL resolved successfully on 2026-09-10 with page title **“Pay Cleopatra.”** No amount was entered and no payment action was taken.
+- Decision: Build a distinctive editorial Afro-fusion visual system using warm cream, ink, pepper red, lime/okra accents, asymmetric image crops, expressive type scale, and restrained tactile motion.
+  - Rationale: Avoids generic marketplace cards and stereotypical AI-template composition while keeping the food and order actions dominant.
+
+
 ## Issues Encountered
 
 - Issue: The documented `hermes-plan-bootstrap` helper is not installed or available on PATH.
@@ -136,6 +147,17 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
   - Why it matters: Chronological execution and verification log.
 
 ## Visual / Browser Findings
+
+### Implemented candidate QA — 2026-09-10 UTC
+
+- Real Chromium interaction coverage passes for menu search, 61-card rendering, quick add, localStorage cart recovery, tray variants, basket quantity controls, delivery validation, first-error focus, stable reference reuse, and the exact Monzo URL contract.
+- Review mode keeps the approved Monzo URL in the handoff component but programmatically blocks activation with `aria-disabled="true"` and `preventDefault()` until the trusted Brevo/order boundary exists.
+- Exact responsive evidence was captured at 390×844, 768×1024, 1366×768, and 1440×900. Each viewport passed decoded-image checks, zero horizontal overflow, clean console/page-error checks, and sticky category geometry beneath the 76px header.
+- Pixel review found and drove repairs for a 21px mobile hero copy/image collision and an 18.5px tablet collision. The corrected mobile and tablet captures passed independent visual reinspection.
+- Chromium scrollbar chrome is explicitly hidden for the horizontal category rail; the remaining curved mark observed inside the first menu image is the plate rim in the photograph, not a UI scrollbar or clipped control.
+- Repeated food imagery within one category is intentional category-level art direction for this first release, not a failed data binding. Ten coherent generated category images cover all 61 items.
+- Basket, checkout, and review screenshots show no first-open clipping or overlap. Quantity and close controls now have explicit 44px targets; dialogs lock background scroll and close with Escape.
+- Desktop/laptop/tablet/mobile visual reviews found the editorial cream/ink/pepper-red/olive system distinctive and not generic template UI after the responsive repairs.
 
 ### Menu-page reference and mobile adaptation
 

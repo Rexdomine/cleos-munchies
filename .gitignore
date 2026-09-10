@@ -16,6 +16,10 @@ dist/
 build/
 out/
 
+# Test output
+playwright-report/
+test-results/
+
 # Local OS/editor files
 .DS_Store
 .vscode/
