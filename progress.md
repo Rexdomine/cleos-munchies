@@ -180,6 +180,9 @@
 
 ## Pause / Resume Notes
 
+- 2026-09-10 mobile visual correction: owner screenshot identified Safari-blue category/price buttons and a platform-dependent Unicode hero starburst. RED source contracts failed on both causes, then passed after adding `button { color: inherit; }` and replacing `✳` with an `aria-hidden` inline SVG. Rendered mobile/desktop QA and release verification are in progress.
+- Mobile visual candidate gate: `npm test` passed 24/24; `npm run build` passed; `npm audit --audit-level=high` found 0 vulnerabilities; `npm run test:e2e` passed 20/20; `git diff --check` passed. Computed Chromium checks at 390×844, 768×1024, 1366×768, and 1440×900 prove ink-colored buttons, mustard SVG color, non-zero SVG geometry, no Unicode burst, no document overflow, and clean runtime. Pixel review passed mobile and desktop.
+
 - 2026-09-10 owner adjustment: replace the 10 repeated category images with 61 dish-specific GPT Image 2 assets before Brevo integration. Two non-overlapping standard `image_generate` batches are active; Higgsfield is explicitly excluded.
 - 2026-09-10 generation recovery: both large delegated workers timed out before manifest creation. Their logs and provider cache yielded 29 completed GPT Image 2 PNGs (all 1254×1254 and non-empty). A labelled contact sheet found no malformed or text-bearing output. The files are being recovered by exact logged prompt/output mapping; 32 images remain and will be generated in smaller bounded batches.
 - 2026-09-10 dish-image completion: generated the remaining 32 assets through four bounded standard GPT Image 2 waves. Fidelity review regenerated Choco Puff, Sugar Puff, Okra Soup, and Fish Shawarma; Fish Shawarma received a second card-readability refinement. Final rendered review passed all 61 dish/name pairings.

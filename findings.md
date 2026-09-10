@@ -152,6 +152,15 @@ Source: supplied promotional menu image, inspected 2026-09-10 UTC. Treat this as
 
 ## Visual / Browser Findings
 
+### Mobile Safari consistency correction — 2026-09-10 UTC
+
+- The supplied mobile screenshot showed unselected category buttons and the card price/add control in iOS blue while desktop remained ink/dark.
+- Root cause: the global `button` rule set font and cursor but not `color`, allowing Safari's native button accent color to leak through. The narrow correction is `button { color: inherit; }`; existing `.selected`, `.primary`, `.basket-bar`, and destructive-action selectors retain their intentional colors.
+- The hero energy mark was authored as the Unicode `✳` glyph. Even where one screenshot rendered it monochromatically, its appearance depends on the mobile platform's glyph/font selection. It is replaced with a decorative `aria-hidden` inline SVG using deterministic geometry and the existing mustard-yellow brand color.
+- Scope remains presentational: no menu data, basket behavior, review/order state, payment boundary, or Brevo boundary changes.
+- Post-fix pixel QA: mobile renders a crisp mustard/yellow radial SVG burst; category labels and price/add controls render dark ink; desktop composition remains unchanged.
+- The partially visible next category pill is the established horizontally scrollable category-rail affordance. Chromium confirms document/body widths remain within the viewport, so it is not page overflow.
+
 ### Implemented candidate QA — 2026-09-10 UTC
 
 - Real Chromium interaction coverage passes for menu search, 61-card rendering, quick add, localStorage cart recovery, tray variants, basket quantity controls, delivery validation, first-error focus, stable reference reuse, and the exact Monzo URL contract.

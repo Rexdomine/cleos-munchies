@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Owner reviews the corrected live menu imagery before any Brevo integration begins.
+Commit and push the verified mobile visual correction, then verify the exact Vercel production deployment.
 
 ## Current Phase
 
-Phase 6 — Dish image fidelity
+Phase 7 — Mobile visual consistency
 
 ## Phases
 
@@ -60,6 +60,14 @@ Phase 6 — Dish image fidelity
 - [x] Re-run unit, build, browser, responsive, and pixel QA
 - [x] Commit, push, and verify the exact Vercel deployment
 - **Status:** complete
+
+### Phase 7: Mobile visual consistency
+- [x] Reproduce the screenshot discrepancy and identify browser-default styling
+- [x] Add RED contracts for a deterministic hero starburst and non-blue buttons
+- [x] Replace the Unicode glyph with an inline SVG and explicitly inherit button color
+- [x] Verify mobile and desktop rendered output, full regression suite, and production build
+- [ ] Commit, push, and verify the exact Vercel production deployment
+- **Status:** in_progress
 
 ## Key Questions
 

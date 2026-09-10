@@ -42,7 +42,14 @@ describe('mobile ordering UI contract', () => {
     const app = await source('../src/App.jsx');
     const css = await source('../src/styles.css');
     assert.doesNotMatch(css, /@import|fonts\.googleapis/);
-    assert.doesNotMatch(app, /↗/);
+    assert.doesNotMatch(app, /↗|✳/);
+    assert.match(app, /className="energy-burst"/);
+    assert.match(app, /<svg[^>]*className="energy-burst"[^>]*aria-hidden="true"/);
+  });
+
+  it('prevents mobile browsers from applying blue button text', async () => {
+    const css = await source('../src/styles.css');
+    assert.match(css, /button\{[^}]*color:inherit/);
   });
 
   it('labels quick-add and basket controls for assistive technology', async () => {

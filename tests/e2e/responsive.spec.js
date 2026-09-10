@@ -36,6 +36,30 @@ for (const viewport of viewports) {
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
 
+    const visualTokens = await page.evaluate(() => {
+      const bodyColor = getComputedStyle(document.body).color;
+      const categoryButton = [...document.querySelectorAll('.categories button')]
+        .find((button) => button.textContent === 'Breakfast');
+      const addButton = document.querySelector('.add-button');
+      const burst = document.querySelector('.energy-burst');
+      const burstBox = burst.getBoundingClientRect();
+      return {
+        bodyColor,
+        categoryColor: getComputedStyle(categoryButton).color,
+        addColor: getComputedStyle(addButton).color,
+        burstColor: getComputedStyle(burst).color,
+        burstWidth: burstBox.width,
+        burstHeight: burstBox.height,
+        hasUnicodeBurst: document.body.textContent.includes('✳'),
+      };
+    });
+    expect(visualTokens.categoryColor).toBe(visualTokens.bodyColor);
+    expect(visualTokens.addColor).toBe(visualTokens.bodyColor);
+    expect(visualTokens.burstColor).toBe('rgb(223, 182, 70)');
+    expect(visualTokens.burstWidth).toBeGreaterThan(0);
+    expect(visualTokens.burstHeight).toBeGreaterThan(0);
+    expect(visualTokens.hasUnicodeBurst).toBe(false);
+
     const heroGeometry = await page.evaluate(() => {
       const copy = document.querySelector('.hero .lede').getBoundingClientRect();
       const image = document.querySelector('.hero-art').getBoundingClientRect();
