@@ -35,7 +35,9 @@ describe('mobile ordering UI contract', () => {
     assert.match(app, /aria-disabled="true"/);
     assert.match(app, /preventDefault/);
     assert.doesNotMatch(app, /Payment confirmed/);
-    assert.doesNotMatch(app, /48HR|48 hours/i);
+    assert.match(app, /within \{PREORDER_READY_WITHIN_HOURS\} hours/);
+    assert.match(app, /order\.preorder\.readyWithinHours/);
+    assert.doesNotMatch(app, /Preferred delivery date|deliveryDate/);
   });
 
   it('uses self-contained typography and deterministic icons', async () => {

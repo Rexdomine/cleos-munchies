@@ -137,7 +137,7 @@ test('mobile basket, checkout, and review states remain within the viewport', as
   await page.getByLabel('Address').fill('10 Market Road');
   await page.getByLabel('Town or city').fill('Chichester');
   await page.getByLabel('Postcode').fill('PO19 1AA');
-  await page.getByLabel('Preferred delivery date').fill('2026-09-18');
+  await expect(page.getByText(/preorder standard.*within 48 hours/i)).toBeVisible();
   await page.getByRole('button', { name: /Review order/ }).click();
   await expect(page.getByText('Review mode')).toBeVisible();
   await expect(page.getByRole('link', { name: /Continue to Monzo/ })).toBeVisible();

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   MONZO_PAYMENT_URL,
+  PREORDER_READY_WITHIN_HOURS,
   createOrderReference,
   createReviewOrder,
   validateDeliveryDetails,
@@ -15,7 +16,6 @@ const validDetails = {
   address: '10 Market Road',
   city: 'Chichester',
   postcode: 'PO19 1AA',
-  deliveryDate: '2026-09-18',
   notes: '',
 };
 
@@ -43,6 +43,12 @@ describe('order domain', () => {
     assert.deepEqual(validateDeliveryDetails(validDetails).errors, {});
   });
 
+  it('does not accept or retain a customer-selected delivery date', () => {
+    const result = validateDeliveryDetails({ ...validDetails, deliveryDate: '2026-09-18' });
+    assert.deepEqual(result.errors, {});
+    assert.equal('deliveryDate' in result.values, false);
+  });
+
   it('creates a readable stable-format reference from injected time and entropy', () => {
     const reference = createOrderReference({
       now: new Date('2026-09-10T12:00:00Z'),
@@ -62,6 +68,8 @@ describe('order domain', () => {
     assert.equal(order.notification.sent, false);
     assert.equal(order.payment.url, MONZO_PAYMENT_URL);
     assert.equal(order.total, 2500);
+    assert.equal(order.preorder.readyWithinHours, PREORDER_READY_WITHIN_HOURS);
+    assert.equal(order.preorder.standard, 'ready_within_48_hours');
     assert.notEqual(order.status, 'pending_payment');
   });
 

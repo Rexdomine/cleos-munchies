@@ -3,19 +3,22 @@ import { cartSubtotal } from './cart.js';
 export const MONZO_PAYMENT_URL =
   'https://monzo.me/cleopatraejiogu?h=EltkP8&account_type=personal';
 
+export const PREORDER_READY_WITHIN_HOURS = 48;
+
 const requiredMessages = {
   name: 'Please enter your name.',
   phone: 'Please enter your phone number.',
   address: 'Please enter the delivery address.',
   city: 'Please enter the town or city.',
   postcode: 'Please enter the postcode.',
-  deliveryDate: 'Please choose a preferred delivery date.',
 };
 
 export function validateDeliveryDetails(input) {
-  const values = Object.fromEntries(
+  const normalizedValues = Object.fromEntries(
     Object.entries(input).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]),
   );
+  // Delivery timing is a Close Munchies standard, not a customer-selected field.
+  const { deliveryDate: _legacyDeliveryDate, ...values } = normalizedValues;
   const errors = {};
 
   for (const [field, message] of Object.entries(requiredMessages)) {
@@ -57,6 +60,10 @@ export function createReviewOrder({ cart, details, reference }) {
     status: 'review_only',
     items: cart.map((line) => ({ ...line })),
     customer: validation.values,
+    preorder: {
+      standard: 'ready_within_48_hours',
+      readyWithinHours: PREORDER_READY_WITHIN_HOURS,
+    },
     total: cartSubtotal(cart),
     notification: {
       provider: 'brevo',
