@@ -49,7 +49,14 @@ test('Brevo email templates preserve Cleo branding and recipient intent', async 
     assert.match(customer.htmlContent, /cleos-munchies\.vercel\.app\/images\/cleos-logo\.png/);
     assert.match(customer.htmlContent, /#f7f1e8/);
     assert.match(customer.htmlContent, /#bd392e/);
-    assert.match(customer.htmlContent, /Continue to Monzo/);
+    assert.match(customer.htmlContent, /Important — payment step/);
+    assert.match(customer.htmlContent, /1 · Copy this order code/);
+    assert.match(customer.htmlContent, /2 · Paste it into Monzo payment Notes/);
+    assert.match(customer.htmlContent, /user-select:all/);
+    assert.match(customer.htmlContent, /Open Monzo securely/);
+    assert.match(customer.textContent, /1\. COPY this exact order code/);
+    assert.match(customer.textContent, /2\. PASTE it into Monzo payment Notes/);
+    assert.match(customer.htmlContent, /Payment is not confirmed until we manually match/);
     assert.match(customer.htmlContent, /&lt;Ada&gt;/);
     assert.match(customer.textContent, /CLEO-260912-C0FFEE/);
     assert.match(operator.htmlContent, /Kitchen notification/);
