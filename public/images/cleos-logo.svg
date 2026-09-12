@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="180" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+  <title id="title">Cleo's Munchies</title>
+  <desc id="desc">Cleo's Munchies wordmark</desc>
+  <rect width="640" height="180" rx="24" fill="#f7f1e8"/>
+  <text x="34" y="84" fill="#1d1b18" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="-3">CLEO</text>
+  <text x="195" y="84" fill="#bd392e" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800">’</text>
+  <text x="220" y="84" fill="#1d1b18" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="-3">S</text>
+  <text x="38" y="132" fill="#1d1b18" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" letter-spacing="10">MUNCHIES</text>
+  <circle cx="567" cy="91" r="34" fill="#526548"/>
+  <path d="M567 69v44M545 91h44M551 75l32 32M583 75l-32 32" stroke="#f7f1e8" stroke-width="4" stroke-linecap="round"/>
+</svg>

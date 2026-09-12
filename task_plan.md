@@ -97,6 +97,14 @@ Phase 10 — Production Monzo payment handoff
 - [x] Publish and verify exact Vercel deployment
 - **Status:** complete
 
+### Phase 11: Premium Brevo email design
+- [x] Create an email-safe hosted Cleo’s Munchies wordmark asset
+- [x] Build branded responsive HTML templates for customer and operator variants
+- [x] Preserve plain-text fallbacks, escaping, payment boundary, and recipient separation
+- [x] Add mocked template contract coverage and render both variants for visual QA
+- [ ] Deploy and verify the hosted logo asset and final Brevo template delivery
+- **Status:** in progress
+
 ## Key Questions
 
 1. Should we attempt iframe embedding, or use the safer new-tab Monzo handoff as the default?
