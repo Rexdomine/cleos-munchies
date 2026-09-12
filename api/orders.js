@@ -3,7 +3,7 @@ import { findMenuItem } from '../src/data/menu.js';
 const OPERATOR_EMAIL = 'cleopatraejiogu@gmail.com';
 const SENDER_EMAIL = 'yummy@cleosmunchies.co.uk';
 const SENDER_NAME = "Cleo's Munchies";
-const LOGO_URL = 'https://cleos-munchies.vercel.app/images/cleos-logo.png';
+const LOGO_URL = 'https://cleos-munchies.vercel.app/images/cleos-logo.png?v=2';
 const MONZO_PAYMENT_URL = 'https://monzo.me/cleopatraejiogu?h=EltkP8&account_type=personal';
 const MAX_ITEMS = 100;
 
