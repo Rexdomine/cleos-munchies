@@ -92,6 +92,7 @@ export default async function handler(req, res) {
     body: JSON.stringify({
       sender: { email: SENDER_EMAIL, name: SENDER_NAME },
       subject: `Cleo’s Munchies preorder ${reference}`,
+      htmlContent: operatorHtml,
       headers: { idempotencyKey },
       messageVersions: [
         { to: [{ email: OPERATOR_EMAIL, name: "Cleopatra Ejiogu" }], subject: `New preorder ${reference}`, htmlContent: operatorHtml },
