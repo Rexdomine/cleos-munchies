@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Implement and verify the Brevo order-notification boundary; keep payment manual and Brevo credentials server-side.
+Implement and verify production Monzo handoff after Brevo notification acceptance; preserve manual payment reconciliation and never infer paid state.
 
 ## Current Phase
 
-Phase 9 — Brevo transactional order notifications
+Phase 10 — Production Monzo payment handoff
 
 ## Phases
 

@@ -29,8 +29,7 @@ describe('mobile ordering UI contract', () => {
   it('keeps payment truth separate after Brevo notification acceptance', async () => {
     const app = await source('../src/App.jsx');
     assert.match(app, /Order notification sent to you and Cleo’s Munchies/);
-    assert.match(app, /Payment is not confirmed/);
-    assert.match(app, /Do not send payment during review/);
+    assert.match(app, /Payment is not confirmed until Monzo payment is manually matched/);
     assert.match(app, /fetch\('\/api\/orders'/);
     assert.match(app, /disabled=\{submitting\}/);
     assert.doesNotMatch(app, /Payment confirmed/);

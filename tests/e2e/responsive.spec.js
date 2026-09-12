@@ -8,6 +8,10 @@ const viewports = [
   { name: 'desktop', width: 1440, height: 900 },
 ];
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/orders', async route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ status: 'submitted', messageIds: ['test-operator', 'test-customer'] }) }));
+});
+
 for (const viewport of viewports) {
   test(`${viewport.name} layout has decoded media, no overflow, and clean runtime`, async ({ page }) => {
     const consoleErrors = [];
@@ -134,12 +138,13 @@ test('mobile basket, checkout, and review states remain within the viewport', as
 
   await page.getByLabel('Name').fill('Ada Ejiogu');
   await page.getByLabel('Phone').fill('07939 427752');
-  await page.getByLabel('Address').fill('10 Market Road');
+  await page.getByLabel('Email').fill('ada@example.com');
+  await page.locator('input[name="address"]').fill('10 Market Road');
   await page.getByLabel('Town or city').fill('Chichester');
   await page.getByLabel('Postcode').fill('PO19 1AA');
   await expect(page.getByText(/preorder standard.*within 48 hours/i)).toBeVisible();
   await page.getByRole('button', { name: /Review order/ }).click();
-  await expect(page.getByText('Review mode')).toBeVisible();
+  await expect(page.getByText('Order submitted')).toBeVisible();
   await expect(page.getByRole('link', { name: /Continue to Monzo/ })).toBeVisible();
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
