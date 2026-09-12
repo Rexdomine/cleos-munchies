@@ -69,8 +69,14 @@ test('delivery validation and review-only Monzo handoff', async ({ page }) => {
   await expect(page.getByText('Order submitted')).toBeVisible();
   await expect(page.getByText(/Order notification sent to you and Cleo’s Munchies/)).toBeVisible();
   await expect(page.getByText(/Payment is not confirmed until Monzo payment is manually matched/)).toBeVisible();
-  const reference = await page.locator('.review > h1').textContent();
+  const reference = await page.locator('.reference-copy strong').textContent();
   expect(reference).toMatch(/^CLEO-\d{6}-[0-9A-F]{6}$/);
+
+  const copyReference = page.getByRole('button', { name: /Copy order reference/ });
+  await expect(copyReference).toContainText(reference);
+  await expect(copyReference).toContainText('Tap to copy');
+  await copyReference.click();
+  await expect(copyReference).toContainText('Copied ✓');
 
   const handoff = page.getByRole('link', { name: /Continue to Monzo/ });
   await expect(handoff).toHaveAttribute('href', MONZO_URL);
@@ -80,5 +86,5 @@ test('delivery validation and review-only Monzo handoff', async ({ page }) => {
 
   await page.getByRole('button', { name: /Edit details/ }).click();
   await page.getByRole('button', { name: /Review order/ }).click();
-  await expect(page.locator('.review > h1')).toHaveText(reference);
+  await expect(page.locator('.reference-copy strong')).toHaveText(reference);
 });

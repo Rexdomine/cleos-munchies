@@ -74,6 +74,18 @@ describe('mobile ordering UI contract', () => {
     assert.match(app, /Continue to Monzo/);
   });
 
+  it('makes the payment reference prominent and copyable', async () => {
+    const app = await source('../src/App.jsx');
+    const css = await source('../src/styles.css');
+    assert.match(app, /className="reference-copy"/);
+    assert.match(app, /Copy order reference/);
+    assert.match(app, /Tap to copy/);
+    assert.match(app, /Copied ✓/);
+    assert.match(app, /Important — payment step/);
+    assert.match(css, /\.reference-copy\{/);
+    assert.match(css, /\.payment-instruction\{/);
+  });
+
   it('includes mobile safe-area and reduced-motion protections', async () => {
     const css = await source('../src/styles.css');
     assert.match(css, /\.categories\{[^}]*position:sticky[^}]*top:76px/);
