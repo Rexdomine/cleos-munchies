@@ -251,6 +251,13 @@
 - Published exact head `85a9a9cd2fc63ce1cc01a8e4ee4536065c91e7f0`; Vercel deployment `dpl_BjNCXPyhvqwAMsi3Z3G5wQR9GzTW` reported READY and the canonical bundle contains the Monzo URL, enabled handoff copy, and no review-lock marker.
 - Brevo remains the prerequisite notification boundary; no payment was submitted by QA.
 
+## 2026-09-12 — Premium Brevo email design released
+- Added hosted email-safe wordmark assets: `public/images/cleos-logo.png` and matching SVG source.
+- Replaced plain fragments with responsive table-based customer/operator templates using the Cleo cream, ink, red, and green palette; added order-reference badge, item summary, delivery card, status callouts, customer Monzo CTA, and plain-text fallbacks.
+- Added mocked handler coverage for logo, palette, escaping, CTA separation, and recipient intent; full verification passed `npm test` 27/27, build, syntax, and Chromium 20/20 before deployment.
+- Published exact head `6a05e202027c328a9a253637345e2c88ff0b2772`; Vercel deployment `dpl_71m19DNjvYDw5k2o4D3FLZzisQFL` reported READY.
+- Hosted logo read-back passed: HTTP 200, `image/png`, 21,101 bytes; both rendered email variants showed natural image width and zero broken images. No payment was submitted by QA.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.
