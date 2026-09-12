@@ -86,6 +86,7 @@ test('delivery validation and review-only Monzo handoff', async ({ page }) => {
   await expect(copyReference).toContainText('Tap to copy');
   await copyReference.click();
   await expect(copyReference).toContainText('Copied ✓');
+  await expect(page.getByRole('button', { name: /View basket/ })).toBeHidden();
 
   const handoff = page.getByRole('link', { name: /Continue to Monzo/ });
   await expect(handoff).toHaveAttribute('href', MONZO_URL);
@@ -96,4 +97,6 @@ test('delivery validation and review-only Monzo handoff', async ({ page }) => {
   await page.getByRole('button', { name: /Edit details/ }).click();
   await page.getByRole('button', { name: /Review order/ }).click();
   await expect(page.locator('.reference-copy strong')).toHaveText(reference);
+  await page.reload();
+  await expect(page.getByRole('button', { name: /View basket/ })).toBeHidden();
 });
