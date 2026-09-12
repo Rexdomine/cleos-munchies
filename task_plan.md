@@ -88,6 +88,15 @@ Phase 10 — Production Monzo payment handoff
 - [x] Publish and verify exact Vercel deployment
 - **Status:** complete
 
+### Phase 10: Production Monzo payment handoff
+- [x] Preserve Brevo acceptance as the prerequisite to payment handoff
+- [x] Remove review-only payment lock from the successful order state
+- [x] Keep payment unconfirmed until manual Monzo reconciliation
+- [x] Update responsive and order-flow regression contracts
+- [x] Verify unit, build, full Chromium, and hosted bundle behavior
+- [x] Publish and verify exact Vercel deployment
+- **Status:** complete
+
 ## Key Questions
 
 1. Should we attempt iframe embedding, or use the safer new-tab Monzo handoff as the default?

@@ -244,6 +244,13 @@
 - Brevo transactional event read-back returned HTTP 200: both operator `cleopatraejiogu@gmail.com` and customer `rextechng@gmail.com` messages recorded `delivered` events; the customer message also recorded an `opened` event.
 - Final code head for this verification is `c091dece3d7905e49e4263bbd7518cf002904295`; deployment `dpl_4ikRR16U1AhQEB3FPvcM1WVXMr6C` was READY. No payment was submitted or marked paid.
 
+## 2026-09-12 — Production Monzo handoff enabled
+- Updated the successful post-Brevo order state from review-only presentation to `Order submitted` with an enabled `Continue to Monzo` link using the exact approved hosted payment URL.
+- Preserved the payment boundary: email acceptance does not mark payment paid; the customer is told payment remains unconfirmed until the Monzo payment is manually matched to the order reference.
+- Updated local order-flow and responsive contracts; final exact-candidate QA passed `npm test` 26/26, Vite build, and Chromium `20/20`.
+- Published exact head `85a9a9cd2fc63ce1cc01a8e4ee4536065c91e7f0`; Vercel deployment `dpl_BjNCXPyhvqwAMsi3Z3G5wQR9GzTW` reported READY and the canonical bundle contains the Monzo URL, enabled handoff copy, and no review-lock marker.
+- Brevo remains the prerequisite notification boundary; no payment was submitted by QA.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.
