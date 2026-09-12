@@ -222,6 +222,8 @@
 - `npm run build` passed with Vite production output; `npm audit --audit-level=high` reported 0 vulnerabilities; `git diff --check` passed.
 - A fresh `npm run test:e2e` attempt was blocked before application assertions because Playwright expects missing `/opt/hermes/.playwright/chromium_headless_shell-1243/.../chrome-headless-shell`; this is an environment/browser-revision mismatch. Prior exact-candidate Chromium evidence remains recorded in the preceding release notes; this rerun is not counted as green.
 - The authorized release candidate is local commit `1ef7c20eb07eeb4d2d33f814c9689aa47e7fb458` (`Apply 48-hour preorder standard`), with the incident-log update to be published alongside it. Brevo remains deferred and payment remains review-mode/manual.
+- Published commit `d9caae8aea23bad4d8ab35ae7362e2dd3c3618f8` to `origin/master`; Vercel deployment `dpl_BfBHkgSDqeRLShCo2RSz7Re7UqVJ` reported production READY and aliased `https://cleos-munchies.vercel.app`. Canonical HTML loads the Cleo app shell, and the deployed JavaScript contains the exact `READY WITHIN 48 HOURS` marker.
+- Final repository read-back: local `master` equals `origin/master` at `d9caae8aea23bad4d8ab35ae7362e2dd3c3618f8`; worktree is clean. Fresh E2E rerun remains environment-blocked because the configured Playwright Chromium executable is missing, while prior exact-candidate browser evidence remains recorded above.
 
 ## 5-Question Reboot Check
 
