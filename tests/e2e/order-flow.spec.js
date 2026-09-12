@@ -3,7 +3,16 @@ import { test, expect } from '@playwright/test';
 const MONZO_URL = 'https://monzo.me/cleopatraejiogu?h=EltkP8&account_type=personal';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/orders', async route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ status: 'submitted', messageIds: ['test-operator', 'test-customer'] }) }));
+  const seenIdempotencyKeys = new Set();
+  await page.route('**/api/orders', async route => {
+    const body = route.request().postDataJSON();
+    if (seenIdempotencyKeys.has(body.idempotencyKey)) {
+      await route.fulfill({ status: 409, contentType: 'application/json', body: JSON.stringify({ error: 'Duplicate idempotency key.' }) });
+      return;
+    }
+    seenIdempotencyKeys.add(body.idempotencyKey);
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ status: 'submitted', messageIds: ['test-operator', 'test-customer'] }) });
+  });
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();

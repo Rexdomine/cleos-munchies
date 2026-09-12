@@ -6,6 +6,7 @@ import {
   PREORDER_READY_WITHIN_HOURS,
   createOrderReference,
   createReviewOrder,
+  refreshOrderForSubmission,
   validateDeliveryDetails,
 } from '../src/domain/order.js';
 
@@ -71,6 +72,16 @@ describe('order domain', () => {
     assert.equal(order.preorder.readyWithinHours, PREORDER_READY_WITHIN_HOURS);
     assert.equal(order.preorder.standard, 'ready_within_48_hours');
     assert.notEqual(order.status, 'pending_payment');
+  });
+
+  it('refreshes a corrected resubmission without changing the order reference', () => {
+    const order = createReviewOrder({ cart, details: validDetails, reference: 'CLEO-260910-0A0B0C' });
+    const corrected = refreshOrderForSubmission(order, { ...validDetails, name: 'Ada Updated', notes: 'Leave at door' });
+    assert.equal(corrected.reference, order.reference);
+    assert.deepEqual(corrected.items, order.items);
+    assert.notEqual(corrected.idempotencyKey, order.idempotencyKey);
+    assert.equal(corrected.customer.name, 'Ada Updated');
+    assert.equal(corrected.customer.notes, 'Leave at door');
   });
 
   it('rejects order creation with an empty cart', () => {

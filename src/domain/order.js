@@ -83,3 +83,12 @@ export function createReviewOrder({ cart, details, reference }) {
     },
   };
 }
+
+export function refreshOrderForSubmission(order, details) {
+  if (!order) throw new Error('Cannot refresh an order that does not exist.');
+  return {
+    ...order,
+    idempotencyKey: createOrderIdempotencyKey(),
+    customer: { ...details },
+  };
+}
