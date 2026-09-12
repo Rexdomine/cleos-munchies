@@ -26,14 +26,13 @@ describe('mobile ordering UI contract', () => {
     assert.match(app, /View basket/);
   });
 
-  it('keeps review mode truthful while Brevo is deferred', async () => {
+  it('keeps payment truth separate after Brevo notification acceptance', async () => {
     const app = await source('../src/App.jsx');
-    assert.match(app, /Review mode/);
-    assert.match(app, /No order email has been sent/);
+    assert.match(app, /Order notification sent to you and Cleo’s Munchies/);
+    assert.match(app, /Payment is not confirmed/);
     assert.match(app, /Do not send payment during review/);
-    assert.match(app, /Food subtotal/);
-    assert.match(app, /aria-disabled="true"/);
-    assert.match(app, /preventDefault/);
+    assert.match(app, /fetch\('\/api\/orders'/);
+    assert.match(app, /disabled=\{submitting\}/);
     assert.doesNotMatch(app, /Payment confirmed/);
     assert.match(app, /within \{PREORDER_READY_WITHIN_HOURS\} hours/);
     assert.match(app, /order\.preorder\.readyWithinHours/);

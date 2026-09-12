@@ -8,6 +8,7 @@ export const PREORDER_READY_WITHIN_HOURS = 48;
 const requiredMessages = {
   name: 'Please enter your name.',
   phone: 'Please enter your phone number.',
+  email: 'Please enter your email address.',
   address: 'Please enter the delivery address.',
   city: 'Please enter the town or city.',
   postcode: 'Please enter the postcode.',
@@ -48,6 +49,10 @@ export function createOrderReference({ now = new Date(), randomBytes } = {}) {
   return `CLEO-${date}-${entropy}`;
 }
 
+export function createOrderIdempotencyKey() {
+  return crypto.randomUUID();
+}
+
 export function createReviewOrder({ cart, details, reference }) {
   if (!cart.length) throw new Error('Cannot create an order because the cart is empty.');
   const validation = validateDeliveryDetails(details);
@@ -56,6 +61,7 @@ export function createReviewOrder({ cart, details, reference }) {
 
   return {
     reference,
+    idempotencyKey: createOrderIdempotencyKey(),
     createdAt: new Date().toISOString(),
     status: 'review_only',
     items: cart.map((line) => ({ ...line })),

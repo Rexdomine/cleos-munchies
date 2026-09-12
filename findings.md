@@ -26,9 +26,9 @@
 - Vercel Git link verified for `Rexdomine/cleos-munchies`, production branch `master`, in the default authenticated team scope.
 - No deployment has been started because the app has not been scaffolded yet.
 
-## Research / External Findings
-
-- None yet; discovery is intentionally limited to the request and local workspace setup.
+- The deployed Brevo sender lookup confirmed `yummy@cleosmunchies.co.uk` / `Cleo's Munchies` is active; this is provider configuration, not a secret.
+- Brevo integration is now authorized: use the Vercel `/api/orders` relay, send operator notification to `cleopatraejiogu@gmail.com`, send customer notification to the required checkout email, and keep the Monzo/payment state manual.
+- The relay recomputes prices from `src/data/menu.js`, rejects unknown items/variants and malformed orders, escapes HTML, and sends both personalized message versions with Brevo `idempotencyKey`. Brevo's documented idempotency window is finite; a durable order store remains a follow-up if longer recovery guarantees are required.
 
 ## Menu and brand content inventory
 

@@ -6,11 +6,11 @@ Create a lightweight, frontend-heavy food-ordering project for Cleo's Munchies w
 
 ## Next Step
 
-Owner reviews the corrected live menu imagery before any Brevo integration begins.
+Implement and verify the Brevo order-notification boundary; keep payment manual and Brevo credentials server-side.
 
 ## Current Phase
 
-Phase 8 — Ingredient-accurate image cleanup
+Phase 9 — Brevo transactional order notifications
 
 ## Phases
 

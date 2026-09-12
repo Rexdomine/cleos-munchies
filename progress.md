@@ -231,6 +231,13 @@
 - Verification with the original broken global environment still present: `npm test` 26/26, `npm run build` passed, and normal `npm run test:e2e` passed 20/20.
 - Published fix commit `5c399b65113f6e902b7833671ae4ad4c541dacc6`; Vercel deployment `dpl_FBjKa9GX63X6vUKJr5UHUp1rmdx4` reported READY and canonical Cleo URL returned HTTP 200.
 
+## 2026-09-12 — Brevo integration implementation
+- Retrieved the supplied Bitwarden Send through the installed Chromium without exposing the API key; Brevo `/v3/senders` read-back confirmed active sender `yummy@cleosmunchies.co.uk`, `Cleo's Munchies`.
+- Added Vercel serverless endpoint `api/orders.js` with server-side `BREVO_API_KEY`, canonical menu/variant pricing validation, HTML escaping, operator/customer message versions, and Brevo idempotency key forwarding.
+- Connected checkout submission to `/api/orders`; customer email is now required, duplicate submits are blocked while sending, provider failures remain visible, and the review screen distinguishes notification acceptance from payment confirmation.
+- Configured Vercel production secret `BREVO_API_KEY` as encrypted, production-only environment state; read-back confirmed one matching encrypted variable.
+- Brevo implementation is locally gated by unit/build/syntax checks; real provider smoke test remains after the code is deployed. No payment was submitted or marked paid.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.

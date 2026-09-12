@@ -15,11 +15,11 @@ The review build includes:
 - A safe Monzo handoff screen
 - Responsive layouts for mobile, tablet, laptop, and desktop
 
-## Important review-mode boundary
+## Transactional order notifications
 
-Brevo is intentionally **not connected yet**. The current flow creates a local review reference but does not submit an order, send an email, or confirm payment.
+Brevo is connected through the Vercel serverless endpoint at `/api/orders`. A valid order submission sends separate personalized notifications to the verified Cleo sender, the customer email, and `cleopatraejiogu@gmail.com`. The Brevo API key is production-only and server-side.
 
-The approved Monzo URL is present for contract verification, but its action is locked in review mode. The live handoff must only be enabled after the trusted order/Brevo boundary durably accepts the order and preserves one idempotent reference.
+Payment remains manual: the site never marks an order paid from email acceptance or a browser return. The Monzo handoff remains locked until the payment launch boundary is separately approved.
 
 ## Run locally
 
