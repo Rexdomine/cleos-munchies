@@ -225,6 +225,12 @@
 - Published commit `d9caae8aea23bad4d8ab35ae7362e2dd3c3618f8` to `origin/master`; Vercel deployment `dpl_BfBHkgSDqeRLShCo2RSz7Re7UqVJ` reported production READY and aliased `https://cleos-munchies.vercel.app`. Canonical HTML loads the Cleo app shell, and the deployed JavaScript contains the exact `READY WITHIN 48 HOURS` marker.
 - Final repository read-back: local `master` equals `origin/master` at `d9caae8aea23bad4d8ab35ae7362e2dd3c3618f8`; worktree is clean. Fresh E2E rerun remains environment-blocked because the configured Playwright Chromium executable is missing, while prior exact-candidate browser evidence remains recorded above.
 
+## 2026-09-12 — Playwright cache-path integration repair
+- Root cause confirmed: `PLAYWRIGHT_BROWSERS_PATH=/opt/hermes/.playwright` was globally exported, while Playwright 1.63.0 revision `1243` was installed at `/opt/data/.playwright`.
+- Added `scripts/run-playwright.mjs`, which selects a cache containing the required Chromium revision and passes it to Playwright; updated `npm run test:e2e` to use the launcher.
+- Verification with the original broken global environment still present: `npm test` 26/26, `npm run build` passed, and normal `npm run test:e2e` passed 20/20.
+- Published fix commit `5c399b65113f6e902b7833671ae4ad4c541dacc6`; Vercel deployment `dpl_FBjKa9GX63X6vUKJr5UHUp1rmdx4` reported READY and canonical Cleo URL returned HTTP 200.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.
