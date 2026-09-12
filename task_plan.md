@@ -79,6 +79,15 @@ Phase 9 — Brevo transactional order notifications
 - [x] Commit, push, and verify the exact Vercel production deployment
 - **Status:** complete
 
+### Phase 9: Brevo transactional order notifications
+- [x] Verify existing Brevo sender and account access
+- [x] Add server-side Vercel order relay with canonical pricing validation
+- [x] Send separate operator and customer notifications with idempotency
+- [x] Configure encrypted production-only `BREVO_API_KEY`
+- [x] Verify local contracts and real deployed provider smoke order
+- [x] Publish and verify exact Vercel deployment
+- **Status:** complete
+
 ## Key Questions
 
 1. Should we attempt iframe embedding, or use the safer new-tab Monzo handoff as the default?

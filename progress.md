@@ -238,6 +238,12 @@
 - Configured Vercel production secret `BREVO_API_KEY` as encrypted, production-only environment state; read-back confirmed one matching encrypted variable.
 - Brevo implementation is locally gated by unit/build/syntax checks; real provider smoke test remains after the code is deployed. No payment was submitted or marked paid.
 
+## 2026-09-12 — Brevo provider smoke verification
+- First valid live smoke request initially returned `502` because Brevo required base `htmlContent` alongside `messageVersions`; Vercel logs identified `missing_parameter`. The payload was corrected without weakening validation.
+- Corrected deployed smoke order `CLEO-260912-BEEF02` returned HTTP 200 with two Brevo message IDs.
+- Brevo transactional event read-back returned HTTP 200: both operator `cleopatraejiogu@gmail.com` and customer `rextechng@gmail.com` messages recorded `delivered` events; the customer message also recorded an `opened` event.
+- Final code head for this verification is `c091dece3d7905e49e4263bbd7518cf002904295`; deployment `dpl_4ikRR16U1AhQEB3FPvcM1WVXMr6C` was READY. No payment was submitted or marked paid.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.
