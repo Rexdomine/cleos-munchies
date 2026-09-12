@@ -208,6 +208,21 @@
 - Next action: Generate, inspect, optimize, and map all 61 dish-specific images; rerun exact responsive QA and redeploy. Brevo stays deferred.
 - Evidence to check first on resume: `task_plan.md`, `findings.md`, and `progress.md`.
 
+## 2026-09-12 — Project-identity drift incident investigation
+- Incident: a generic push/deploy follow-up was incorrectly routed to the unrelated RexTexh project after a session reset.
+- Verified Cleo source of truth: `/opt/data/projects/cleos-munchies`, root-level `task_plan.md`, `findings.md`, and `progress.md`; no `PROJECT_CONTEXT.md` or `.planning/.active_plan` exists in this project.
+- Root cause: the recovery path did not first identify the active project from Cleo’s durable artifacts and latest session lineage. It used a broad session search whose top result was RexTexh, then treated that result as active context instead of validating project identity against the current task and Cleo’s files.
+- Contributing factor: the Cleo plan’s root-level convention was not consulted before acting. This was an agent continuity failure, not a Cleo repository ambiguity.
+- Impact boundary: no Cleo files, commits, remote refs, or Cleo deployment were changed by the mistaken action. Cleo currently has local `master` commit `1ef7c20eb07eeb4d2d33f814c9689aa47e7fb458` ahead of `origin/master` `824a25d5cc089c2f0052b11f825046839b1b1e5f`; the correct pending work is the `Apply 48-hour preorder standard` commit.
+- Unrelated side effect: RexTexh received the mistaken context commit/deployment; it must not be presented as Cleo work. No rollback is performed without explicit authorization.
+- Correct recovery rule: for every Cleo follow-up, read these three root files first, verify repo path/remote/default branch (`Rexdomine/cleos-munchies`, `master`), and only then inspect/push/deploy the exact Cleo head.
+
+## 2026-09-12 — 48-hour preorder release verification
+- `npm test` passed: 26/26.
+- `npm run build` passed with Vite production output; `npm audit --audit-level=high` reported 0 vulnerabilities; `git diff --check` passed.
+- A fresh `npm run test:e2e` attempt was blocked before application assertions because Playwright expects missing `/opt/hermes/.playwright/chromium_headless_shell-1243/.../chrome-headless-shell`; this is an environment/browser-revision mismatch. Prior exact-candidate Chromium evidence remains recorded in the preceding release notes; this rerun is not counted as green.
+- The authorized release candidate is local commit `1ef7c20eb07eeb4d2d33f814c9689aa47e7fb458` (`Apply 48-hour preorder standard`), with the incident-log update to be published alongside it. Brevo remains deferred and payment remains review-mode/manual.
+
 ## 5-Question Reboot Check
 
 - Where am I? Phase 1 — Discovery.
