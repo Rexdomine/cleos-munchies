@@ -68,3 +68,21 @@ test('Brevo email templates preserve Cleo branding and recipient intent', async 
     else process.env.BREVO_API_KEY = previousKey;
   }
 });
+
+test('Brevo transport failures return a bounded retryable response', async () => {
+  const previousKey = process.env.BREVO_API_KEY;
+  const previousFetch = global.fetch;
+  process.env.BREVO_API_KEY = 'test-only';
+  global.fetch = async () => { throw new TypeError('fetch failed'); };
+  try {
+    const res = responseCapture();
+    await handler(requestBody(), res);
+    assert.equal(res.statusCode, 503);
+    assert.match(res.body.error, /interrupted/i);
+    assert.match(res.body.error, /not confirmed/i);
+  } finally {
+    global.fetch = previousFetch;
+    if (previousKey === undefined) delete process.env.BREVO_API_KEY;
+    else process.env.BREVO_API_KEY = previousKey;
+  }
+});

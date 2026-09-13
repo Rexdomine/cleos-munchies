@@ -95,6 +95,7 @@ test('delivery validation and review-only Monzo handoff', async ({ page }) => {
   await expect(handoff).toContainText('Continue to Monzo');
 
   await page.getByRole('button', { name: /Edit details/ }).click();
+  await page.locator('textarea[name="notes"]').fill('Leave at door');
   await page.getByRole('button', { name: /Review order/ }).click();
   await expect(page.locator('.reference-copy strong')).toHaveText(reference);
   await page.reload();

@@ -92,3 +92,10 @@ export function refreshOrderForSubmission(order, details) {
     customer: { ...details },
   };
 }
+
+export function prepareOrderForSubmission(order, details) {
+  if (!order) throw new Error('Cannot prepare an order that does not exist.');
+  const fields = ['name', 'phone', 'email', 'address', 'city', 'postcode', 'notes'];
+  const unchanged = fields.every((field) => order.customer?.[field] === details[field]);
+  return unchanged ? order : refreshOrderForSubmission(order, details);
+}

@@ -63,7 +63,7 @@ describe('mobile ordering UI contract', () => {
 
   it('defers off-screen dish image loading for the 61-item menu', async () => {
     const app = await source('../src/App.jsx');
-    assert.match(app, /<img src=\{item\.image\} alt="" loading="lazy" decoding="async"/);
+    assert.match(app, /<img src=\{item\.image\} srcSet=\{.*-320\.webp.*loading="lazy" decoding="async" fetchPriority="low"/);
   });
 
   it('contains the exact approved Monzo handoff with safe new-tab behavior', async () => {

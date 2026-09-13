@@ -52,6 +52,15 @@ for (const item of MENU) {
   ], { encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`FFmpeg failed for ${item.id}: ${result.stderr}`);
   renameSync(temporary, output);
+  const compactOutput = resolve(outputDir, `${item.id}-320.webp`);
+  const compactTemporary = `${compactOutput}.tmp.webp`;
+  const compactResult = spawnSync('ffmpeg', [
+    '-loglevel', 'error', '-y', '-i', source.output,
+    '-vf', 'scale=320:320:force_original_aspect_ratio=increase,crop=320:320',
+    '-frames:v', '1', '-c:v', 'libwebp', '-quality', '74', compactTemporary,
+  ], { encoding: 'utf8' });
+  if (compactResult.status !== 0) throw new Error(`FFmpeg failed for compact ${item.id}: ${compactResult.stderr}`);
+  renameSync(compactTemporary, compactOutput);
   const bytes = readFileSync(output);
   provenance.push({
     id: item.id,

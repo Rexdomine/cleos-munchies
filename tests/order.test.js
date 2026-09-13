@@ -6,6 +6,7 @@ import {
   PREORDER_READY_WITHIN_HOURS,
   createOrderReference,
   createReviewOrder,
+  prepareOrderForSubmission,
   refreshOrderForSubmission,
   validateDeliveryDetails,
 } from '../src/domain/order.js';
@@ -82,6 +83,14 @@ describe('order domain', () => {
     assert.notEqual(corrected.idempotencyKey, order.idempotencyKey);
     assert.equal(corrected.customer.name, 'Ada Updated');
     assert.equal(corrected.customer.notes, 'Leave at door');
+  });
+
+  it('reuses the idempotency key when retrying unchanged details after an ambiguous failure', () => {
+    const order = createReviewOrder({ cart, details: validDetails, reference: 'CLEO-260910-0A0B0C' });
+    const retry = prepareOrderForSubmission(order, { ...validDetails });
+    assert.equal(retry.idempotencyKey, order.idempotencyKey);
+    const edited = prepareOrderForSubmission(order, { ...validDetails, notes: 'Leave at door' });
+    assert.notEqual(edited.idempotencyKey, order.idempotencyKey);
   });
 
   it('rejects order creation with an empty cart', () => {

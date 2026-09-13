@@ -111,13 +111,19 @@ export default async function handler(req, res) {
   const customerHtml = { html: emailShell({ preheader: `Your Cleo’s Munchies preorder ${reference} is safely with us.`, eyebrow: 'Order received', title: `Thanks, ${details.name}`, intro: `We’ve received your preorder and sent the details to the Cleo’s Munchies kitchen team.`, reference, content: `${orderCard(lines, total, details)}${paymentGuide(reference)}`, footer: 'Questions? Reply to this email and the Cleo’s Munchies team will help.' }), textContent: customerText(details, lines, total, reference) };
   const operatorHtml = { html: emailShell({ preheader: `New preorder ${reference} needs kitchen and payment reconciliation.`, eyebrow: 'Kitchen notification', title: 'New preorder', intro: 'A new preorder has been submitted. Please confirm preparation and manually reconcile payment against the reference below.', reference, content: `${orderCard(lines, total, details)}<div style="height:18px;line-height:18px">&nbsp;</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td style="padding:16px 18px;background:#e8eee3;border-left:4px solid #526548;border-radius:8px"><p style="margin:0;color:#405039;font-size:14px;line-height:1.55"><strong>Ready within 48 hours.</strong><br>Payment remains subject to manual Monzo reconciliation.</p></td></tr></table>`, footer: 'Cleo’s Munchies · Keep this reference attached to the kitchen and payment record.' }), textContent: operatorText(details, lines, total, reference) };
 
-  const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST', headers: { accept: 'application/json', 'content-type': 'application/json', 'api-key': apiKey },
-    body: JSON.stringify({ sender: { email: SENDER_EMAIL, name: SENDER_NAME }, subject: `Cleo’s Munchies preorder ${reference}`, htmlContent: operatorHtml.html, textContent: operatorHtml.textContent, headers: { idempotencyKey }, messageVersions: [
-      { to: [{ email: OPERATOR_EMAIL, name: 'Cleopatra Ejiogu' }], subject: `New preorder ${reference}`, htmlContent: operatorHtml.html, textContent: operatorHtml.textContent },
-      { to: [{ email: details.email, name: details.name }], subject: `Your Cleo’s Munchies preorder ${reference}`, htmlContent: customerHtml.html, textContent: customerHtml.textContent },
-    ] }),
-  });
+  let brevoResponse;
+  try {
+    brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST', signal: AbortSignal.timeout(15000), headers: { accept: 'application/json', 'content-type': 'application/json', 'api-key': apiKey },
+      body: JSON.stringify({ sender: { email: SENDER_EMAIL, name: SENDER_NAME }, subject: `Cleo’s Munchies preorder ${reference}`, htmlContent: operatorHtml.html, textContent: operatorHtml.textContent, headers: { idempotencyKey }, messageVersions: [
+        { to: [{ email: OPERATOR_EMAIL, name: 'Cleopatra Ejiogu' }], subject: `New preorder ${reference}`, htmlContent: operatorHtml.html, textContent: operatorHtml.textContent },
+        { to: [{ email: details.email, name: details.name }], subject: `Your Cleo’s Munchies preorder ${reference}`, htmlContent: customerHtml.html, textContent: customerHtml.textContent },
+      ] }),
+    });
+  } catch (error) {
+    console.error('Brevo order notification transport failed', { name: error?.name || 'Error' });
+    return json(res, 503, { error: 'The order service was interrupted. Please try again. Your order was not confirmed.' });
+  }
 
   if (!brevoResponse.ok) {
     let errorCode = 'provider_error';
