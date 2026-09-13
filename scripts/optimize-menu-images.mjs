@@ -47,8 +47,8 @@ for (const item of MENU) {
   const temporary = `${output}.tmp.webp`;
   const result = spawnSync('ffmpeg', [
     '-loglevel', 'error', '-y', '-i', source.output,
-    '-vf', 'scale=900:900:force_original_aspect_ratio=increase,crop=900:900',
-    '-frames:v', '1', '-c:v', 'libwebp', '-quality', '82', temporary,
+    '-vf', 'scale=480:480:force_original_aspect_ratio=increase,crop=480:480',
+    '-frames:v', '1', '-c:v', 'libwebp', '-quality', '74', temporary,
   ], { encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`FFmpeg failed for ${item.id}: ${result.stderr}`);
   renameSync(temporary, output);

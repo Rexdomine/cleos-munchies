@@ -53,6 +53,13 @@ describe('menu data contract', () => {
     }
   });
 
+  it('keeps menu thumbnails within the mobile-card performance budget', () => {
+    for (const item of MENU) {
+      const imagePath = new URL(`../public${item.image}`, import.meta.url);
+      assert.ok(readFileSync(imagePath).length <= 80_000, `${item.id} exceeds the 80 KB thumbnail budget`);
+    }
+  });
+
   it('allows visible okra only for the two named okra soups', () => {
     const audit = JSON.parse(readFileSync(new URL('../docs/menu-image-ingredient-audit.json', import.meta.url), 'utf8'));
     const menuIds = MENU.map((item) => item.id).sort();
