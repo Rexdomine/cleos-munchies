@@ -23,7 +23,7 @@
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "cleos-munchies-media" }],
   "vars": {
     // Sites allowed to call /api/menu and /api/orders from the browser.
-    "ALLOWED_ORIGINS": "https://cleos-munchies.vercel.app",
+    "ALLOWED_ORIGINS": "https://www.cleosmunchies.co.uk,https://cleosmunchies.co.uk,https://cleos-munchies.vercel.app",
     // Emails allowed into /admin. Cloudflare Access enforces this too.
     "ADMIN_EMAILS": "cleopatraejiogu@gmail.com,rextechng@gmail.com",
     // Cloudflare Access app "Cleo's Munchies admin" (covers /admin and /api/admin only).

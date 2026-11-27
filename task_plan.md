@@ -154,7 +154,9 @@ Current focus: the admin backend on Cloudflare (Worker + D1 + Access). Only the 
 - [x] Remote D1 `cleos-munchies` created, migrated and seeded (2026-11-27)
 - [x] Owner: Zero Trust (free) turned on and wrangler logged in (2026-11-27)
 - [x] Worker deployed to https://cleos-munchies-api.rextechng.workers.dev. The Access app "Cleo's Munchies admin" covers `/admin` and `/api/admin` only, with email-code login for cleopatraejiogu@gmail.com and rextechng@gmail.com. Team domain: cleosmunchies.cloudflareaccess.com. (2026-11-27)
-- [ ] Owner: `wrangler secret put BREVO_API_KEY`, then merge and deploy the site so orders go through the Worker
+- [x] Brevo key set on the Worker; PR #1 merged and deployed to Vercel production (2026-11-27). The live site now reads the menu from the Worker and sends orders to it.
+- [x] The Worker accepts browser calls from www.cleosmunchies.co.uk and cleosmunchies.co.uk as well as cleos-munchies.vercel.app.
+- [ ] Place one real order and confirm both emails arrive and it appears in the admin.
 - [x] Admin Log out button and a branded signed-out page; branded Access login page (2026-11-27)
 - [x] Menu photo uploads: R2 bucket `cleos-munchies-media` created and the Worker deployed with the `MEDIA` binding. Live storage and serving verified (2026-11-27).
 - [x] Domain DNS moved from Namecheap to Cloudflare; Email Routing catch-all to Cleo's Gmail; admin served at https://admin.cleosmunchies.co.uk (2026-11-27)
