@@ -27,3 +27,10 @@ test-results/
 .DS_Store
 .vscode/
 .idea/
+
+# Cloudflare Worker local state and secrets
+.wrangler/
+.dev.vars
+worker/src/generated/
+dist-admin/
+dist-worker/

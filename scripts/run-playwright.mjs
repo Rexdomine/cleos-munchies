@@ -11,16 +11,19 @@ const roots = [
   resolve('.playwright'),
   '/opt/data/.playwright',
   join(homedir(), '.cache', 'ms-playwright'),
+  join(homedir(), 'Library', 'Caches', 'ms-playwright'),
 ].filter(Boolean);
 
 function hasRequiredChromium(root) {
-  const executable = join(
-    root,
-    `chromium_headless_shell-${requiredRevision}`,
-    'chrome-headless-shell-linux64',
-    executableName,
-  );
-  return existsSync(executable);
+  // The platform folder differs per OS (linux64, mac-arm64, mac-x64, win64).
+  const revisionDir = join(root, `chromium_headless_shell-${requiredRevision}`);
+  try {
+    return readdirSync(revisionDir)
+      .filter((entry) => entry.startsWith('chrome-headless-shell-'))
+      .some((entry) => existsSync(join(revisionDir, entry, executableName)));
+  } catch {
+    return false;
+  }
 }
 
 const browserRoot = roots.find(hasRequiredChromium);

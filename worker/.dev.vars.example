@@ -1,0 +1,9 @@
+# Copy to worker/.dev.vars for local development. Never commit .dev.vars.
+ALLOWED_ORIGINS=http://localhost:5173,https://cleos-munchies.vercel.app
+# Turns off Cloudflare Access checks locally so DEV_ADMIN_EMAIL is used instead.
+ACCESS_TEAM_DOMAIN=
+ACCESS_AUD=
+# Signs you in to /admin locally without Cloudflare Access. Must be on ADMIN_EMAILS.
+DEV_ADMIN_EMAIL=rextechng@gmail.com
+# Optional: a Brevo key for local order emails. Leave unset to get the 503 "temporarily unavailable" path.
+# BREVO_API_KEY=

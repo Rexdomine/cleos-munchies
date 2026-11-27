@@ -18,7 +18,7 @@ export function validateDeliveryDetails(input) {
   const normalizedValues = Object.fromEntries(
     Object.entries(input).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]),
   );
-  // Delivery timing is a Close Munchies standard, not a customer-selected field.
+  // Delivery timing is a Cleo’s Munchies standard, not a customer-selected field.
   const { deliveryDate: _legacyDeliveryDate, ...values } = normalizedValues;
   const errors = {};
 

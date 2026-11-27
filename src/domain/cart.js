@@ -39,3 +39,33 @@ export function formatGBP(pence) {
     currency: 'GBP',
   }).format(pence / 100);
 }
+
+// Brings saved basket lines in line with the live menu: current names and prices,
+// dishes that were removed dropped, sold-out dishes flagged.
+export function syncCartWithMenu(cart, menuItems) {
+  const byId = new Map(menuItems.map((item) => [item.id, item]));
+  let changed = false;
+  const next = [];
+  for (const line of cart) {
+    const item = byId.get(line.id);
+    const variant = line.variantId ? item?.variants?.find((entry) => entry.id === line.variantId) : null;
+    if (!item || (line.variantId && !variant)) {
+      changed = true;
+      continue;
+    }
+    const price = variant ? variant.price : item.price;
+    const updated = {
+      ...line,
+      name: item.name,
+      note: item.note,
+      price,
+      ...(variant ? { variantLabel: variant.label } : {}),
+      unavailable: item.available === false,
+    };
+    if (updated.name !== line.name || updated.price !== line.price || updated.variantLabel !== line.variantLabel || updated.unavailable !== Boolean(line.unavailable) || updated.note !== line.note) {
+      changed = true;
+    }
+    next.push(updated);
+  }
+  return changed ? next : cart;
+}

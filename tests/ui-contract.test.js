@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 
 async function source(path) {
   try {
@@ -10,16 +10,26 @@ async function source(path) {
   }
 }
 
+// The UI is split across src/App.jsx, src/components, src/hooks and src/lib, so contracts
+// check the combined UI source rather than a single file.
+async function uiSource() {
+  const root = new URL('../src/', import.meta.url);
+  const entries = await readdir(root, { recursive: true });
+  const files = entries.filter((path) => /\.(jsx?|mjs)$/.test(path) && !path.startsWith('data/') && !path.startsWith('domain/')).sort();
+  const contents = await Promise.all(files.map((path) => source(`../src/${path}`)));
+  return contents.join('\n');
+}
+
 describe('mobile ordering UI contract', () => {
   it('renders the menu as the primary page experience', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     assert.match(app, /Explore the full menu/);
     assert.match(app, /aria-label="Menu categories"/);
     assert.match(app, /Search the menu/);
   });
 
   it('exposes accessible cart and item-option surfaces', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     assert.match(app, /role="dialog"/);
     assert.match(app, /aria-modal="true"/);
     assert.match(app, /aria-live="polite"/);
@@ -27,10 +37,10 @@ describe('mobile ordering UI contract', () => {
   });
 
   it('keeps payment truth separate after Brevo notification acceptance', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     assert.match(app, /Order notification sent to you and Cleo’s Munchies/);
     assert.match(app, /Payment is not confirmed until Monzo payment is manually matched/);
-    assert.match(app, /fetch\('\/api\/orders'/);
+    assert.match(app, /fetch\(`\$\{API_BASE\}\/api\/orders`/);
     assert.match(app, /disabled=\{submitting\}/);
     assert.doesNotMatch(app, /Payment confirmed/);
     assert.match(app, /within \{PREORDER_READY_WITHIN_HOURS\} hours/);
@@ -39,7 +49,7 @@ describe('mobile ordering UI contract', () => {
   });
 
   it('uses self-contained typography and deterministic icons', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     const css = await source('../src/styles.css');
     assert.doesNotMatch(css, /@import|fonts\.googleapis/);
     assert.doesNotMatch(app, /↗|✳/);
@@ -53,7 +63,7 @@ describe('mobile ordering UI contract', () => {
   });
 
   it('labels quick-add and basket controls for assistive technology', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     assert.match(app, /aria-label={`Add \${item\.name}`}/);
     assert.match(app, /aria-label={`Choose a size for \${item\.name}`}/);
     assert.match(app, /aria-label="Open basket"/);
@@ -62,12 +72,12 @@ describe('mobile ordering UI contract', () => {
   });
 
   it('defers off-screen dish image loading for the 61-item menu', async () => {
-    const app = await source('../src/App.jsx');
-    assert.match(app, /<img src=\{item\.image\} srcSet=\{.*-320\.webp.*loading="lazy" decoding="async" fetchPriority="low"/);
+    const app = await uiSource();
+    assert.match(app, /<img src=\{image\} srcSet=\{.*-320\.webp.*loading="lazy" decoding="async" fetchPriority="low"/);
   });
 
   it('contains the exact approved Monzo handoff with safe new-tab behavior', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     assert.match(app, /MONZO_PAYMENT_URL/);
     assert.match(app, /target="_blank"/);
     assert.match(app, /rel="noreferrer"/);
@@ -75,7 +85,7 @@ describe('mobile ordering UI contract', () => {
   });
 
   it('makes the payment reference prominent and copyable', async () => {
-    const app = await source('../src/App.jsx');
+    const app = await uiSource();
     const css = await source('../src/styles.css');
     assert.match(app, /className="reference-copy"/);
     assert.match(app, /Copy order reference/);
