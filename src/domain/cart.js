@@ -49,7 +49,8 @@ export function syncCartWithMenu(cart, menuItems) {
   for (const line of cart) {
     const item = byId.get(line.id);
     const variant = line.variantId ? item?.variants?.find((entry) => entry.id === line.variantId) : null;
-    if (!item || (line.variantId && !variant)) {
+    // Drop lines for removed dishes, removed sizes, or dishes that now need a size to be chosen.
+    if (!item || (line.variantId && !variant) || (!line.variantId && item.variants?.length)) {
       changed = true;
       continue;
     }

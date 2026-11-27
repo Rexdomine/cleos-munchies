@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { cartSubtotal, formatGBP, removeCartItem, setCartQuantity } from '../domain/cart.js';
 import { useOverlayLifecycle } from '../hooks/useOverlayLifecycle.js';
 
@@ -22,11 +23,12 @@ function BasketLine({ line, setCart }) {
 }
 
 export function Basket({ cart, setCart, onBack, onCheckout }) {
-  useOverlayLifecycle(onBack);
+  const dialogRef = useRef(null);
+  useOverlayLifecycle(onBack, dialogRef);
   const hasSoldOut = cart.some((line) => line.unavailable);
   return (
     <div className="scrim" onClick={onBack}>
-      <section className="drawer" role="dialog" aria-modal="true" aria-labelledby="basket-title" onClick={(e) => e.stopPropagation()}>
+      <section ref={dialogRef} tabIndex={-1} className="drawer" role="dialog" aria-modal="true" aria-labelledby="basket-title" onClick={(e) => e.stopPropagation()}>
         <button className="close" onClick={onBack} aria-label="Close basket">×</button>
         <p className="eyebrow">Your order</p>
         <h2 id="basket-title">The basket</h2>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from './api.js';
 import { formatGBP, imageUrl } from './format.js';
 import { ItemEditor } from './ItemEditor.jsx';
@@ -10,6 +10,7 @@ function priceSummary(item) {
 }
 
 function MenuRow({ item, onToggle, onEdit }) {
+  // While a sold-out toggle is saving, editing waits so the two changes can't cross.
   const [busy, setBusy] = useState(false);
   const toggle = async () => {
     setBusy(true);
@@ -28,7 +29,7 @@ function MenuRow({ item, onToggle, onEdit }) {
         <input type="checkbox" checked={item.available} disabled={busy} onChange={toggle} />
         <span>{item.available ? 'Available' : 'Sold out'}</span>
       </label>
-      <button className="secondary" onClick={() => onEdit(item)} aria-label={`Edit ${item.name}`}>Edit</button>
+      <button className="secondary" disabled={busy} onClick={() => onEdit(item)} aria-label={`Edit ${item.name}`}>Edit</button>
     </li>
   );
 }
@@ -36,7 +37,12 @@ function MenuRow({ item, onToggle, onEdit }) {
 export function MenuView() {
   const [menu, setMenu] = useState(null);
   const [error, setError] = useState('');
-  const [editing, setEditing] = useState(null); // null | 'new' | item
+  // null, or one editor session: { item: dish or null for a new dish, key }.
+  // Each opening is a new object, so async results can tell whether their editor is still open.
+  const [editing, setEditing] = useState(null);
+  const sessionCount = useRef(0);
+  const openEditor = (item) => setEditing({ item, key: ++sessionCount.current });
+  const closeIfCurrent = (session) => setEditing((current) => (current === session ? null : current));
 
   const load = useCallback(async () => {
     try {
@@ -61,15 +67,17 @@ export function MenuView() {
   };
 
   const save = async (payload) => {
-    if (editing === 'new') await api.createItem(payload);
-    else await api.updateItem(editing.id, payload);
-    setEditing(null);
+    const session = editing;
+    if (session.item) await api.updateItem(session.item.id, payload);
+    else await api.createItem(payload);
+    closeIfCurrent(session);
     await load();
   };
 
   const remove = async () => {
-    await api.deleteItem(editing.id);
-    setEditing(null);
+    const session = editing;
+    await api.deleteItem(session.item.id);
+    closeIfCurrent(session);
     await load();
   };
 
@@ -77,7 +85,7 @@ export function MenuView() {
     <section>
       <div className="view-head">
         <h1>Menu</h1>
-        <button className="primary" onClick={() => setEditing('new')} disabled={!menu}>+ Add a dish</button>
+        <button className="primary" onClick={() => openEditor(null)} disabled={!menu}>+ Add a dish</button>
       </div>
       <p className="muted">Changes show on the website within about a minute. Mark dishes sold out to stop new orders without deleting them.</p>
       {error && <p className="error" role="alert">{error}</p>}
@@ -92,7 +100,7 @@ export function MenuView() {
             {items.length ? (
               <ul>
                 {items.map((item) => (
-                  <MenuRow key={item.id} item={item} onToggle={toggle} onEdit={setEditing} />
+                  <MenuRow key={item.id} item={item} onToggle={toggle} onEdit={openEditor} />
                 ))}
               </ul>
             ) : (
@@ -102,7 +110,7 @@ export function MenuView() {
         );
       })}
       {editing && (
-        <ItemEditor item={editing === 'new' ? null : editing} categories={menu.categories} onSave={save} onDelete={remove} onClose={() => setEditing(null)} />
+        <ItemEditor key={editing.key} item={editing.item} categories={menu.categories} onSave={save} onDelete={remove} onClose={() => setEditing(null)} />
       )}
     </section>
   );

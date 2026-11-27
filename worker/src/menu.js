@@ -1,4 +1,4 @@
-import { parseMenuItemInput, slugify } from './validation.js';
+import { MAX_ITEM_ID_LENGTH, parseMenuItemInput, slugify } from './validation.js';
 
 function toItem(row, variantsByItem) {
   const variants = variantsByItem.get(row.id) ?? [];
@@ -50,7 +50,8 @@ function variantStatements(db, itemId, variants) {
 }
 
 async function uniqueItemId(db, name) {
-  const base = slugify(name) || 'item';
+  // Leave room for a "-NN" suffix so the final id never exceeds the checkout limit.
+  const base = slugify(name).slice(0, MAX_ITEM_ID_LENGTH - 4).replace(/-$/, '') || 'item';
   let candidate = base;
   for (let suffix = 2; ; suffix += 1) {
     const existing = await db.prepare('SELECT 1 FROM menu_items WHERE id = ?').bind(candidate).first();
@@ -67,7 +68,7 @@ export async function createMenuItem(db, body) {
   const last = await db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS max FROM menu_items').first();
   await db.batch([
     db.prepare('INSERT INTO menu_items (id, category, name, note, price, image, available, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-      .bind(id, item.category, item.name, item.note, item.variants.length ? null : item.price, item.image, item.available ? 1 : 0, last.max + 1),
+      .bind(id, item.category, item.name, item.note, item.variants.length ? null : item.price, item.image, item.available === false ? 0 : 1, last.max + 1),
     ...variantStatements(db, id, item.variants),
   ]);
   return { id };
@@ -80,8 +81,9 @@ export async function updateMenuItem(db, id, body) {
   if (parsed.error) return parsed;
   const { item } = parsed;
   await db.batch([
-    db.prepare(`UPDATE menu_items SET category = ?, name = ?, note = ?, price = ?, image = ?, available = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`)
-      .bind(item.category, item.name, item.note, item.variants.length ? null : item.price, item.image, item.available ? 1 : 0, id),
+    // COALESCE keeps the stored availability when the edit didn't include it.
+    db.prepare(`UPDATE menu_items SET category = ?, name = ?, note = ?, price = ?, image = ?, available = COALESCE(?, available), updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`)
+      .bind(item.category, item.name, item.note, item.variants.length ? null : item.price, item.image, item.available === undefined ? null : item.available ? 1 : 0, id),
     db.prepare('DELETE FROM menu_variants WHERE item_id = ?').bind(id),
     ...variantStatements(db, id, item.variants),
   ]);

@@ -120,3 +120,5 @@ h3 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: v
   .menu-row-price { grid-column: 3; grid-row: 1; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+.load-more { display: flex; justify-content: center; margin-top: 18px; }

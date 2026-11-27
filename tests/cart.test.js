@@ -74,3 +74,11 @@ it('syncCartWithMenu refreshes prices, flags sold-out dishes and drops removed o
   // Nothing changes when the basket already matches, so React state stays stable.
   assert.equal(syncCartWithMenu(synced, menu), synced);
 });
+
+it('syncCartWithMenu drops a saved line when its dish now needs a size', async () => {
+  const { syncCartWithMenu } = await import('../src/domain/cart.js');
+  const cart = [{ id: 'meat-pie', key: 'meat-pie', name: 'Meat Pie', price: 500, quantity: 1 }];
+  const menu = [{ id: 'meat-pie', name: 'Meat Pie', price: null, available: true, variants: [{ id: 'box', label: 'Box of 6', price: 2800 }] }];
+  assert.deepEqual(syncCartWithMenu(cart, menu), []);
+});
+

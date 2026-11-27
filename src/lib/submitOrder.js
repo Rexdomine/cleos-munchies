@@ -14,6 +14,7 @@ export async function submitOrder(order) {
       body: JSON.stringify({
         reference: order.reference,
         idempotencyKey: order.idempotencyKey,
+        editToken: order.editToken,
         items: order.items,
         customer: order.customer,
       }),

@@ -25,7 +25,14 @@ async function request(path, { method = 'GET', body, form } = {}) {
 
 export const api = {
   session: () => request('/api/admin/session'),
-  orders: () => request('/api/admin/orders'),
+  orders: ({ status = '', query = '', before = '' } = {}) => {
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+    if (query) params.set('q', query);
+    if (before) params.set('before', before);
+    const search = params.toString();
+    return request(`/api/admin/orders${search ? `?${search}` : ''}`);
+  },
   updateOrder: (reference, changes) => request(`/api/admin/orders/${reference}`, { method: 'PATCH', body: changes }),
   menu: () => request('/api/admin/menu'),
   createItem: (item) => request('/api/admin/menu/items', { method: 'POST', body: item }),

@@ -10,7 +10,8 @@ const BUNDLED_MENU = {
 };
 
 function isMenuPayload(payload) {
-  return Array.isArray(payload?.categories) && Array.isArray(payload?.items) && payload.items.length > 0;
+  // An empty list is a valid live menu (every dish removed); only a failed or malformed response falls back.
+  return Array.isArray(payload?.categories) && Array.isArray(payload?.items);
 }
 
 // Loads the live menu (prices, sold-out dishes, new dishes) from the Worker.

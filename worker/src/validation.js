@@ -1,6 +1,9 @@
 // Pure request validation and pricing. No D1, fetch or Worker globals, so node --test can cover it.
 
 export const MAX_ORDER_LINES = 100;
+// IDs are generated within these lengths, and checkout reads them with the same limits.
+export const MAX_ITEM_ID_LENGTH = 100;
+export const MAX_VARIANT_ID_LENGTH = 50;
 const REFERENCE_PATTERN = /^CLEO-\d{6}-[0-9A-F]{6}$/;
 const UUID_V4_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,6 +22,7 @@ export function parseOrderRequest(body) {
   if (!body || typeof body !== 'object') return null;
   const reference = clean(body.reference, 40);
   const idempotencyKey = clean(body.idempotencyKey, 100);
+  const editToken = clean(body.editToken, 100);
   const customer = body.customer && typeof body.customer === 'object' ? body.customer : null;
   if (!customer || !Array.isArray(body.items)) return null;
 
@@ -36,12 +40,13 @@ export function parseOrderRequest(body) {
   const valid =
     REFERENCE_PATTERN.test(reference) &&
     UUID_V4_PATTERN.test(idempotencyKey) &&
+    UUID_V4_PATTERN.test(editToken) &&
     details.name && details.address && details.city && details.postcode &&
     UK_PHONE_PATTERN.test(phoneDigits) &&
     validEmail(details.email) &&
     body.items.length > 0 && body.items.length <= MAX_ORDER_LINES;
 
-  return valid ? { reference, idempotencyKey, details, items: body.items } : null;
+  return valid ? { reference, idempotencyKey, editToken, details, items: body.items } : null;
 }
 
 // Prices order lines from the canonical menu (a Map of id -> item with optional variants).
@@ -49,7 +54,7 @@ export function parseOrderRequest(body) {
 export function priceOrderLines(items, menuById) {
   const lines = [];
   for (const raw of items) {
-    const item = menuById.get(clean(raw?.id, 100));
+    const item = menuById.get(clean(raw?.id, MAX_ITEM_ID_LENGTH));
     const quantity = Number(raw?.quantity);
     if (!item || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) return { error: 'invalid' };
     if (!item.available) return { error: 'unavailable', itemName: item.name };
@@ -58,7 +63,7 @@ export function priceOrderLines(items, menuById) {
     let variantId = '';
     let variantLabel = '';
     if (item.variants?.length) {
-      const variant = item.variants.find((entry) => entry.id === clean(raw?.variantId, 50));
+      const variant = item.variants.find((entry) => entry.id === clean(raw?.variantId, MAX_VARIANT_ID_LENGTH));
       if (!variant) return { error: 'invalid' };
       price = variant.price;
       variantId = variant.id;
@@ -95,7 +100,8 @@ export function parseMenuItemInput(body, categories) {
   const category = clean(body.category, 60);
   const note = clean(body.note, 200);
   const image = clean(body.image, 200);
-  const available = body.available === undefined ? true : Boolean(body.available);
+  // Left undefined when not sent, so an edit can keep the stored availability.
+  const available = body.available === undefined ? undefined : Boolean(body.available);
 
   if (!name) return { error: 'Give the dish a name.' };
   if (!categories.includes(category)) return { error: 'Choose a menu category.' };
@@ -111,7 +117,7 @@ export function parseMenuItemInput(body, categories) {
     for (const raw of body.variants) {
       const label = clean(raw?.label, 80);
       const variantPrice = Number(raw?.price);
-      const id = clean(raw?.id, 40) || slugify(label);
+      const id = clean(raw?.id, MAX_VARIANT_ID_LENGTH) || slugify(label).slice(0, MAX_VARIANT_ID_LENGTH).replace(/-$/, '');
       if (!label || !id) return { error: 'Every size needs a label.' };
       if (!validPrice(variantPrice)) return { error: `Check the price for “${label}”.` };
       if (seen.has(id)) return { error: 'Each size needs a different label.' };

@@ -4,11 +4,11 @@ import { MONZO_PAYMENT_URL } from '../domain/order.js';
 import { copyText } from '../lib/copyText.js';
 
 export function Review({ order, onBack }) {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState('idle'); // idle | copied | failed
   const copyReference = async () => {
-    await copyText(order.reference);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2200);
+    const copied = await copyText(order.reference);
+    setCopyState(copied ? 'copied' : 'failed');
+    if (copied) window.setTimeout(() => setCopyState('idle'), 2200);
   };
 
   return (
@@ -18,7 +18,7 @@ export function Review({ order, onBack }) {
       <p className="eyebrow">Your reference</p>
       <button type="button" className="reference-copy" onClick={copyReference} aria-label={`Copy order reference ${order.reference}`}>
         <strong>{order.reference}</strong>
-        <span>{copied ? 'Copied ✓' : 'Tap to copy'}</span>
+        <span className={copyState === 'failed' ? 'copy-failed' : undefined}>{copyState === 'copied' ? 'Copied ✓' : copyState === 'failed' ? 'Couldn’t copy. Press and hold the code to copy it.' : 'Tap to copy'}</span>
       </button>
       <p className="lede">
         Order notification sent to you and Cleo’s Munchies. Payment is not confirmed until Monzo payment is manually matched to this reference.

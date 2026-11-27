@@ -3,6 +3,8 @@
 // really came through Access and that the email is on the admin list (defence in depth).
 
 const CERT_CACHE_MS = 60 * 60 * 1000;
+// When a token names a key we don't have (Cloudflare rotated keys), refetch at most this often.
+const FORCED_REFRESH_MIN_MS = 60 * 1000;
 let certCache = { url: '', keys: null, fetchedAt: 0 };
 
 function base64UrlDecode(input) {
@@ -16,9 +18,11 @@ function decodeJsonPart(part) {
   return JSON.parse(new TextDecoder().decode(base64UrlDecode(part)));
 }
 
-async function getSigningKeys(teamDomain, fetchImpl) {
+async function getSigningKeys(teamDomain, fetchImpl, { force = false } = {}) {
   const url = `${teamDomain}/cdn-cgi/access/certs`;
-  if (certCache.url === url && certCache.keys && Date.now() - certCache.fetchedAt < CERT_CACHE_MS) return certCache.keys;
+  const age = Date.now() - certCache.fetchedAt;
+  const cached = certCache.url === url && certCache.keys;
+  if (cached && (force ? age < FORCED_REFRESH_MIN_MS : age < CERT_CACHE_MS)) return certCache.keys;
   const response = await fetchImpl(url);
   if (!response.ok) throw new Error(`Could not load Access signing keys (${response.status}).`);
   const { keys } = await response.json();
@@ -46,8 +50,11 @@ export async function verifyAccessJwt(token, { teamDomain, audience, fetchImpl =
   const payload = decodeJsonPart(payloadPart);
   if (header.alg !== 'RS256') throw new Error('Unexpected token algorithm.');
 
-  const keys = await getSigningKeys(teamDomain, fetchImpl);
-  const jwk = keys.find((key) => key.kid === header.kid);
+  let jwk = (await getSigningKeys(teamDomain, fetchImpl)).find((key) => key.kid === header.kid);
+  if (!jwk) {
+    // Possibly a newly rotated key: refresh once (rate limited) before rejecting.
+    jwk = (await getSigningKeys(teamDomain, fetchImpl, { force: true })).find((key) => key.kid === header.kid);
+  }
   if (!jwk) throw new Error('Unknown signing key.');
 
   const key = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);

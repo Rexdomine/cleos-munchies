@@ -4,7 +4,7 @@ import { getAdminEmail } from './auth.js';
 import { corsHeaders, errorResponse, json, readJson } from './http.js';
 import { serveMedia, storeMenuPhoto } from './media.js';
 import { createMenuItem, deleteMenuItem, loadMenu, setMenuItemAvailability, updateMenuItem } from './menu.js';
-import { listOrders, submitOrder, updateOrder } from './orders.js';
+import { countOrders, listOrders, submitOrder, updateOrder } from './orders.js';
 
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
@@ -63,8 +63,12 @@ async function handleAdminApi(request, env, path) {
 
   if (path === '/api/admin/orders' && method === 'GET') {
     const url = new URL(request.url);
-    const orders = await listOrders(db, { status: url.searchParams.get('status') ?? '', query: url.searchParams.get('q') ?? '' });
-    return json({ orders });
+    const page = await listOrders(db, {
+      status: url.searchParams.get('status') ?? '',
+      query: url.searchParams.get('q') ?? '',
+      before: url.searchParams.get('before') ?? '',
+    });
+    return json({ ...page, counts: await countOrders(db) });
   }
 
   const orderMatch = /^\/api\/admin\/orders\/(CLEO-\d{6}-[0-9A-F]{6})$/.exec(path);

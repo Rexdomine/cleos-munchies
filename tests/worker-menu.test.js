@@ -56,3 +56,24 @@ describe('Worker menu', () => {
     assert.match(parseMenuItemInput({ name: 'Pie', category: 'Pies', price: 600, image: '/media/../secret' }, categories).error, /photo/);
   });
 });
+
+describe('Worker menu edits', () => {
+  it('keeps the stored availability when an edit does not send it', async () => {
+    const db = createTestD1();
+    await setMenuItemAvailability(db, 'meat-pie', false);
+    await updateMenuItem(db, 'meat-pie', { name: 'Meat Pie', category: 'Pies', price: 550 });
+    const pie = (await loadMenu(db)).items.find((item) => item.id === 'meat-pie');
+    assert.deepEqual([pie.price, pie.available], [550, false]);
+  });
+
+  it('generates ids that checkout can still find', async () => {
+    const db = createTestD1();
+    const longName = 'a'.repeat(140);
+    const first = await createMenuItem(db, { name: longName, category: 'Pies', price: 100 });
+    const second = await createMenuItem(db, { name: longName, category: 'Pies', price: 100 });
+    assert.ok(first.id.length <= 100 && second.id.length <= 100);
+    assert.notEqual(first.id, second.id);
+    const parsed = parseMenuItemInput({ name: 'Tray', category: 'Pies', variants: [{ label: 'b'.repeat(80), price: 100 }] }, ['Pies']);
+    assert.ok(parsed.item.variants[0].id.length <= 50);
+  });
+});

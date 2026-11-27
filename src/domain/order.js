@@ -62,6 +62,8 @@ export function createReviewOrder({ cart, details, reference }) {
   return {
     reference,
     idempotencyKey: createOrderIdempotencyKey(),
+    // Private to this browser. The order API only lets the same token change this order later.
+    editToken: createOrderIdempotencyKey(),
     createdAt: new Date().toISOString(),
     status: 'review_only',
     items: cart.map((line) => ({ ...line })),
@@ -84,18 +86,39 @@ export function createReviewOrder({ cart, details, reference }) {
   };
 }
 
-export function refreshOrderForSubmission(order, details) {
+// A changed order gets a new idempotency key (the reference and edit token stay the same).
+// Pass `cart` to replace the items and total as well.
+export function refreshOrderForSubmission(order, details, cart) {
   if (!order) throw new Error('Cannot refresh an order that does not exist.');
   return {
     ...order,
     idempotencyKey: createOrderIdempotencyKey(),
     customer: { ...details },
+    ...(cart ? { items: cart.map((line) => ({ ...line })), total: cartSubtotal(cart) } : {}),
   };
 }
 
-export function prepareOrderForSubmission(order, details) {
+function sameLines(items, cart) {
+  const summary = (lines) => lines.map((line) => `${line.key}:${line.quantity}:${line.price}`).join('|');
+  return summary(items) === summary(cart);
+}
+
+// Decides what to send when an order is submitted again.
+// - Same details and basket: resend the same order (same key), so a retry never duplicates it.
+// - Details or basket changed: same reference, new key, current items.
+// An empty basket (it is cleared after a successful order) keeps the order's saved items,
+// so "Edit details" after submitting still works.
+export function prepareOrderForSubmission(order, details, cart = []) {
   if (!order) throw new Error('Cannot prepare an order that does not exist.');
   const fields = ['name', 'phone', 'email', 'address', 'city', 'postcode', 'notes'];
-  const unchanged = fields.every((field) => order.customer?.[field] === details[field]);
-  return unchanged ? order : refreshOrderForSubmission(order, details);
+  const detailsUnchanged = fields.every((field) => order.customer?.[field] === details[field]);
+  const basketChanged = cart.length > 0 && !sameLines(order.items, cart);
+  if (detailsUnchanged && !basketChanged) return order;
+  return refreshOrderForSubmission(order, details, basketChanged ? cart : undefined);
+}
+
+// Uses the items and total the order API saved and emailed (server prices), when it returns them.
+export function applyConfirmedOrder(order, response) {
+  if (!Array.isArray(response?.items) || !Number.isInteger(response?.total)) return order;
+  return { ...order, items: response.items, total: response.total };
 }

@@ -10,6 +10,15 @@ export function ImagePicker({ value, onChange, onBusyChange }) {
   const [error, setError] = useState('');
   const [localPreview, setLocalPreview] = useState('');
 
+  // The editor can close while a photo is still being prepared or uploaded; ignore those late results.
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   useEffect(() => () => localPreview && URL.revokeObjectURL(localPreview), [localPreview]);
   useEffect(() => onBusyChange?.(status === 'working'), [status, onBusyChange]);
 
@@ -21,14 +30,16 @@ export function ImagePicker({ value, onChange, onBusyChange }) {
     setStatus('working');
     try {
       const { full, thumbnail } = await prepareMenuPhoto(file);
+      if (!mounted.current) return;
       setLocalPreview(URL.createObjectURL(full));
       const { url } = await api.uploadPhoto(full, thumbnail);
-      onChange(url);
+      if (mounted.current) onChange(url);
     } catch (err) {
+      if (!mounted.current) return;
       setLocalPreview('');
       setError(err.message);
     } finally {
-      setStatus('idle');
+      if (mounted.current) setStatus('idle');
     }
   };
 

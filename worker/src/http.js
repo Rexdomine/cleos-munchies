@@ -28,14 +28,34 @@ export function corsHeaders(request, env) {
 
 const MAX_BODY_BYTES = 32 * 1024;
 
-// Reads a JSON body, refusing oversized or malformed payloads.
+// Reads a JSON body, refusing oversized or malformed payloads. The size limit is enforced while
+// streaming, so an oversized request without Content-Length is never buffered in full.
 export async function readJson(request) {
   const declared = Number(request.headers.get('Content-Length') ?? 0);
   if (declared > MAX_BODY_BYTES) return { error: 'too_large' };
-  const text = await request.text();
-  if (text.length > MAX_BODY_BYTES) return { error: 'too_large' };
+  if (!request.body) return { error: 'invalid_json' };
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel().catch(() => {});
+      return { error: 'too_large' };
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
   try {
-    return { body: JSON.parse(text) };
+    return { body: JSON.parse(new TextDecoder().decode(bytes)) };
   } catch {
     return { error: 'invalid_json' };
   }

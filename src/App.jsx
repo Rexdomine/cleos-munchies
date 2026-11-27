@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { addCartItem, syncCartWithMenu } from './domain/cart.js';
-import { createOrderReference, createReviewOrder, prepareOrderForSubmission, validateDeliveryDetails } from './domain/order.js';
+import { applyConfirmedOrder, createOrderReference, createReviewOrder, prepareOrderForSubmission, validateDeliveryDetails } from './domain/order.js';
 import { useMenu } from './hooks/useMenu.js';
 import { usePersistentCart } from './hooks/usePersistentCart.js';
 import { submitOrder } from './lib/submitOrder.js';
@@ -50,16 +50,17 @@ function App() {
       return;
     }
 
-    // Reuse the pending order (and its idempotency key) on retry unless the details changed.
+    // Reuse the pending order (and its idempotency key) on retry unless the details or basket changed.
     const order = pendingOrder
-      ? prepareOrderForSubmission(pendingOrder, result.values)
+      ? prepareOrderForSubmission(pendingOrder, result.values, cart)
       : createReviewOrder({ cart, details: result.values, reference: createOrderReference() });
     setPendingOrder(order);
     setSubmitting(true);
     try {
       const payload = await submitOrder(order);
+      // Show the prices the server saved and emailed, which can differ if the menu changed meanwhile.
       setReview({
-        ...order,
+        ...applyConfirmedOrder(order, payload),
         status: 'pending_payment',
         notification: { provider: 'brevo', status: 'accepted', sent: true, messageIds: payload.messageIds || [] },
       });

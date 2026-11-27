@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useOverlayLifecycle } from '../../src/hooks/useOverlayLifecycle.js';
 import { penceToPounds, poundsToPence } from './format.js';
 import { ImagePicker } from './ImagePicker.jsx';
 
@@ -52,21 +53,14 @@ export function ItemEditor({ item, categories, onSave, onDelete, onClose }) {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const dialogRef = useRef(null);
+  const nameRef = useRef(null);
+  // Availability as it was when the editor opened. A save only sends it if it was changed here,
+  // so it never overwrites a sold-out toggle made from the list in the meantime.
+  const initialAvailable = useRef(item ? item.available : null);
 
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
-
-  useEffect(() => {
-    dialogRef.current?.querySelector('input')?.focus();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKey = (event) => event.key === 'Escape' && closeRef.current();
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', onKey);
-    };
-  }, []);
+  // Scroll lock, Escape to close, focus kept inside the dialog and restored afterwards.
+  useOverlayLifecycle(onClose, dialogRef);
+  useEffect(() => nameRef.current?.focus(), []);
 
   const set = (field) => (event) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -81,6 +75,7 @@ export function ItemEditor({ item, categories, onSave, onDelete, onClose }) {
     event.preventDefault();
     const { payload, error: formError } = toPayload(form);
     if (formError) return setError(formError);
+    if (item && payload.available === initialAvailable.current) delete payload.available;
     setBusy(true);
     setError('');
     try {
@@ -113,7 +108,7 @@ export function ItemEditor({ item, categories, onSave, onDelete, onClose }) {
         </div>
         <label>
           Name
-          <input value={form.name} maxLength={120} onChange={set('name')} required />
+          <input ref={nameRef} value={form.name} maxLength={120} onChange={set('name')} required />
         </label>
         <label>
           Category

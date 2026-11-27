@@ -1,14 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ORDER_STATUSES, orderStatusLabel } from '../../shared/orderStatus.js';
 import { api } from './api.js';
 import { formatDateTime, formatGBP } from './format.js';
-
-function matches(order, query) {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return true;
-  const { customer } = order;
-  return [order.reference, customer.name, customer.email, customer.phone, customer.postcode].some((value) => value.toLowerCase().includes(needle));
-}
 
 function OrderCard({ order, onChange }) {
   const [open, setOpen] = useState(false);
@@ -16,7 +9,10 @@ function OrderCard({ order, onChange }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => setNote(order.adminNote), [order.adminNote]);
+  // Follow outside changes to the saved note, but never while a save is in flight (the textarea is locked then).
+  useEffect(() => {
+    if (!saving) setNote(order.adminNote);
+  }, [order.adminNote, saving]);
 
   const save = async (changes) => {
     setSaving(true);
@@ -97,7 +93,7 @@ function OrderCard({ order, onChange }) {
           <div className="admin-note">
             <label>
               Private note
-              <textarea value={note} maxLength={1000} placeholder="e.g. Paid £45 on 12 Nov, delivering Saturday" onChange={(e) => setNote(e.target.value)} />
+              <textarea value={note} maxLength={1000} disabled={saving} placeholder="e.g. Paid £45 on 12 Nov, delivering Saturday" onChange={(e) => setNote(e.target.value)} />
             </label>
             <button className="secondary" disabled={saving || note === order.adminNote} onClick={() => save({ adminNote: note })}>
               {saving ? 'Saving…' : 'Save note'}
@@ -111,46 +107,59 @@ function OrderCard({ order, onChange }) {
 
 export function OrdersView() {
   const [orders, setOrders] = useState(null);
+  const [nextCursor, setNextCursor] = useState(null);
+  const [counts, setCounts] = useState({});
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const requestId = useRef(0);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    try {
-      setOrders((await api.orders()).orders);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedQuery(query.trim()), 300);
+    return () => window.clearTimeout(timer);
+  }, [query]);
+
+  // Filters and search run on the server, so older orders are always reachable; "Show more" pages back.
+  const load = useCallback(
+    async ({ append = false, cursor = '' } = {}) => {
+      const id = ++requestId.current;
+      setLoading(true);
+      setError('');
+      try {
+        const page = await api.orders({ status, query: debouncedQuery, before: cursor });
+        if (id !== requestId.current) return; // A newer filter or search replaced this request.
+        setOrders((current) => (append && current ? [...current, ...page.orders] : page.orders));
+        setNextCursor(page.nextCursor);
+        setCounts(page.counts ?? {});
+      } catch (err) {
+        if (id === requestId.current) setError(err.message);
+      } finally {
+        if (id === requestId.current) setLoading(false);
+      }
+    },
+    [status, debouncedQuery],
+  );
 
   useEffect(() => {
     load();
   }, [load]);
 
-  const counts = useMemo(() => {
-    const result = {};
-    for (const order of orders ?? []) result[order.status] = (result[order.status] ?? 0) + 1;
-    return result;
-  }, [orders]);
-
-  const visible = (orders ?? []).filter((order) => (!status || order.status === status) && matches(order, query));
+  const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
   const replaceOrder = (updated) => setOrders((current) => current.map((order) => (order.reference === updated.reference ? updated : order)));
+  const filtered = Boolean(status || debouncedQuery);
 
   return (
     <section>
       <div className="view-head">
         <h1>Orders</h1>
-        <button className="secondary" onClick={load} disabled={loading}>{loading ? 'Refreshing…' : 'Refresh'}</button>
+        <button className="secondary" onClick={() => load()} disabled={loading}>{loading ? 'Refreshing…' : 'Refresh'}</button>
       </div>
       <div className="filters">
         <input type="search" aria-label="Search orders" placeholder="Search reference, name, email, phone or postcode" value={query} onChange={(e) => setQuery(e.target.value)} />
         <div className="chips" role="group" aria-label="Filter by status">
-          <button className={status === '' ? 'selected' : ''} onClick={() => setStatus('')}>All <span>{orders?.length ?? 0}</span></button>
+          <button className={status === '' ? 'selected' : ''} onClick={() => setStatus('')}>All <span>{total}</span></button>
           {ORDER_STATUSES.map((entry) => (
             <button key={entry.id} className={status === entry.id ? 'selected' : ''} onClick={() => setStatus(entry.id)}>
               {entry.label} <span>{counts[entry.id] ?? 0}</span>
@@ -160,14 +169,21 @@ export function OrdersView() {
       </div>
       {error && <p className="error" role="alert">{error}</p>}
       {orders === null && !error && <p className="muted">Loading orders…</p>}
-      {orders && visible.length === 0 && (
-        <p className="empty">{orders.length === 0 ? 'No orders yet. New orders appear here as soon as customers submit them.' : `No ${status ? orderStatusLabel(status).toLowerCase() : ''} orders match.`}</p>
+      {orders && orders.length === 0 && (
+        <p className="empty">{!filtered ? 'No orders yet. New orders appear here as soon as customers submit them.' : `No ${status ? orderStatusLabel(status).toLowerCase() : ''} orders match.`}</p>
       )}
       <div className="order-list">
-        {visible.map((order) => (
+        {orders?.map((order) => (
           <OrderCard key={order.reference} order={order} onChange={replaceOrder} />
         ))}
       </div>
+      {nextCursor && (
+        <div className="load-more">
+          <button className="secondary" disabled={loading} onClick={() => load({ append: true, cursor: nextCursor })}>
+            {loading ? 'Loading…' : 'Show older orders'}
+          </button>
+        </div>
+      )}
     </section>
   );
 }
