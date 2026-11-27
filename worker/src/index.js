@@ -1,4 +1,5 @@
 import { ADMIN_HTML, ADMIN_SCRIPT_HASHES } from './generated/adminPage.js';
+import EMAIL_LOGO from './assets/email-logo.png';
 import LOGIN_LOGO from './assets/login-logo.png';
 import { getAdminEmail } from './auth.js';
 import { corsHeaders, errorResponse, json, readJson } from './http.js';
@@ -75,7 +76,7 @@ async function handleAdminApi(request, env, path) {
   if (orderMatch && method === 'PATCH') {
     const { body, error } = await readJson(request);
     if (error) return errorResponse(400, 'Could not read the update.');
-    return fromResult(await updateOrder(db, orderMatch[1], body));
+    return fromResult(await updateOrder(env, orderMatch[1], body));
   }
 
   if (path === '/api/admin/menu' && method === 'GET') return json(await loadMenu(db));
@@ -139,8 +140,10 @@ async function route(request, env) {
 
   if (path === '/api/health') return json({ ok: true });
   // Logo shown on the Cloudflare Access login page (set as the organization's login_design.logo_path).
-  if (path === '/brand/login-logo.png' && method === 'GET') {
-    return new Response(LOGIN_LOGO, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400', 'Access-Control-Allow-Origin': '*' } });
+  // Logo in order and status emails (shared/orderEmails.js LOGO_URL). Cream background, so it stays legible in dark mode.
+  const brandImages = { '/brand/login-logo.png': LOGIN_LOGO, '/brand/email-logo.png': EMAIL_LOGO };
+  if (brandImages[path] && method === 'GET') {
+    return new Response(brandImages[path], { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400', 'Access-Control-Allow-Origin': '*' } });
   }
   if (path === '/') return Response.redirect(`${url.origin}/admin`, 302);
   if (path === '/signed-out' && method === 'GET') return signedOutPage();

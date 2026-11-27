@@ -122,3 +122,4 @@ h3 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: v
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 
 .load-more { display: flex; justify-content: center; margin-top: 18px; }
+.notice { margin: 10px 0 0; padding: 10px 12px; background: var(--green-soft); border-left: 4px solid var(--green); border-radius: 6px; font-size: 14px; }

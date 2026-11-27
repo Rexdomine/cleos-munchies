@@ -8,6 +8,7 @@ function OrderCard({ order, onChange }) {
   const [note, setNote] = useState(order.adminNote);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState(null); // { tone: 'ok' | 'warning', text }
 
   // Follow outside changes to the saved note, but never while a save is in flight (the textarea is locked then).
   useEffect(() => {
@@ -17,9 +18,16 @@ function OrderCard({ order, onChange }) {
   const save = async (changes) => {
     setSaving(true);
     setError('');
+    setNotice(null);
     try {
-      await api.updateOrder(order.reference, changes);
+      const result = await api.updateOrder(order.reference, changes);
       onChange({ ...order, ...changes });
+      if (changes.status) {
+        const label = orderStatusLabel(changes.status);
+        if (result.customerEmail === 'sent') setNotice({ tone: 'ok', text: `Marked “${label}”. ${order.customer.name} has been emailed.` });
+        else if (result.customerEmail === 'failed') setNotice({ tone: 'warning', text: `Marked “${label}”, but the email to ${order.customer.email} failed to send. You may want to contact them directly.` });
+        else setNotice({ tone: 'ok', text: `Marked “${label}”.` });
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -42,7 +50,7 @@ function OrderCard({ order, onChange }) {
         </button>
         <strong className="order-total">{formatGBP(order.total)}</strong>
         <label className="status-select">
-          <span className="sr-only">Status for {order.reference}</span>
+          <span className="sr-only">Status for {order.reference}. Changing it emails the customer.</span>
           <select value={order.status} disabled={saving} onChange={(e) => save({ status: e.target.value })}>
             {ORDER_STATUSES.map((status) => (
               <option key={status.id} value={status.id}>{status.label}</option>
@@ -58,6 +66,11 @@ function OrderCard({ order, onChange }) {
         </p>
       )}
       {error && <p className="error" role="alert">{error}</p>}
+      {notice && (
+        <p className={notice.tone === 'warning' ? 'warning' : 'notice'} role="status">
+          {notice.text}
+        </p>
+      )}
       {open && (
         <div className="order-details">
           <div>
@@ -156,6 +169,7 @@ export function OrdersView() {
         <h1>Orders</h1>
         <button className="secondary" onClick={() => load()} disabled={loading}>{loading ? 'Refreshing…' : 'Refresh'}</button>
       </div>
+      <p className="muted">Changing an order’s status emails the customer to let them know.</p>
       <div className="filters">
         <input type="search" aria-label="Search orders" placeholder="Search reference, name, email, phone or postcode" value={query} onChange={(e) => setQuery(e.target.value)} />
         <div className="chips" role="group" aria-label="Filter by status">

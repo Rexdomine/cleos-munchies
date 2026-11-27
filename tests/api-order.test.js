@@ -46,7 +46,7 @@ test('Brevo email templates preserve Cleo branding and recipient intent', async 
     assert.equal(providerPayload.sender.email, 'yummy@cleosmunchies.co.uk');
     assert.equal(providerPayload.messageVersions.length, 2);
     const [operator, customer] = providerPayload.messageVersions;
-    assert.match(customer.htmlContent, /cleos-munchies\.vercel\.app\/images\/cleos-logo\.png/);
+    assert.match(customer.htmlContent, /admin\.cleosmunchies\.co\.uk\/brand\/email-logo\.png/);
     assert.match(customer.htmlContent, /#f7f1e8/);
     assert.match(customer.htmlContent, /#bd392e/);
     assert.match(customer.htmlContent, /Important — payment step/);
