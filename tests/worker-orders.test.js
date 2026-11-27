@@ -99,7 +99,7 @@ describe('Worker order submission', () => {
 
   it('refuses to change an order that Cleo has already moved on', async () => {
     await submitOrder(env, orderBody(), fakeBrevo().fetchImpl);
-    await updateOrder(env.DB, 'CLEO-261127-C0FFEE', { status: 'paid' });
+    await updateOrder(env, 'CLEO-261127-C0FFEE', { status: 'paid' }, fakeBrevo().fetchImpl);
     const result = await submitOrder(env, orderBody({ idempotencyKey: KEY_B }), fakeBrevo().fetchImpl);
     assert.equal(result.status, 409);
   });
@@ -133,13 +133,13 @@ describe('Worker order admin', () => {
     assert.equal(((await listOrders(env.DB, { query: 'bola' }))).orders.length, 1);
     assert.equal(((await listOrders(env.DB, { query: 'PO19' }))).orders.length, 2);
 
-    assert.deepEqual(await updateOrder(env.DB, 'CLEO-261127-BEEF01', { status: 'paid', adminNote: 'Paid by Monzo' }), { reference: 'CLEO-261127-BEEF01' });
+    assert.deepEqual(await updateOrder(env, 'CLEO-261127-BEEF01', { status: 'paid', adminNote: 'Paid by Monzo' }, fakeBrevo().fetchImpl), { reference: 'CLEO-261127-BEEF01', customerEmail: 'sent' });
     const [paid] = (await listOrders(env.DB, { status: 'paid' })).orders;
     assert.equal(paid.reference, 'CLEO-261127-BEEF01');
     assert.equal(paid.adminNote, 'Paid by Monzo');
 
-    assert.match((await updateOrder(env.DB, 'CLEO-261127-BEEF01', { status: 'eaten' })).error, /Unknown/);
-    assert.equal((await updateOrder(env.DB, 'CLEO-000000-000000', { status: 'paid' })).status, 404);
+    assert.match((await updateOrder(env, 'CLEO-261127-BEEF01', { status: 'eaten' })).error, /Unknown/);
+    assert.equal((await updateOrder(env, 'CLEO-000000-000000', { status: 'paid' }, fakeBrevo().fetchImpl)).status, 404);
   });
 });
 
@@ -242,3 +242,52 @@ describe('Worker order listing', () => {
     assert.equal(seen.size, 130);
   });
 });
+
+describe('Order status emails', () => {
+  let env;
+  beforeEach(async () => {
+    env = { DB: createTestD1(), BREVO_API_KEY: 'test-only' };
+    await submitOrder(env, orderBody({ customer: { ...orderBody().customer, name: '<Ada>' } }), fakeBrevo().fetchImpl);
+  });
+
+  it('emails only the customer when the status changes', async () => {
+    const brevo = fakeBrevo();
+    const result = await updateOrder(env, 'CLEO-261127-C0FFEE', { status: 'preparing' }, brevo.fetchImpl);
+    assert.equal(result.customerEmail, 'sent');
+    assert.equal(brevo.calls.length, 1);
+    const email = brevo.calls[0].payload;
+    assert.deepEqual(email.to, [{ email: 'ada@example.com', name: '<Ada>' }]);
+    assert.equal(email.messageVersions, undefined);
+    assert.match(email.subject, /In the kitchen: your Cleo’s Munchies order CLEO-261127-C0FFEE/);
+    assert.match(email.htmlContent, /We’re cooking your order/);
+    assert.match(email.htmlContent, /&lt;Ada&gt;/);
+    assert.match(email.htmlContent, /Grilled Chicken/);
+    assert.doesNotMatch(email.htmlContent, /Copy your code into Monzo/);
+    assert.match(email.headers.idempotencyKey, /^[0-9a-f-]{36}$/);
+  });
+
+  it('has an email for every status, with payment steps only while awaiting payment', async () => {
+    const statuses = ['paid', 'preparing', 'ready', 'delivered', 'cancelled', 'pending_payment'];
+    for (const status of statuses) {
+      const brevo = fakeBrevo();
+      assert.equal((await updateOrder(env, 'CLEO-261127-C0FFEE', { status }, brevo.fetchImpl)).customerEmail, 'sent', status);
+      const html = brevo.calls[0].payload.htmlContent;
+      if (status === 'pending_payment') assert.match(html, /Copy your code into Monzo/);
+      else assert.doesNotMatch(html, /Copy your code into Monzo/);
+    }
+  });
+
+  it('does not email for note changes or an unchanged status', async () => {
+    const brevo = fakeBrevo();
+    assert.equal((await updateOrder(env, 'CLEO-261127-C0FFEE', { adminNote: 'Called customer' }, brevo.fetchImpl)).customerEmail, 'not_sent');
+    assert.equal((await updateOrder(env, 'CLEO-261127-C0FFEE', { status: 'pending_payment' }, brevo.fetchImpl)).customerEmail, 'not_sent');
+    assert.equal(brevo.calls.length, 0);
+  });
+
+  it('keeps the new status when the email fails, and reports the failure', async () => {
+    const result = await updateOrder(env, 'CLEO-261127-C0FFEE', { status: 'paid' }, fakeBrevo({ throws: true }).fetchImpl);
+    assert.equal(result.customerEmail, 'failed');
+    assert.equal((await listOrders(env.DB)).orders[0].status, 'paid');
+  });
+});
+

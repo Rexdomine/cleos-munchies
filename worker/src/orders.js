@@ -1,11 +1,11 @@
-import { buildOrderEmailPayload } from '../../shared/orderEmails.js';
+import { buildOrderEmailPayload, buildStatusEmailPayload } from '../../shared/orderEmails.js';
 import { ORDER_STATUS_IDS } from '../../shared/orderStatus.js';
 import { loadMenu } from './menu.js';
 import { clean, orderTotal, parseOrderRequest, priceOrderLines } from './validation.js';
 
 const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
 
-async function sendOrderEmails(apiKey, payload, fetchImpl) {
+async function sendBrevoEmail(apiKey, payload, fetchImpl) {
   let response;
   try {
     response = await fetchImpl(BREVO_URL, {
@@ -118,7 +118,7 @@ export async function submitOrder(env, body, fetchImpl = fetch) {
   ]);
   if (!upsert.meta.changes) return NOT_EDITABLE;
 
-  let sent = await sendOrderEmails(env.BREVO_API_KEY, buildOrderEmailPayload({ reference, idempotencyKey, details, lines }), fetchImpl);
+  let sent = await sendBrevoEmail(env.BREVO_API_KEY, buildOrderEmailPayload({ reference, idempotencyKey, details, lines }), fetchImpl);
   if (!sent.ok && sent.duplicate && existing?.idempotency_key === idempotencyKey) {
     // An earlier attempt with this same key reached Brevo even though we recorded a failure.
     sent = { ok: true, messageIds: [] };
@@ -212,7 +212,14 @@ export async function countOrders(db) {
   return Object.fromEntries(results.map((row) => [row.status, row.count]));
 }
 
-export async function updateOrder(db, reference, body) {
+// Updates an order's status and/or private note. When the status actually changes, the customer is
+// emailed about it. The status change stands even if the email fails; the result says what happened:
+// customerEmail is 'sent', 'failed' or 'not_sent' (no change, or Brevo not configured).
+export async function updateOrder(env, reference, body, fetchImpl = fetch) {
+  const db = env.DB;
+  const current = await db.prepare('SELECT * FROM orders WHERE reference = ?').bind(reference).first();
+  if (!current) return { error: 'That order could not be found.', status: 404 };
+
   const sets = [];
   const params = [];
   if (body?.status !== undefined) {
@@ -225,9 +232,23 @@ export async function updateOrder(db, reference, body) {
     params.push(clean(body.adminNote, 1000));
   }
   if (!sets.length) return { error: 'Nothing to update.' };
-  const result = await db
+  await db
     .prepare(`UPDATE orders SET ${sets.join(', ')}, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE reference = ?`)
     .bind(...params, reference)
     .run();
-  return result.meta.changes ? { reference } : { error: 'That order could not be found.', status: 404 };
+
+  const statusChanged = body.status !== undefined && body.status !== current.status;
+  if (!statusChanged || !env.BREVO_API_KEY) return { reference, customerEmail: 'not_sent' };
+
+  const details = { name: current.customer_name, email: current.customer_email, phone: current.customer_phone, address: current.address, city: current.city, postcode: current.postcode, notes: current.notes };
+  const payload = buildStatusEmailPayload({
+    reference,
+    status: body.status,
+    details,
+    lines: await storedLines(db, reference),
+    total: current.total,
+    idempotencyKey: crypto.randomUUID(),
+  });
+  const sent = await sendBrevoEmail(env.BREVO_API_KEY, payload, fetchImpl);
+  return { reference, customerEmail: sent.ok ? 'sent' : 'failed' };
 }

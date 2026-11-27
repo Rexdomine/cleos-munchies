@@ -5,7 +5,9 @@ export const OPERATOR_EMAIL = 'cleopatraejiogu@gmail.com';
 export const OPERATOR_NAME = 'Cleopatra Ejiogu';
 export const SENDER_EMAIL = 'yummy@cleosmunchies.co.uk';
 export const SENDER_NAME = "Cleo's Munchies";
-export const LOGO_URL = 'https://cleos-munchies.vercel.app/images/cleos-logo.png?v=2';
+// Served by the Cloudflare Worker (worker/src/assets/email-logo.png). Brevo re-hosts it through r.yummy.cleosmunchies.co.uk,
+// so that CNAME (and img.yummy / yummy) must stay in DNS or images and tracked links in emails break.
+export const LOGO_URL = 'https://admin.cleosmunchies.co.uk/brand/email-logo.png';
 export const MONZO_PAYMENT_URL = 'https://monzo.me/cleopatraejiogu?h=EltkP8&account_type=personal';
 
 export function escapeHtml(value) {
@@ -34,7 +36,7 @@ export function detailsRows(details) {
 }
 
 export function emailShell({ preheader, eyebrow, title, intro, reference, content, footer }) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head><body style="margin:0;padding:0;background:#eee8df;color:#1d1b18;font-family:Arial,Helvetica,sans-serif"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${escapeHtml(preheader)}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#eee8df"><tr><td align="center" style="padding:28px 12px 42px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:620px;background:#f7f1e8;border:1px solid #ded3c6;border-radius:18px;overflow:hidden"><tr><td style="padding:26px 30px 22px;border-bottom:1px solid #ded3c6"><img src="${LOGO_URL}" width="256" alt="Cleo's Munchies" style="display:block;width:256px;max-width:100%;height:auto;border:0"></td></tr><tr><td style="padding:34px 30px 12px"><p style="margin:0 0 12px;color:#bd392e;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase">${escapeHtml(eyebrow)}</p><h1 style="margin:0;color:#1d1b18;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:1.08;font-weight:normal;letter-spacing:-.5px">${escapeHtml(title)}</h1><p style="margin:16px 0 0;color:#5f574e;font-size:16px;line-height:1.6">${intro}</p>${reference ? `<p style="display:inline-block;margin:22px 0 0;padding:9px 13px;background:#1d1b18;border-radius:999px;color:#f7f1e8;font-family:monospace;font-size:13px;letter-spacing:1px">${escapeHtml(reference)}</p>` : ''}</td></tr><tr><td style="padding:16px 30px 30px">${content}</td></tr><tr><td style="padding:22px 30px;background:#1d1b18;color:#f7f1e8"><p style="margin:0;color:#f7f1e8;font-size:13px;line-height:1.6">${footer}</p></td></tr></table><p style="max-width:620px;margin:16px auto 0;text-align:center;color:#82786d;font-size:11px;line-height:1.5">Cleo’s Munchies · Nigerian comfort, made for sharing</p></td></tr></table></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head><body style="margin:0;padding:0;background:#eee8df;color:#1d1b18;font-family:Arial,Helvetica,sans-serif"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${escapeHtml(preheader)}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#eee8df"><tr><td align="center" style="padding:28px 12px 42px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:620px;background:#f7f1e8;border:1px solid #ded3c6;border-radius:18px;overflow:hidden"><tr><td style="padding:26px 30px 22px;border-bottom:1px solid #ded3c6"><img src="${LOGO_URL}" width="170" height="75" alt="Cleo's Munchies" style="display:block;width:170px;max-width:100%;height:auto;border:0"></td></tr><tr><td style="padding:34px 30px 12px"><p style="margin:0 0 12px;color:#bd392e;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase">${escapeHtml(eyebrow)}</p><h1 style="margin:0;color:#1d1b18;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:1.08;font-weight:normal;letter-spacing:-.5px">${escapeHtml(title)}</h1><p style="margin:16px 0 0;color:#5f574e;font-size:16px;line-height:1.6">${intro}</p>${reference ? `<p style="display:inline-block;margin:22px 0 0;padding:9px 13px;background:#1d1b18;border-radius:999px;color:#f7f1e8;font-family:monospace;font-size:13px;letter-spacing:1px">${escapeHtml(reference)}</p>` : ''}</td></tr><tr><td style="padding:16px 30px 30px">${content}</td></tr><tr><td style="padding:22px 30px;background:#1d1b18;color:#f7f1e8"><p style="margin:0;color:#f7f1e8;font-size:13px;line-height:1.6">${footer}</p></td></tr></table><p style="max-width:620px;margin:16px auto 0;text-align:center;color:#82786d;font-size:11px;line-height:1.5">Cleo’s Munchies · Nigerian comfort, made for sharing</p></td></tr></table></body></html>`;
 }
 
 export function orderCard(lines, total, details, showDetails = true) {
@@ -70,5 +72,72 @@ export function buildOrderEmailPayload({ reference, idempotencyKey, details, lin
       { to: [{ email: OPERATOR_EMAIL, name: OPERATOR_NAME }], subject: `New preorder ${reference}`, htmlContent: operatorHtml.html, textContent: operatorHtml.textContent },
       { to: [{ email: details.email, name: details.name }], subject: `Your Cleo’s Munchies preorder ${reference}`, htmlContent: customerHtml.html, textContent: customerHtml.textContent },
     ],
+  };
+}
+
+// Customer emails sent when Cleo changes an order's status in the admin.
+const STATUS_EMAILS = {
+  pending_payment: {
+    eyebrow: 'Awaiting payment',
+    title: 'Your order is waiting for payment',
+    intro: 'Your preorder is saved and waiting for payment. Follow the steps below so we can match your Monzo payment to your order.',
+    includePaymentGuide: true,
+  },
+  paid: {
+    eyebrow: 'Payment received',
+    title: 'Thank you, your payment is in',
+    intro: 'We’ve matched your Monzo payment to this order. Your food is in the queue, and we’ll let you know when we start cooking.',
+  },
+  preparing: {
+    eyebrow: 'In the kitchen',
+    title: 'We’re cooking your order',
+    intro: 'Cleo’s kitchen is preparing your food now. We’ll let you know as soon as it’s ready.',
+  },
+  ready: {
+    eyebrow: 'Ready',
+    title: 'Your order is ready',
+    intro: 'Your food is ready and will be with you soon. We’ll be in touch if we need anything for the delivery.',
+  },
+  delivered: {
+    eyebrow: 'Delivered',
+    title: 'Enjoy your food',
+    intro: 'Your order has been delivered. Thank you for ordering from Cleo’s Munchies, and enjoy every bite.',
+  },
+  cancelled: {
+    eyebrow: 'Order cancelled',
+    title: 'Your order has been cancelled',
+    intro: 'This order has been cancelled. If you’ve already paid, we’ll contact you about a refund. If you think this is a mistake, just reply to this email.',
+  },
+};
+
+export const STATUS_EMAIL_STATUSES = Object.keys(STATUS_EMAILS);
+
+function statusText(copy, details, lines, total, reference) {
+  const payment = copy.includePaymentGuide
+    ? `\n\nPAYMENT STEPS:\n1. COPY this exact order code: ${reference}\n2. PASTE it into Monzo payment Notes.\nOpen Monzo: ${MONZO_PAYMENT_URL}`
+    : '';
+  return `Cleo's Munchies order ${reference}: ${copy.eyebrow}\n\nHi ${details.name},\n\n${copy.intro}\n\n${textItems(lines)}\n\nFood subtotal: ${pounds(total)}${payment}\n\nQuestions? Reply to this email.`;
+}
+
+// Builds the Brevo payload for a status-change email to the customer, or null for an unknown status.
+export function buildStatusEmailPayload({ reference, status, details, lines, total, idempotencyKey }) {
+  const copy = STATUS_EMAILS[status];
+  if (!copy) return null;
+  const html = emailShell({
+    preheader: `${copy.eyebrow}: Cleo’s Munchies order ${reference}`,
+    eyebrow: copy.eyebrow,
+    title: copy.title,
+    intro: `Hi ${escapeHtml(details.name)},<br>${copy.intro}`,
+    reference,
+    content: `${orderCard(lines, total, details, false)}${copy.includePaymentGuide ? paymentGuide(reference) : ''}`,
+    footer: 'Questions? Reply to this email and the Cleo’s Munchies team will help.',
+  });
+  return {
+    sender: { email: SENDER_EMAIL, name: SENDER_NAME },
+    to: [{ email: details.email, name: details.name }],
+    subject: `${copy.eyebrow}: your Cleo’s Munchies order ${reference}`,
+    htmlContent: html,
+    textContent: statusText(copy, details, lines, total, reference),
+    headers: { idempotencyKey },
   };
 }
