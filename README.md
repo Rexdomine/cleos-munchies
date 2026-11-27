@@ -25,11 +25,12 @@ Payment remains manual: the site never marks an order paid from email acceptance
 
 The menu and orders live in a Cloudflare Worker with a D1 (SQLite) database. The public site stays on Vercel and calls the Worker. Everything runs on Cloudflare's free plan.
 
-- **Worker:** `worker/` → `https://cleos-munchies-api.rextechng.workers.dev`
+- **Worker:** `worker/`. The admin is at **https://admin.cleosmunchies.co.uk**; the public API stays on `https://cleos-munchies-api.rextechng.workers.dev`.
   - `GET /api/menu`: the live menu, including sold-out flags. The site shows its bundled menu first, then switches to this.
   - `POST /api/orders`: re-prices the order from D1, saves it, then sends the Brevo emails (templates in `shared/orderEmails.js`). Retries with the same idempotency key never send twice.
   - `/admin`: the admin UI (`admin/`), plus `/api/admin/*`. It's protected by Cloudflare Access (an emailed one-time code), and the Worker re-checks the Access token and the `ADMIN_EMAILS` list.
 - **Menu photos:** uploaded from the dish editor. The admin centre-crops each photo to a square in the browser and resizes it (up to 960px, plus a 320px thumbnail) before uploading. The Worker stores them in the R2 bucket `cleos-munchies-media` and serves them at `/media/menu/<id>.webp`, cached for a year. The database stores the `/media/...` path; the public site puts the Worker's address in front.
+- **Domain:** `cleosmunchies.co.uk` DNS is on Cloudflare (moved from Namecheap on 2026-11-27). The website records point to Vercel with the proxy off; Brevo DKIM, verification and DMARC records are unchanged. Email Routing forwards every `@cleosmunchies.co.uk` address to Cleo's Gmail.
 - **Login page:** branded through the Zero Trust organization's `login_design` setting in Cloudflare, not in code: cream background, ink text, a header and a help-line footer. Its logo is `worker/src/assets/login-logo.png`, served publicly by the Worker at `/brand/login-logo.png`. The Cloudflare Access title and the blue button can't be changed on the free plan.
 - **Database:** `worker/migrations/`. The first menu is generated from `src/data/menu.js` with `npm run menu:seed`. After launch, D1 is the source of truth and `menu.js` is only a fallback.
 

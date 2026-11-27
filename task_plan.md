@@ -157,4 +157,5 @@ Current focus: the admin backend on Cloudflare (Worker + D1 + Access). Only the 
 - [ ] Owner: `wrangler secret put BREVO_API_KEY`, then merge and deploy the site so orders go through the Worker
 - [x] Admin Log out button and a branded signed-out page; branded Access login page (2026-11-27)
 - [x] Menu photo uploads: R2 bucket `cleos-munchies-media` created and the Worker deployed with the `MEDIA` binding. Live storage and serving verified (2026-11-27).
+- [x] Domain DNS moved from Namecheap to Cloudflare; Email Routing catch-all to Cleo's Gmail; admin served at https://admin.cleosmunchies.co.uk (2026-11-27)
 - [ ] Later: retire `api/orders.js` on Vercel; consider rate limiting `/api/orders`; clean up photos that are no longer used

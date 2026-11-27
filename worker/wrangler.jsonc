@@ -4,6 +4,8 @@
   "main": "src/index.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
+  // The admin lives on its own subdomain. workers.dev stays on for the public API used by the Vercel site.
+  "routes": [{ "pattern": "admin.cleosmunchies.co.uk", "custom_domain": true }],
   "observability": { "enabled": true },
   // Builds the admin UI into src/generated/adminPage.js before dev and deploy.
   "build": { "command": "npm run admin:build" },
