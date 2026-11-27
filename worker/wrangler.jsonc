@@ -1,0 +1,34 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "cleos-munchies-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  // The admin lives on its own subdomain. workers.dev stays on for the public API used by the Vercel site.
+  "routes": [{ "pattern": "admin.cleosmunchies.co.uk", "custom_domain": true }],
+  "observability": { "enabled": true },
+  // Builds the admin UI into src/generated/adminPage.js before dev and deploy.
+  "build": { "command": "npm run admin:build" },
+  // Lets src/index.js import PNG files (the Access login logo) as binary data.
+  "rules": [{ "type": "Data", "globs": ["**/*.png"], "fallthrough": true }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cleos-munchies",
+      "database_id": "501e1e54-d4e3-4b04-bfd6-082fb77e36aa",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Menu photos uploaded from the admin. Served publicly at /media/menu/<id>.webp.
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "cleos-munchies-media" }],
+  "vars": {
+    // Sites allowed to call /api/menu and /api/orders from the browser.
+    "ALLOWED_ORIGINS": "https://cleos-munchies.vercel.app",
+    // Emails allowed into /admin. Cloudflare Access enforces this too.
+    "ADMIN_EMAILS": "cleopatraejiogu@gmail.com,rextechng@gmail.com",
+    // Cloudflare Access app "Cleo's Munchies admin" (covers /admin and /api/admin only).
+    "ACCESS_TEAM_DOMAIN": "https://cleosmunchies.cloudflareaccess.com",
+    "ACCESS_AUD": "c8a326644388dcbf4315046d40f8beb4a47836961727aacb190cdd0571cc2a1e"
+  }
+  // Secret (set with `npx wrangler secret put BREVO_API_KEY --config worker/wrangler.jsonc`): BREVO_API_KEY
+}

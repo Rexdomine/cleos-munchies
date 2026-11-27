@@ -11,7 +11,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4281',
+    command: 'VITE_API_BASE=http://127.0.0.1:4281 npm run build && npm run preview -- --host 127.0.0.1 --port 4281',
     url: 'http://127.0.0.1:4281',
     reuseExistingServer: false,
     timeout: 120000,

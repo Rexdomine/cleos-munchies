@@ -136,3 +136,26 @@ Phase 10 — Production Monzo payment handoff
 - Error: A rapid hosted Chromium sweep triggered Vercel edge protection after 38 dish images; subsequent requests from the same automation IP returned a 32 KB HTML 403 response.
   - Attempt: rapid 61-image scroll, then a paced fresh-context retry
   - Resolution/next change: Classified as automation-IP edge protection rather than corrupt image output. Exact Git/Vercel deployment read-back is READY; the canonical URL returned 200 before the burst, 38 live images decoded, and all 61 exact production files passed local Chromium. Do not weaken Vercel protection for QA.
+
+## Improvement backlog
+
+Work through these one item at a time. Mark each one done when it lands.
+
+1. [~] No durable order store. Orders exist only as emails, and duplicate protection relies on Brevo's idempotency window. Built on `refactor/split-app-components`: orders are saved to D1 by the Cloudflare Worker, which goes live once the site is switched over.
+2. [x] Split `src/App.jsx` into components, hooks and lib. Done 2026-11-27 on `refactor/split-app-components`.
+3. [ ] No URL routing. The back button and refresh don't follow the screens.
+4. [ ] Missing business content: allergens and dietary labels, delivery fees, areas and minimum order, opening hours and cut-off times, meal-prep and catering options.
+5. [ ] Contact and WhatsApp details aren't on the site. It's set to `noindex` and has no SEO.
+6. [x] Fixed the "Close Munchies" typo. Done 2026-11-27.
+7. [ ] Pin the React and Vite versions, which are currently `latest` in `package.json`.
+
+Current focus: the admin backend on Cloudflare (Worker + D1 + Access). Only the backend is on Cloudflare for now; moving the whole site there comes later.
+- [x] Worker API, D1 schema and seed, admin UI, live menu on the site, tests (2026-11-27)
+- [x] Remote D1 `cleos-munchies` created, migrated and seeded (2026-11-27)
+- [x] Owner: Zero Trust (free) turned on and wrangler logged in (2026-11-27)
+- [x] Worker deployed to https://cleos-munchies-api.rextechng.workers.dev. The Access app "Cleo's Munchies admin" covers `/admin` and `/api/admin` only, with email-code login for cleopatraejiogu@gmail.com and rextechng@gmail.com. Team domain: cleosmunchies.cloudflareaccess.com. (2026-11-27)
+- [ ] Owner: `wrangler secret put BREVO_API_KEY`, then merge and deploy the site so orders go through the Worker
+- [x] Admin Log out button and a branded signed-out page; branded Access login page (2026-11-27)
+- [x] Menu photo uploads: R2 bucket `cleos-munchies-media` created and the Worker deployed with the `MEDIA` binding. Live storage and serving verified (2026-11-27).
+- [x] Domain DNS moved from Namecheap to Cloudflare; Email Routing catch-all to Cleo's Gmail; admin served at https://admin.cleosmunchies.co.uk (2026-11-27)
+- [ ] Later: retire `api/orders.js` on Vercel; consider rate limiting `/api/orders`; clean up photos that are no longer used

@@ -1,51 +1,119 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { MENU, MENU_CATEGORIES, searchMenu } from './data/menu.js';
-import { addCartItem, cartCount, cartSubtotal, formatGBP, removeCartItem, setCartQuantity } from './domain/cart.js';
-import { createOrderIdempotencyKey, createOrderReference, createReviewOrder, MONZO_PAYMENT_URL, PREORDER_READY_WITHIN_HOURS, prepareOrderForSubmission, validateDeliveryDetails } from './domain/order.js';
+import { useEffect, useState } from 'react';
+import { addCartItem, syncCartWithMenu } from './domain/cart.js';
+import { applyConfirmedOrder, createOrderReference, createReviewOrder, prepareOrderForSubmission, validateDeliveryDetails } from './domain/order.js';
+import { useMenu } from './hooks/useMenu.js';
+import { usePersistentCart } from './hooks/usePersistentCart.js';
+import { submitOrder } from './lib/submitOrder.js';
+import { Basket } from './components/Basket.jsx';
+import { BasketBar } from './components/BasketBar.jsx';
+import { Checkout } from './components/Checkout.jsx';
+import { Header } from './components/Header.jsx';
+import { Hero } from './components/Hero.jsx';
+import { ALL_CATEGORIES, MenuSection } from './components/MenuSection.jsx';
+import { Review } from './components/Review.jsx';
+import { VariantSheet } from './components/VariantSheet.jsx';
 
-const emptyDetails = { name:'', phone:'', email:'', address:'', city:'', postcode:'', notes:'' };
-
-function useOverlayLifecycle(onClose) {
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
-
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    const handleKeyDown = event => {
-      if (event.key === 'Escape') closeRef.current();
-    };
-
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-}
+const emptyDetails = { name: '', phone: '', email: '', address: '', city: '', postcode: '', notes: '' };
 
 function App() {
-  const [cart, setCart] = useState(() => { try { return JSON.parse(localStorage.getItem('cleos-cart')) || []; } catch { return []; } });
-  const [category, setCategory] = useState('All'); const [query, setQuery] = useState('');
-  const [sheet, setSheet] = useState(null); const [screen, setScreen] = useState('menu');
-  const [details, setDetails] = useState(emptyDetails); const [errors, setErrors] = useState({}); const [review, setReview] = useState(null); const [pendingOrder, setPendingOrder] = useState(null); const [submitting, setSubmitting] = useState(false); const [submitError, setSubmitError] = useState('');
-  useEffect(() => localStorage.setItem('cleos-cart', JSON.stringify(cart)), [cart]);
-  const visible = useMemo(() => searchMenu(MENU.filter(x => category === 'All' || x.category === category), query), [category, query]);
-  const add = item => setCart(c => addCartItem(c, item));
-  const submitDetails = async e => { e.preventDefault(); if (submitting) return; const result = validateDeliveryDetails(details); setDetails(result.values); setErrors(result.errors); setSubmitError(''); if (!result.valid) { requestAnimationFrame(() => document.querySelector('[aria-invalid="true"]')?.focus()); return; } const order = pendingOrder ? prepareOrderForSubmission(pendingOrder, result.values) : createReviewOrder({ cart, details: result.values, reference: createOrderReference() }); setPendingOrder(order); setSubmitting(true); try { const response = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: order.reference, idempotencyKey: order.idempotencyKey, items: order.items, customer: order.customer }) }); const payload = await response.json().catch(() => ({})); if (!response.ok) throw new Error(payload.error || 'We could not send the order notification. Please try again.'); setReview({ ...order, status: 'pending_payment', notification: { provider: 'brevo', status: 'accepted', sent: true, messageIds: payload.messageIds || [] } }); setCart([]); setScreen('review'); } catch (error) { setSubmitError(error instanceof TypeError ? 'The connection was interrupted. Your order was not confirmed. Please try again.' : (error.message || 'We could not send the order notification. Please try again.')); } finally { setSubmitting(false); } };
-  if (screen === 'review') return <Review order={review} onBack={() => setScreen('checkout')} />;
-  if (screen === 'checkout') return <Checkout details={details} setDetails={setDetails} errors={errors} onSubmit={submitDetails} cart={cart} onBack={() => setScreen('basket')} submitting={submitting} submitError={submitError} />;
-  return <><header className="topbar"><a className="brand" href="#menu" onClick={() => setScreen('menu')}>CLEO<span>’</span>S<br/><i>MUNCHIES</i></a><div className="preorder"><span className="live-dot" /> PREORDER<br/><b>READY WITHIN 48 HOURS</b></div><button className="bag-icon" aria-label="Open basket" onClick={() => setScreen('basket')}>Bag <strong>{cartCount(cart)}</strong></button></header>
-    <main id="menu"><section className="hero"><p className="eyebrow">Nigerian comfort · made for sharing</p><h1>Big flavour.<br/><em>Zero fuss.</em></h1><p className="lede">Home-cooked West African favourites, ready for your table. Order ahead and let us do the delicious bit.</p><div className="hero-art"><img src="/images/grills.webp" alt="Smoky grilled chicken" /><span>Cooked with<br/>good energy <svg className="energy-burst" aria-hidden="true" viewBox="0 0 32 32"><circle cx="16" cy="16" r="3"/><path d="M16 2v8m0 12v8M2 16h8m12 0h8M6.1 6.1l5.7 5.7m8.4 8.4 5.7 5.7m0-19.8-5.7 5.7m-8.4 8.4-5.7 5.7"/></svg></span></div></section>
-      <section className="menu-head"><div><p className="eyebrow">The good stuff</p><h2>Explore the full menu</h2></div><label className="search"><span>⌕</span><input aria-label="Search the menu" placeholder="Search the menu" value={query} onChange={e => setQuery(e.target.value)} /></label></section>
-      <nav className="categories" aria-label="Menu categories">{['All', ...MENU_CATEGORIES].map(c => <button key={c} className={category === c ? 'selected' : ''} onClick={() => setCategory(c)}>{c}</button>)}</nav>
-      <section className="menu-grid">{visible.map(item => <article className="food-card" key={item.id}><div className="food-image"><img src={item.image} srcSet={`${item.image.replace('.webp', '-320.webp')} 320w, ${item.image} 480w`} sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 900px) calc(50vw - 28px), 480px" alt="" loading="lazy" decoding="async" fetchPriority="low" /><span className="category-tag">{item.category}</span></div><div className="food-copy"><div><h3>{item.name}</h3><p>{item.note}</p></div>{item.variants ? <button className="add-button variant" aria-label={`Choose a size for ${item.name}`} onClick={() => setSheet(item)}>Choose size <span aria-hidden="true">＋</span></button> : <button className="add-button" aria-label={`Add ${item.name}`} onClick={() => add(item)}>{formatGBP(item.price)} <span aria-hidden="true">＋</span></button>}</div></article>)}</section>
-      {visible.length === 0 && <p className="empty">No dishes found. Try another flavour.</p>}
-    </main>{cart.length > 0 && <button className="basket-bar" aria-live="polite" onClick={() => setScreen('basket')}><span>View basket <b>{cartCount(cart)}</b></span><strong>{formatGBP(cartSubtotal(cart))}</strong></button>}{sheet && <VariantSheet item={sheet} onAdd={item => { add(item); setSheet(null); }} onClose={() => setSheet(null)} />}{screen === 'basket' && <Basket cart={cart} setCart={setCart} onBack={() => setScreen('menu')} onCheckout={() => setScreen('checkout')} />}</>;
+  const [cart, setCart] = usePersistentCart();
+  const menu = useMenu();
+  const [screen, setScreen] = useState('menu'); // 'menu' | 'basket' | 'checkout' | 'review'
+  const [category, setCategory] = useState(ALL_CATEGORIES);
+  const [query, setQuery] = useState('');
+  const [sheet, setSheet] = useState(null);
+
+  const [details, setDetails] = useState(emptyDetails);
+  const [errors, setErrors] = useState({});
+  const [pendingOrder, setPendingOrder] = useState(null);
+  const [review, setReview] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const add = (item) => setCart((current) => addCartItem(current, item));
+
+  // Once the live menu arrives, refresh saved basket prices and flag sold-out dishes.
+  useEffect(() => {
+    if (menu.live) setCart((current) => syncCartWithMenu(current, menu.items));
+  }, [menu, setCart]);
+
+  const submitDetails = async (e) => {
+    e.preventDefault();
+    if (submitting) return;
+
+    const result = validateDeliveryDetails(details);
+    setDetails(result.values);
+    setErrors(result.errors);
+    setSubmitError('');
+    if (!result.valid) {
+      requestAnimationFrame(() => document.querySelector('[aria-invalid="true"]')?.focus());
+      return;
+    }
+
+    // Reuse the pending order (and its idempotency key) on retry unless the details or basket changed.
+    const order = pendingOrder
+      ? prepareOrderForSubmission(pendingOrder, result.values, cart)
+      : createReviewOrder({ cart, details: result.values, reference: createOrderReference() });
+    setPendingOrder(order);
+    setSubmitting(true);
+    try {
+      const payload = await submitOrder(order);
+      // Show the prices the server saved and emailed, which can differ if the menu changed meanwhile.
+      setReview({
+        ...applyConfirmedOrder(order, payload),
+        status: 'pending_payment',
+        notification: { provider: 'brevo', status: 'accepted', sent: true, messageIds: payload.messageIds || [] },
+      });
+      setCart([]);
+      setScreen('review');
+    } catch (error) {
+      setSubmitError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (screen === 'review') {
+    return <Review order={review} onBack={() => setScreen('checkout')} />;
+  }
+
+  if (screen === 'checkout') {
+    return (
+      <Checkout
+        details={details}
+        setDetails={setDetails}
+        errors={errors}
+        onSubmit={submitDetails}
+        onBack={() => setScreen('basket')}
+        submitting={submitting}
+        submitError={submitError}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Header cart={cart} onHome={() => setScreen('menu')} onOpenBasket={() => setScreen('basket')} />
+      <main id="menu">
+        <Hero />
+        <MenuSection menu={menu} category={category} setCategory={setCategory} query={query} setQuery={setQuery} onAdd={add} onChooseSize={setSheet} />
+      </main>
+      {cart.length > 0 && <BasketBar cart={cart} onOpen={() => setScreen('basket')} />}
+      {sheet && (
+        <VariantSheet
+          item={sheet}
+          onAdd={(item) => {
+            add(item);
+            setSheet(null);
+          }}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {screen === 'basket' && (
+        <Basket cart={cart} setCart={setCart} onBack={() => setScreen('menu')} onCheckout={() => setScreen('checkout')} />
+      )}
+    </>
+  );
 }
 
-function VariantSheet({ item, onAdd, onClose }) { useOverlayLifecycle(onClose); return <div className="scrim" onClick={onClose}><section className="sheet" role="dialog" aria-modal="true" aria-labelledby="variant-title" onClick={e => e.stopPropagation()}><button className="close" onClick={onClose} aria-label="Close options">×</button><p className="eyebrow">Choose your tray</p><h2 id="variant-title">{item.name}</h2>{item.variants.map(v => <button className="variant-row" key={v.id} onClick={() => onAdd({...item, variantId:v.id, price:v.price, variantLabel:v.label})}><span>{v.label}</span><b>{formatGBP(v.price)}</b></button>)}</section></div> }
-function Basket({cart,setCart,onBack,onCheckout}) { useOverlayLifecycle(onBack); return <div className="scrim" onClick={onBack}><section className="drawer" role="dialog" aria-modal="true" aria-labelledby="basket-title" onClick={e => e.stopPropagation()}><button className="close" onClick={onBack} aria-label="Close basket">×</button><p className="eyebrow">Your order</p><h2 id="basket-title">The basket</h2>{cart.map(line => <div className="basket-line" key={line.key}><div><b>{line.name}</b><small>{line.variantLabel || line.note}</small></div><div className="quantity"><button aria-label={`Decrease ${line.name}`} onClick={() => setCart(c => setCartQuantity(c,line.key,line.quantity-1))}>−</button><span>{line.quantity}</span><button aria-label={`Increase ${line.name}`} onClick={() => setCart(c => setCartQuantity(c,line.key,line.quantity+1))}>+</button></div><strong>{formatGBP(line.price*line.quantity)}</strong><button className="remove" onClick={() => setCart(c => removeCartItem(c,line.key))}>Remove</button></div>)}<div className="total"><span>Food subtotal</span><b>{formatGBP(cartSubtotal(cart))}</b></div><p className="fee-note">Delivery arrangements and any delivery charge will be confirmed separately.</p><button className="primary" disabled={!cart.length} onClick={onCheckout}>Continue to details <span aria-hidden="true">→</span></button></section></div> }
-function Checkout({details,setDetails,errors,onSubmit,cart,onBack,submitting,submitError}) { const update = e => setDetails(d => ({...d,[e.target.name]:e.target.value})); return <div className="page-shell"><button className="back" onClick={onBack}>← Back to basket</button><p className="eyebrow">Almost there</p><h1>Delivery details</h1><p className="lede">Tell us where to send the good stuff. Close Munchies' preorder standard is that your food will be ready within {PREORDER_READY_WITHIN_HOURS} hours.</p><form onSubmit={onSubmit} noValidate><div className="form-grid">{[['name','Name'],['phone','Phone'],['email','Email'],['address','Address'],['city','Town or city'],['postcode','Postcode']].map(([name,label]) => <label key={name}>{label}<input name={name} type={name==='email'?'email':'text'} inputMode={name === 'phone' ? 'tel' : undefined} autoComplete={name === 'name' ? 'name' : name === 'phone' ? 'tel' : name === 'email' ? 'email' : name === 'postcode' ? 'postal-code' : name === 'address' ? 'street-address' : name === 'city' ? 'address-level2' : undefined} value={details[name]} onChange={update} required={true} aria-invalid={!!errors[name]} aria-describedby={errors[name] ? `${name}-error` : undefined} />{errors[name]&&<small className="error" id={`${name}-error`}>{errors[name]}</small>}</label>)}<label className="full">Notes (optional)<textarea name="notes" value={details.notes} onChange={update} placeholder="Allergies, gate codes or delivery notes" /></label></div>{submitError && <p className="error" role="alert">{submitError}</p>}<button className="primary" type="submit" disabled={submitting}>{submitting ? 'Sending order…' : 'Review order'} <span aria-hidden="true">→</span></button></form></div> }
-function Review({order,onBack}) { const [copied,setCopied] = useState(false); const copyReference = async () => { try { await navigator.clipboard.writeText(order.reference); } catch { const input = document.createElement('input'); input.value = order.reference; input.setAttribute('readonly',''); input.style.position='fixed'; input.style.opacity='0'; document.body.appendChild(input); input.select(); document.execCommand('copy'); input.remove(); } setCopied(true); window.setTimeout(() => setCopied(false), 2200); }; return <div className="page-shell review"><button className="back" onClick={onBack}>← Edit details</button><div className="review-flag">Order submitted</div><p className="eyebrow">Your reference</p><button type="button" className="reference-copy" onClick={copyReference} aria-label={`Copy order reference ${order.reference}`}><strong>{order.reference}</strong><span>{copied ? 'Copied ✓' : 'Tap to copy'}</span></button><p className="lede">Order notification sent to you and Cleo’s Munchies. Payment is not confirmed until Monzo payment is manually matched to this reference.</p><div className="review-card"><h2>Ready when you are</h2>{order.items.map(i => <p key={i.key}><span>{i.quantity} × {i.name}</span><b>{formatGBP(i.price*i.quantity)}</b></p>)}<div className="total"><span>Food subtotal</span><b>{formatGBP(order.total)}</b></div><p className="preorder-note">Preorder standard: your food will be ready within {order.preorder.readyWithinHours} hours.</p><p className="fee-note">Delivery arrangements and any delivery charge will be confirmed separately.</p></div><div className="payment-instruction"><span className="payment-kicker">Important — payment step</span><h2>Copy your code into Monzo</h2><p>Tap the reference above to copy it, then paste it into Monzo’s payment Notes. This is how we match your payment to your order.</p></div><a className="primary link-button" href={MONZO_PAYMENT_URL} target="_blank" rel="noreferrer">Continue to Monzo <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h13m-6-6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2"/></svg></a><p className="payment-footnote">Your order is not marked paid until we manually match the Monzo payment.</p></div> }
 export default App;

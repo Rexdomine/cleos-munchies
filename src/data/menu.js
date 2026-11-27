@@ -1,4 +1,4 @@
-const CATEGORY_NOTES = {
+export const CATEGORY_NOTES = {
   Breakfast: 'Served per small takeaway bowl',
   Indomie: 'Served per small takeaway bowl',
   'Puff Puff': 'Five pieces',
